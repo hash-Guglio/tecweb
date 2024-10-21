@@ -25,7 +25,7 @@ Per l'avvio tramite Docker è possibile utilizare il seguente comando
 ``` bash
 docker-compose up
 bash
-
+```
 #### Eseguire il container in background
 ```bash
 docker-compose up -d
