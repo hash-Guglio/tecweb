@@ -18,4 +18,20 @@ Puoi accedere al sito web utilizzando il seguente link:
 https://[branch].tecweb.guglielmobarison.app
 ```
 
-La pipeline di integrazione continua è gestita tramite GitHub Actions e include il deploy automatico dei branch sul server, insieme a una serie di controlli automatici.
+La pipeline di integrazione continua è gestita tramite GitHub Actions e include il deploy automatico dei branch (main, dev) sul server, insieme a una serie di controlli automatici.
+
+# Utilizzo del container Docker
+Per l'avvio tramite Docker è possibile utilizare il seguente comando
+``` bash
+docker-compose up
+bash
+
+#### Eseguire il container in background
+```bash
+docker-compose up -d
+```
+#### Forzare la creazione e la build del container
+```bash
+docker-compose up --build --force-recreate
+```
+
