@@ -48,7 +48,7 @@ jobs:
           host: ${{ secrets.SSH_HOSTNAME }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          #passphrase: ${{ secrets.SSH_KEY_PASS }}
+          passphrase: ${{ secrets.SSH_KEY_PASS }}
           script: |
             cd /home
             ./create_apache_conf.sh ${{ steps.branch-name.outputs.current_branch }} ${{ github.event.repository.name }}
