@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro,Z
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+  
+  php-apache:
+    container_name: php-apache
+    build: ./php-apache
+    volumes:
+      - ./..:/var/www/html:Z
+    user: "1000"
+    restart: unless-stopped
+  
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.6.7
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./mariadb/mariadb.env
+    volumes:
+      - mariadb:/var/lib/mysql
+    restart: unless-stopped
+  
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    env_file:
+      - ./phpmyadmin/phpmyadmin.env
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
+  mariadb:

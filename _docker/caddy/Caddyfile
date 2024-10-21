@@ -1,0 +1,10 @@
+localhost {
+	encode zstd gzip
+	redir /pma /pma/
+	handle_path /pma/* {
+		reverse_proxy phpmyadmin
+	}
+	handle {
+		reverse_proxy php-apache
+	}
+}
