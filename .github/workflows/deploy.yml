@@ -11,11 +11,6 @@ on:
       - 'LICENSE'
   pull_request:
   workflow_dispatch:
-    inputs:
-      run_all_checks:
-        description: "Enable all checks (broken links, PageSpeed, HTML validation, accessibility)"
-        required: false
-        default: 'true'
 
 jobs:
   deploy:
@@ -48,14 +43,12 @@ jobs:
           host: ${{ secrets.SSH_HOSTNAME }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_KEY_PASS }}
           script: |
             cd /home
             ./create_apache_conf.sh ${{ steps.branch-name.outputs.current_branch }} ${{ github.event.repository.name }}
             echo "Deploy complete 🚀"
 
   broken-links-check:
-    if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: Check broken links
     uses: hash-Guglio/tecweb/.github/workflows/broken-links.yml@dev
     needs: deploy
@@ -63,7 +56,6 @@ jobs:
       inherit
 
   pagespeed-check:
-    if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: PageSpeed Insights
     uses: hash-Guglio/tecweb/.github/workflows/pagespeed-performance.yml@dev
     needs: deploy
@@ -71,7 +63,6 @@ jobs:
       inherit
 
   validate-html:
-    if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: Validate HTML
     uses: hash-Guglio/tecweb/.github/workflows/validate-html.yml@dev
     needs: deploy
@@ -79,7 +70,6 @@ jobs:
       inherit
 
   accessibility-audit:
-    if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: Accessibility audit
     needs: deploy
     uses: hash-Guglio/tecweb/.github/workflows/a11y-audit.yml@dev
