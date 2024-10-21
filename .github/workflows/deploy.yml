@@ -1,0 +1,87 @@
+name: sync
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+      - '.configs/**'
+      - '_docker/**'
+      - '_db/**'
+      - '.gitignore'
+      - 'README.md'
+      - 'LICENSE'
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      run_all_checks:
+        description: "Enable all checks (broken links, PageSpeed, HTML validation, accessibility)"
+        required: false
+        default: 'true'
+
+jobs:
+  deploy:
+    name: Remote deployment
+    runs-on: ubuntu-latest
+    outputs:
+      current_branch: ${{ steps.branch-name.outputs.current_branch }}
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v4
+    - name: Get branch name
+      id: branch-name
+      uses: tj-actions/branch-names@v8
+    - name: Save branch name
+      id: branch-name-combined
+      run: echo "branch=${{ steps.branch-name.outputs.current_branch }}.${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+    - name: Rsync
+      uses: burnett01/rsync-deployments@7.0.1
+      with:
+        switches: -avzr --exclude=".github" --exclude=".configs" --exclude=".git" --exclude ".gitignore" --exclude="_docker" --exclude="db"
+        path: /
+        remote_path: /var/www/${{ steps.branch-name-combined.outputs.branch }}
+        remote_host: ${{ secrets.SSH_HOSTNAME }}
+        remote_user: ${{ secrets.SSH_USER }}
+        remote_key:  ${{ secrets.SSH_PRIVATE_KEY }}
+        remote_key_pass: ${{ secrets.SSH_KEY_PASS }}
+    - name: Add virtual host to remote
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+          host: ${{ secrets.SSH_HOSTNAME }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASS }}
+          script: |
+            cd /home
+            ./create_apache_conf.sh ${{ steps.branch-name.outputs.current_branch }} ${{ github.event.repository.name }}
+            echo "Deploy complete 🚀"
+
+  broken-links-check:
+    if: ${{ github.event.inputs.run_all_checks == 'true' }}
+    name: Check broken links
+    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/broken-links.yml@dev
+    needs: deploy
+    secrets:
+      inherit
+
+  pagespeed-check:
+    if: ${{ github.event.inputs.run_all_checks == 'true' }}
+    name: PageSpeed Insights
+    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/pagespeed-performance.yml@dev
+    needs: deploy
+    secrets:
+      inherit
+
+  validate-html:
+    if: ${{ github.event.inputs.run_all_checks == 'true' }}
+    name: Validate HTML
+    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/validate-html.yml@dev
+    needs: deploy
+    secrets:
+      inherit
+
+  accessibility-audit:
+    if: ${{ github.event.inputs.run_all_checks == 'true' }}
+    name: Accessibility audit
+    needs: deploy
+    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/a11y-audit.yml@dev
+    secrets:
+      inherit

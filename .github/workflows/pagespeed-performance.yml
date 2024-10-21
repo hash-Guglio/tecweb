@@ -1,0 +1,62 @@
+name: site performance
+on:
+  - workflow_call
+  - workflow_dispatch
+
+jobs:
+  performanceChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8
+
+      - name: Run PageSpeed Insights (Mobile)
+        id: psi_mobile
+        uses: stefafafan/psi-action@v1
+        with:
+          url: "https://${{ steps.branch-name.outputs.current_branch }}.${{ github.event.repository.name }}"
+          strategy: 'mobile'
+          key: ${{ secrets.PAGESPEED_INSIGHTS_API }}
+          
+      - name: Echo results mobile
+        run: |
+          {
+            echo "### Performance Mobile"
+            echo ""
+            echo "| Metric                        | Value                                       | Unit             | Maximum Value |"
+            echo "| ----------------------------- | ------------------------------------------- | ----------------- | ------------- |"
+            echo "| **Score**                     | ${{ steps.psi_mobile.outputs.score }}              | Overall score     | 100           |"
+            echo "| **First Contentful Paint**    | ${{ steps.psi_mobile.outputs.first-contentful-paint }}              | milliseconds      | -             |"
+            echo "| **First Input Delay**         | ${{ steps.psi_mobile.outputs.first-input-delay }}              | milliseconds      | -             |"
+            echo "| **Cumulative Layout Shift**   | ${{ steps.psi_mobile.outputs.cumulative-layout-shift }}              | Score             | -             |"
+            echo "| **Largest Contentful Paint**  | ${{ steps.psi_mobile.outputs.largest-contentful-paint }}              | milliseconds      | -             |"
+            echo "| **Speed Index**               | ${{ steps.psi_mobile.outputs.speed-index }}              | Speed Index score | 100           |"
+            echo "| **Time to Interactive**       | ${{ steps.psi_mobile.outputs.time-to-interactive }}              | Time to Interactive score | 100           |"
+            echo "| **Total Blocking Time**       | ${{ steps.psi_mobile.outputs.total-blocking-time }}              | Total Blocking Time score | 100           |"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Run PageSpeed Insights (Desktop)
+        id: psi_desktop
+        uses: stefafafan/psi-action@v1
+        with:
+          url: "https://${{ steps.branch-name.outputs.current_branch }}.${{ github.event.repository.name }}"
+          strategy: 'desktop'
+          key: ${{ secrets.PAGESPEED_INSIGHTS_API }}
+          
+      - name: Echo results desktop
+        run: |
+          {
+            echo "### Performance Desktop"
+            echo ""
+            echo "| Metric                        | Value                                       | Unit             | Maximum Value |"
+            echo "| ----------------------------- | ------------------------------------------- | ----------------- | ------------- |"
+            echo "| **Score**                     | ${{ steps.psi_desktop.outputs.score }}              | Overall score     | 100           |"
+            echo "| **First Contentful Paint**    | ${{ steps.psi_desktop.outputs.first-contentful-paint }}              | milliseconds      | -             |"
+            echo "| **First Input Delay**         | ${{ steps.psi_desktop.outputs.first-input-delay }}              | milliseconds      | -             |"
+            echo "| **Cumulative Layout Shift**   | ${{ steps.psi_desktop.outputs.cumulative-layout-shift }}              | Score             | -             |"
+            echo "| **Largest Contentful Paint**  | ${{ steps.psi_desktop.outputs.largest-contentful-paint }}              | milliseconds      | -             |"
+            echo "| **Speed Index**               | ${{ steps.psi_desktop.outputs.speed-index }}              | Speed Index score | 100           |"
+            echo "| **Time to Interactive**       | ${{ steps.psi_desktop.outputs.time-to-interactive }}              | Time to Interactive score | 100           |"
+            echo "| **Total Blocking Time**       | ${{ steps.psi_desktop.outputs.total-blocking-time }}              | Total Blocking Time score | 100           |"
+          } >> "${GITHUB_STEP_SUMMARY}"

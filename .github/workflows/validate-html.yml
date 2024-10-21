@@ -1,0 +1,21 @@
+name: HTML5 validator
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/validate-html.yml
+jobs:
+  validator:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: Validate
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          config: .configs/validate-html-config.yml
+      - name: Log failures
+        if: failure()
+        run: cat log.log > "${GITHUB_STEP_SUMMARY}"

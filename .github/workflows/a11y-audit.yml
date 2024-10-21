@@ -1,0 +1,27 @@
+name: A11y audit
+
+on:
+  - workflow_call
+  - workflow_dispatch
+
+jobs:
+  a11yChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+      - name: A11y Evaluation
+        uses: a11ywatch/github-actions@v2.1.10
+        with:
+          WEBSITE_URL: https://${{ steps.branch-name.outputs.current_branch }}.${{ github.event.repository.name }}/index.php
+          SITE_WIDE: true
+          FIX: false
+          SUBDOMAINS: false
+          TLD: true
+          FAIL_WARNINGS_COUNT: 0
+          FAIL_ERRORS_COUNT: 0
+          LIST: true
+          UPGRADE: true
+          COMPUTER_VISION_ENDPOINT: false
+      - name: Output JSON
+        run: a11ywatch -r > "${GITHUB_STEP_SUMMARY}"
