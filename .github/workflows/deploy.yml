@@ -31,7 +31,7 @@ jobs:
       uses: tj-actions/branch-names@v8
     - name: Save branch name
       id: branch-name-combined
-      run: echo "branch=${{ steps.branch-name.outputs.current_branch }}.${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+      run: echo "branch=${{ steps.branch-name.outputs.current_branch }}.${{ github.event.repository.name }}.${{ secrets.SSH_HOSTNAME }}" >> $GITHUB_OUTPUT
     - name: Rsync
       uses: burnett01/rsync-deployments@7.0.1
       with:
@@ -57,7 +57,7 @@ jobs:
   broken-links-check:
     if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: Check broken links
-    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/broken-links.yml@dev
+    uses: hash-Guglio/tecweb/.github/workflows/broken-links.yml@dev
     needs: deploy
     secrets:
       inherit
@@ -65,7 +65,7 @@ jobs:
   pagespeed-check:
     if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: PageSpeed Insights
-    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/pagespeed-performance.yml@dev
+    uses: hash-Guglio/tecweb/.github/workflows/pagespeed-performance.yml@dev
     needs: deploy
     secrets:
       inherit
@@ -73,7 +73,7 @@ jobs:
   validate-html:
     if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: Validate HTML
-    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/validate-html.yml@dev
+    uses: hash-Guglio/tecweb/.github/workflows/validate-html.yml@dev
     needs: deploy
     secrets:
       inherit
@@ -82,6 +82,6 @@ jobs:
     if: ${{ github.event.inputs.run_all_checks == 'true' }}
     name: Accessibility audit
     needs: deploy
-    uses: hash-Guglio/tecweb.guglielmobarison.app/.github/workflows/a11y-audit.yml@dev
+    uses: hash-Guglio/tecweb/.github/workflows/a11y-audit.yml@dev
     secrets:
       inherit
