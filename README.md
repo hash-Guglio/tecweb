@@ -39,3 +39,7 @@ docker-compose -f path/to/docker-compose.yml up
 docker-compose up --build --force-recreate
 ```
 
+### Schema della banca dati
+``` bash
+[https://[branch].tecweb.guglielmobarison.a](https://www.notion.so/BASE-DE-DATOS-TEC-WEB-2c9cb3db0c244148bc5ade136265323a?pvs=4)
+```
