@@ -1,72 +1,90 @@
-<?php 
-    require_once('ini.php');
+<?php
+
+require_once("ini.php");
+session_start();
 
     class RenderEngine {
-        private static function getFile(string $filePath) : string {
-            if(!file_exists($filePath)) {
-                throw new Exception("[ERROR] {$filePath}  not found in /html directory.");
+
+        private static function loadHtmlFile(string $filePath, string $errorMessage): string {
+            if (!file_exists($filePath)) {
+                throw new Exception("File not found: " . $filePath);
             }
-
-            $content = @file_get_contents($filePath);
-
-            if ($content == false) {
-                throw new Exception("[ERROR] {$filePath} is empty.");
-            }
-            return $content; 
-        }
-
-        public static function replaceSectionContent(&$in, $sectionName) {
-            $sectionTag = "<!-- shared_{$sectionName} -->";
-            $startPos = strpos($in, $sectionTag);
             
-            if ($startPos == false) {
-                return new Exception("[ERROR] Start delimeter (section: {$sectionName}) not found.");
-            } 
-
-            $length = strlen($sectionTag);
-
-            $sectionFile = self::getFile(__DIR__ . "/../html/component.{$sectionName}" . '.html');
-
-            $contentSection = self::getSectionContent($sectionFile, $sectionName);
-
-            $in = substr_replace($in, $contentSection, $startPos, $length); 
+            $content = @file_get_contents($filePath);
+            if ($content === false) {
+                throw new Exception($errorMessage);
+            }
+            
+            return $content;
         }
 
-        public static function getSectionContent(&$in, $sectionName) : string {
-            $sectionStartTag = "<!-- {$sectionName}_start -->"; 
-            $sectionEndTag = "<!-- {$sectionName}_end -->";
+        private static function getSectionContent(&$in, $name) : string {
+            $startDelimiter = "<!-- {$name}_start -->";
+            $endDelimiter = "<!-- {$name}_end -->";
+            
+            $startPos = strpos($in, $startDelimiter);
+            $endPos = strpos($in, $endDelimiter);
 
-            $startPos = strpos($in, $sectionStartTag); 
-            $endPos = strpos($in, $sectionEndTag);
-
-
+    
             if ($startPos === false || $endPos === false) {
-                return new Exception("[ERROR] Delimeters (section: {$sectionName}) not found in component file.");
+                throw new Exception("Delimiters not found: {$name}");
             }
 
-            $startPos += strlen($sectionStartTag);
+            $startPos += strlen($startDelimiter);
             $contentLength = $endPos - $startPos;
 
             return substr($in, $startPos, $contentLength);
         }
 
-        public static function buildPage(string $name) : string {            
+        private static function replaceSectionContent(&$in, $sectionName) : void {
+            $sectionStartTag = "<!-- shared_{$sectionName} -->";
+            $startIndex = strpos($in, $sectionStartTag);
+
+            if ($startIndex === false) {
+                throw new Exception("Start of the section '{$sectionName}' not found in the provided HTML content.");
+            }
+
+            $length = strlen($sectionStartTag);
+
+            $filePath = __DIR__ . "/../html/component.{$sectionName}.html";
+            $fileStr = self::loadHtmlFile($filePath, "Could not load content for section '{$sectionName}'");
+            $newContent = self::getSectionContent($fileStr, $sectionName);
+
+            $in = substr_replace($in, $newContent, $startIndex, $length);
+        }
+
+        public static function errorCode($number) : void {
+		        http_response_code($number);
+		        require ("{$number}.php");
+        }
+
+        private static function deleteCircularLinks(&$page, $name, $activeClass = 'active') : void {
+		        $from = '/<a href="' . $name . '\.php.*?"([^>]*?)>(.*?)<\/a>/s';
+		        $to = '<span class="'. $activeClass .'"${1}>${2}</span>';
+		        $page = preg_replace($from, $to, $page);
+	      }
+
+        public static function buildPage($name) : string {        
+            $name = basename($name, ".php");
+
             try {
-                $page = self::getFile(__DIR__ . "/../html/{$name}.html");
+                $page = self::loadHtmlFile(__DIR__ . "/../html/{$name}.html", "Could not load page content: {$name}"); 
                 self::replaceSectionContent($page, 'head');
                 self::replaceSectionContent($page, 'header');
                 self::replaceSectionContent($page, 'footer');
-                return $page;
+            } catch (Exception $e) {
+                echo "<p lang='en'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
+                echo "<p lang='en'>File: " . htmlspecialchars($e->getFile()) . " | Line: " . $e->getLine() . "</p>";
+                return "";
             }
-            catch(Exception $ex) {
-                return $ex;
-            }
-        }    
-        
-        public static function showPage(string &$page) : void {
-            $page = preg_replace('/^\h*\v+/m', '', $page);
-            echo($page);
-        } 
 
+            return $page;
+        }
+
+        public static function showPage(&$page) : void {
+		        $page = preg_replace('/^\h*\v+/m', '', $page);
+		        echo($page);
+	      }
     }
+
 ?>
