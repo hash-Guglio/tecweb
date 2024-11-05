@@ -40,9 +40,7 @@ session_start();
             $sectionStartTag = "<!-- shared_{$sectionName} -->";
             $startIndex = strpos($in, $sectionStartTag);
 
-            if ($startIndex === false) {
-                throw new Exception("Start of the section '{$sectionName}' not found in the provided HTML content.");
-            }
+            if ($startIndex === false) return;
 
             $length = strlen($sectionStartTag);
 
