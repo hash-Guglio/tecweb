@@ -3,8 +3,8 @@
     require_once("php/renderEngine.php");
     
     function getSanitizedLoginData() {
-        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING) ?: '';
-        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING) ?: '';
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS) ?: '';
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS) ?: '';
         return [$username, $password];
     }
 
@@ -19,7 +19,6 @@
     }
 
     function main() {
-        RenderEngine::redirectIfNotAuthenticated('user'));
         [$username, $password] = getSanitizedLoginData();
         $loginData = authenticateUser($username, $password);
 
