@@ -56,6 +56,13 @@ session_start();
 		        require ("{$number}.php");
         }
 
+        public static function redirectIfNotAuthenticated($page) {
+            if (!isset($_SESSION["id"])) {
+                header("location: {$page}.php");
+                exit();
+            }
+        }
+
         private static function deleteCircularLinks(&$page, $name, $activeClass = 'active') : void {
 		        $from = '/<a href="' . $name . '\.php.*?"([^>]*?)>(.*?)<\/a>/s';
 		        $to = '<span class="'. $activeClass .'"${1}>${2}</span>';
