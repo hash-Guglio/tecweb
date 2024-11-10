@@ -36,7 +36,22 @@ session_start();
             return substr($in, $startPos, $contentLength);
         }
 
-        private static function replaceSectionContent(&$in, $sectionName) : void {
+        public static function replaceAnchor(&$in, $anchor, $content, $comment = false) : void {
+
+            if (empty($anchor)) {
+                return;
+            }
+
+            $from = $comment ? "<!-- $anchor -->" : "@@{$anchor}@@";
+            $pos = strpos($in, $from);
+
+
+            if ($pos !== false) {
+                $in = substr_replace($in, $content, $pos, strlen($from));
+            }
+        }
+
+        public static function replaceSectionContent(&$in, $sectionName) : void {
             $sectionStartTag = "<!-- shared_{$sectionName} -->";
             $startIndex = strpos($in, $sectionStartTag);
 
@@ -56,9 +71,9 @@ session_start();
 		        require ("{$number}.php");
         }
 
-        public static function redirectIfNotAuthenticated($page) {
-            if (!isset($_SESSION["id"])) {
-                header("location: {$page}.php");
+        public static function redirectBasedOnAuth($page, $authenticated = true) {
+            if (($authenticated == isset($_SESSION["id"])) ) {
+                header("Location: {$page}.php");
                 exit();
             }
         }
@@ -69,7 +84,7 @@ session_start();
 		        $page = preg_replace($from, $to, $page);
 	      }
 
-        public static function buildPage($name) : string {        
+        public static function buildPage($name, $callbacks = null) : string {        
             $name = basename($name, ".php");
 
             try {
@@ -81,6 +96,14 @@ session_start();
                 echo "<p lang='en'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
                 echo "<p lang='en'>File: " . htmlspecialchars($e->getFile()) . " | Line: " . $e->getLine() . "</p>";
                 return "";
+            }
+
+            if ($callbacks !== null) {
+                foreach ($callbacks  as $callback => $params) {
+                    if (is_callable([self::class, $callback])) {
+                        call_user_func_array([self::class, $callback], array_merge([$page], $params));
+                    }
+                }
             }
 
             return $page;

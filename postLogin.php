@@ -9,9 +9,20 @@
     }
 
 
-    function authenticateUser($username, $password) {
+    function authenticateUser($username, $password) : array {
+        try {
+	          $connection = new Database();
+	          $loginData = $connection->authenticateUser($username, $password);
+	          unset($connection);
+            return $loginData;
+        } catch (Exception) {
+	          unset($connection);
+	          RenderEngine::errCode(500);
+	          exit();
+        }
+        
+        return [];
     }   
-
 
     function setUserSession($loginData) {
         $_SESSION['id'] = $loginData['id'];
