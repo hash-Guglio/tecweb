@@ -1,5 +1,5 @@
 <?php
-    require_once("php/tools.php");
+    require_once("php/renderEngine.php");
 
     session_unset();
     session_destroy();

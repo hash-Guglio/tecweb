@@ -1,14 +1,37 @@
-<form id="authForm" method="post" action="post_login.php">
-			<fieldset>
-				<legend class="sr-only">Dati di accesso</legend>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="utf-8" />
+	<title>Accesso | nome_sito</title>
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<!-- shared_head -->
+</head>
+<body>
+    <!-- shared_header -->
+    <main id="content">
+    
+        <form id="authForm" method="post" action="post_login.php">
+			      <fieldset>
+                <!-- a11 --><legend class="sr-a11y-only">Dati di accesso</legend>
+				        <label for="username">Nome utente<span class="required">(richiesto)</span></label>
+				        <input type="text" id="username" name="username" required />
 
-				<label for="username">Nome utente<span class="required">(richiesto)</span></label>
-				<input type="text" id="username" name="username" required />
+				        <label for="password"><span lang="en">Password</span><span class="required">(richiesto)</span></label>
+				        <input type="password" id="password" name="password" required />
 
-				<label for="password"><span lang="en">Password</span><span class="required">(richiesto)</span></label>
-				<input type="password" id="password" name="password" required />
+				        <button type="submit" name="submit">Accedi</button>
+			      </fieldset>
+        </form>
+    </main>
+    <!-- shared_footer -->
+</body>
+</html>
 
-				<button type="submit" name="submit">Accedi</button>
-			</fieldset>
-</form>
+
+
+
+
+
+
 

@@ -18,8 +18,3 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
-INSERT INTO `user` (`id`, `usr_name`, `usr_mail`, `usr_first_name`, `usr_gender`, `usr_birth_date`, `usr_password`, `usr_is_admin`, `usr_is_vegan`, `usr_is_celiac`, `usr_is_lactose_intolerant`) VALUES
-(0, 'admin', 'admin@example.com', 'Admin', 'male', '1990-01-01', 'pass', true, false, false, false),
-(1, 'user', 'user@example.com', 'User', 'female', '1995-05-10', 'pass', false, false, false, false);
-
-

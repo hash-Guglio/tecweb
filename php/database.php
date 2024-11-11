@@ -120,14 +120,12 @@
             $params = [$username];
             $res = $this->executeSelectQuery($query, $params);
 
-            if (!empty($res) /*&& password_verify($password, $res[0]["usr_password"])*/) {
-                echo "non vuoto";
+            if (!empty($res) && password_verify($password, $res[0]["usr_password"])) {
                 return [
                     "id" => $res[0]["id"],
                     "is_admin" => $res[0]["usr_is_admin"]
                 ];
             };
-            echo "vuoto";
             return [];
         }
  
