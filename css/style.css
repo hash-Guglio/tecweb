@@ -1,0 +1,116 @@
+/*
+==============
+VARIABLES AND COLORS
+==============
+*/
+
+:root {
+    /*
+    ==============
+    COMMON VARIABLES 
+    ==============
+    */
+    --header-height: 3.5em;
+    --content-width: 60em;
+    --content-padding: 1em;
+	  --border-radius-link: 0.3rem;       /* Lightly rounded corners */
+
+    /*
+    ==============
+    COLOR  (LIGHT)
+    ==============
+    */
+    --txtcolor: #101010;
+    --bgcolor: #efefef;
+
+    --link-color: #1E90FF;              /* Dodger Blue */
+	  --link-hover-color: #1C7ED6;        /* Royal Blue */
+	  --link-visited-color: #9B59B6;      /* Amethyst Purple */
+	  --link-visited-hover-color: #8E44AD;/* Dark Amethyst */
+	  --focus-outline-color: #2ECC71;     /* Emerald Green */
+}
+
+/*
+==============
+COLOR (DARK)
+==============
+*/
+
+:root.dark {}
+
+/*
+==============
+FONT
+==============
+*/
+
+@font-face {}
+
+/*
+==============
+COMMON STYLE
+==============
+*/
+
+* {
+	margin: 0;
+	font-family: "Sora", ".AppleSystemUIFont", "Arial", sans-serif;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+img, picture {
+	display: block;
+	max-width: 15em;
+}
+
+input, button, textarea, select {
+	font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+	overflow-wrap: break-word;
+}
+
+html {
+	scroll-padding-top: var(--header-height);
+	height: 100%;
+}
+
+body > main {
+	padding: var(--content-padding);
+}
+
+body {
+	display: grid;
+	grid-template-rows: auto auto 1fr auto;
+	gap: 0.5em;
+	line-height: 1.5;
+	background-color: var(--bgcolor);
+	color: var(--txtcolor);
+	max-width: var(--content-width);
+	margin: 0 auto;
+	min-height: 100%;
+}
+
+a {
+	color: var(--link-color);
+}
+
+a:hover,
+a:focus {
+	outline: 0.2rem solid var(--focus-outline-color);
+	border-radius: var(--border-radius-link);
+	color: var(--link-hover-color);
+}
+
+a:visited {
+	color: var(--link-visited-color);
+}
+
+a:visited:hover,
+a:visited:focus {
+	color: var(--link-visited-hover-color);
+}
