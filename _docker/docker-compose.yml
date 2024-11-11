@@ -20,6 +20,8 @@ services:
     volumes:
       - ./..:/var/www/html:Z
     user: "1000"
+    env_file:
+      - ./mariadb/mariadb.env
     restart: unless-stopped
   
   mariadb:
@@ -31,6 +33,7 @@ services:
       - ./mariadb/mariadb.env
     volumes:
       - mariadb:/var/lib/mysql
+    command: mysqld --general-log=1 --general-log-file=/var/lib/mysql/general-log.log
     restart: unless-stopped
   
   phpmyadmin:

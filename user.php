@@ -5,12 +5,12 @@
 
     function getUsername($db, $userId) {
         try {
-	          $username = $db->getUsernameByUserId($userId);
+	          $res = $db->getUsernameByUserId($userId);
             unset($db);
-            return $username['username'];
+            return $res[0]['usr_name'];
         } catch (Exception) {
 	          unset($db);
-	          RenderEngine::errCode(500);
+	          RenderEngine::errorCode(500);
 	          exit();
         }
     }
@@ -19,20 +19,11 @@
         RenderEngine::redirectBasedOnAuth('login', false);
 
         $connection = new Database();
-        $username = getUsername($_SESSION["id"]); 
+        $username = getUsername($connection, $_SESSION["id"]); 
 
-        $page = RenderEngine::buildPage($_SERVER['SCRIPT_NAME'], [
-            [
-                'callback' => 'replaceAnchor',
-                'params' => ['username', $username, false]
-            ],
-            $_SESSION["is_admin"] == 0 ? 
-                [
-                    'callback' => 'replaceSectionContent',
-                    'params' => ['admin', '']
-                ]
-                : null
-        ]);
+        $page = RenderEngine::buildPage('user');
+
+        RenderEngine::replaceAnchor($page, 'username', $username);
         
         RenderEngine::showPage($page);
     }

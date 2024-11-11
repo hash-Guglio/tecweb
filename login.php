@@ -5,7 +5,7 @@
     
     RenderEngine::redirectBasedOnAuth('user', true);
     
-    $page = RenderEngine::buildPage($_SERVER['SCRIPT_NAME']);
+    $page = RenderEngine::buildPage('login');
     RenderEngine::showPage($page);
 
 ?>

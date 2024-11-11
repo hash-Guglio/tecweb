@@ -1,23 +1,18 @@
 <?php
 
-    require_once("php/renderEngine.php");
+    require_once('php/renderEngine.php');
+    require_once('php/database.php');
+    require_once('php/debug.php');
     
-    function getSanitizedLoginData() {
-        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS) ?: '';
-        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS) ?: '';
-        return [$username, $password];
-    }
-
-
     function authenticateUser($username, $password) : array {
         try {
 	          $connection = new Database();
-	          $loginData = $connection->authenticateUser($username, $password);
+            $loginData = $connection->authenticateUser($username, $password);
 	          unset($connection);
             return $loginData;
-        } catch (Exception) {
-	          unset($connection);
-	          RenderEngine::errCode(500);
+        } catch (Exception $e) {
+            unset($connection);
+            RenderEngine::errorCode(500);
 	          exit();
         }
         
@@ -30,7 +25,11 @@
     }
 
     function main() {
-        [$username, $password] = getSanitizedLoginData();
+        RenderEngine::redirectBasedOnAuth('user', true);
+
+        $username = isset($_POST["username"]) ? $_POST["username"] : "";
+        $password = isset($_POST["password"]) ? $_POST["password"] : "";
+
         $loginData = authenticateUser($username, $password);
 
         if (!empty($loginData)) {

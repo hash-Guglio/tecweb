@@ -37,11 +37,6 @@ session_start();
         }
 
         public static function replaceAnchor(&$in, $anchor, $content, $comment = false) : void {
-
-            if (empty($anchor)) {
-                return;
-            }
-
             $from = $comment ? "<!-- $anchor -->" : "@@{$anchor}@@";
             $pos = strpos($in, $from);
 
@@ -84,7 +79,7 @@ session_start();
 		        $page = preg_replace($from, $to, $page);
 	      }
 
-        public static function buildPage($name, $callbacks = null) : string {        
+        public static function buildPage($name) : string {        
             $name = basename($name, ".php");
 
             try {
@@ -96,14 +91,6 @@ session_start();
                 echo "<p lang='en'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
                 echo "<p lang='en'>File: " . htmlspecialchars($e->getFile()) . " | Line: " . $e->getLine() . "</p>";
                 return "";
-            }
-
-            if ($callbacks !== null) {
-                foreach ($callbacks  as $callback => $params) {
-                    if (is_callable([self::class, $callback])) {
-                        call_user_func_array([self::class, $callback], array_merge([$page], $params));
-                    }
-                }
             }
 
             return $page;
