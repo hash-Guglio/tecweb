@@ -6,10 +6,29 @@
 </head>
 <body>
     <!-- header_start -->
+
     <header id="page-header">
+        <nav id="dropdown-link-container" data-open="false" aria-label="Menù principale">
+            <ul>
+                <li><a href="index.php"><span lang="en">Home</span></a></li>
+                <li><a href=""><span>Ricette</span></a></li>
+                <li><a href=""><span>Ingredienti</span></a></li> 
+                <li><a href=""><span>Menu</span></a></li>
+            
+                <!-- header_user_start -->
+		            <li><a href="">Prova</a></li>
+                <!-- header_admin_start -->
+		            <li><a href="">Aggiungi</a></li>
+                <!-- header_admin_end -->
+		            <!-- header_user_end -->
+            </ul>
+        </nav>
+    
+        <!-- account_start -->
         <a href="user.php" id="accountButton">
-            <span>Accedi</span>
+            <span>@@account_button@@</span>
         </a>
+        <!-- account_end -->
     </header>
     <!-- header_end -->
 </body>

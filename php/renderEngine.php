@@ -4,10 +4,11 @@ require_once("ini.php");
 session_start();
 
     class RenderEngine {
+        private static $authPages = ['login', 'user'];
 
         private static function loadHtmlFile(string $filePath, string $errorMessage): string {
             if (!file_exists($filePath)) {
-                throw new Exception("File not found: " . $filePath);
+                throw new Exception("File not found: {$filePath}");
             }
             
             $content = @file_get_contents($filePath);
@@ -18,6 +19,10 @@ session_start();
             return $content;
         }
 
+        private static function isAuthPage($name): bool {
+            return in_array($name, self::$authPages);
+        }
+        
         private static function getSectionContent(&$in, $name) : string {
             $startDelimiter = "<!-- {$name}_start -->";
             $endDelimiter = "<!-- {$name}_end -->";
@@ -45,20 +50,34 @@ session_start();
                 $in = substr_replace($in, $content, $pos, strlen($from));
             }
         }
+       
+        public static function replaceSectionContent(&$in, $sectionName, $content = '@@') : void {
+            
+            $sharedTag = "<!-- shared_{$sectionName} -->";
+            $startTag = "<!-- {$sectionName}_start -->";
+            $endTag = "<!-- {$sectionName}_end -->";
 
-        public static function replaceSectionContent(&$in, $sectionName) : void {
-            $sectionStartTag = "<!-- shared_{$sectionName} -->";
-            $startIndex = strpos($in, $sectionStartTag);
+            $startIndex = strpos($in, $sharedTag);
 
-            if ($startIndex === false) return;
+            if ($startIndex !== false && $content == '@@') {
+                $filePath = __DIR__ . "/../html/component.{$sectionName}.html";
+                $fileStr = self::loadHtmlFile($filePath, "Could not load content for section '{$sectionName}'");
+                $content = self::getSectionContent($fileStr, $sectionName);
+                $length = strlen($sharedTag);
+                $in = substr_replace($in, $content, $startIndex, $length);
+                return;
+            }
 
-            $length = strlen($sectionStartTag);
+            $startIndex = strpos($in, $startTag);
+            $endIndex = strpos($in, $endTag);
 
-            $filePath = __DIR__ . "/../html/component.{$sectionName}.html";
-            $fileStr = self::loadHtmlFile($filePath, "Could not load content for section '{$sectionName}'");
-            $newContent = self::getSectionContent($fileStr, $sectionName);
-
-            $in = substr_replace($in, $newContent, $startIndex, $length);
+            if ($startIndex === false && $endIndex === false) 
+                throw new Exception("Section delimiters not found for '{$sectionName}'");
+            
+            $startIndex += strlen($startTag);
+            $length = $endIndex - $startIndex;
+        
+            $in = substr_replace($in, $content, $startIndex, $length);
         }
 
         public static function errorCode($number) : void {
@@ -87,6 +106,23 @@ session_start();
                 self::replaceSectionContent($page, 'head');
                 self::replaceSectionContent($page, 'header');
                 self::replaceSectionContent($page, 'footer');
+            
+                if (self::isAuthPage($name)) {
+                    self::replaceSectionContent($page, 'header_user', '');
+                    self::replaceSectionContent($page, 'account', '');
+                } 
+                else {
+                    if (isset($_SESSION["id"])) {
+				                    self::replaceAnchor($page, "account_button", "Utente");
+                            
+                            if ($_SESSION["is_admin"] == 0)
+					                      self::replaceSectionContent($page, "header_admin", "");
+			              } else {
+				                self::replaceSectionContent($page, "header_user", "");
+				                self::replaceAnchor($page, "account_button", "Accedi");
+			              }                
+                }
+
             } catch (Exception $e) {
                 echo "<p lang='en'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
                 echo "<p lang='en'>File: " . htmlspecialchars($e->getFile()) . " | Line: " . $e->getLine() . "</p>";
