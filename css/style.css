@@ -114,3 +114,36 @@ a:visited:hover,
 a:visited:focus {
 	color: var(--link-visited-hover-color);
 }
+
+/*
+==============
+HEADER
+==============
+*/
+
+#page-header {
+	position: sticky;
+	top: 0;
+	background-color: var(--bgcolor);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 10;
+	height: var(--header-height);
+}
+
+#page-header ul {
+	display: flex;
+	list-style-type: none;
+	padding: 0;
+}
+
+#page-header li {
+	margin: 0 0.5em;
+}
+
+#page-header li a,
+#accountButton {
+	display: block;
+}
+
