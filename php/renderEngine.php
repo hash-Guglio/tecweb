@@ -85,8 +85,8 @@
 		        header("Location:{$number}.php");
         }
 
-        public static function redirectBasedOnAuth($page, $authenticated = true) {
-            if (($authenticated == isset($_SESSION["id"])) ) {
+        public static function redirectBasedOnAuth($page, $authenticated = true, $sVar = 'id') {
+            if (($authenticated == isset($_SESSION[$sVar])) ) {
                 header("Location: {$page}.php");
                 exit();
             }

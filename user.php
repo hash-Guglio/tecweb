@@ -25,6 +25,7 @@
 
         RenderEngine::replaceAnchor($page, 'username', $username);
         
+        if ($_SESSION['is_admin'] == 0) RenderEngine::replaceSectionContent($page, 'admin_board', '');
         RenderEngine::showPage($page);
     }
 

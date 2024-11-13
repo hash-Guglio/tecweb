@@ -140,5 +140,16 @@
             return $result;
         }
 
+        public function getUserDataByUserId($id): array {
+            $query = "SELECT * FROM user WHERE id = ?";
+            $params = [$id];
+            $types = "i";
+
+            $result = $this->executeSelectQuery($query, $params, $types);
+
+            return $result;
+        }
+
+
     }
 ?>
