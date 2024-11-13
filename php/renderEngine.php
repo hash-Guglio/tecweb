@@ -1,7 +1,7 @@
 <?php
 
-require_once("ini.php");
-session_start();
+    require_once("ini.php");
+    session_start();
 
     class RenderEngine {
         private static $authPages = ['login', 'user'];
@@ -59,6 +59,7 @@ session_start();
 
             $startIndex = strpos($in, $sharedTag);
 
+
             if ($startIndex !== false && $content == '@@') {
                 $filePath = __DIR__ . "/../html/component.{$sectionName}.html";
                 $fileStr = self::loadHtmlFile($filePath, "Could not load content for section '{$sectionName}'");
@@ -70,10 +71,9 @@ session_start();
 
             $startIndex = strpos($in, $startTag);
             $endIndex = strpos($in, $endTag);
-
-            if ($startIndex === false && $endIndex === false) 
-                throw new Exception("Section delimiters not found for '{$sectionName}'");
             
+            if ($startIndex == false || $endIndex == false) return;
+
             $startIndex += strlen($startTag);
             $length = $endIndex - $startIndex;
         
@@ -82,7 +82,7 @@ session_start();
 
         public static function errorCode($number) : void {
 		        http_response_code($number);
-		        require ("{$number}.php");
+		        header("Location:{$number}.php");
         }
 
         public static function redirectBasedOnAuth($page, $authenticated = true) {
@@ -96,32 +96,62 @@ session_start();
 		        $from = '/<a href="' . $name . '\.php.*?"([^>]*?)>(.*?)<\/a>/s';
 		        $to = '<span class="'. $activeClass .'"${1}>${2}</span>';
 		        $page = preg_replace($from, $to, $page);
-	      }
+        }
+
+        private static function buildMessage(&$in, $name, $intro): void {
+
+            self::replaceAnchor($in, "server_msg_intro", $intro);
+            self::replaceAnchor($in, "msg_type", $name);
+            
+            $template = self::getSectionContent($in, "server_msg");
+            $res = "";
+
+            foreach ($_SESSION[$name] as $s) {
+			          $t = $template;
+			          self::replaceAnchor($t, "server_msg", $s);
+			          $res .= $t;
+            }
+
+            self::replaceSectionContent($in, "server_msg", $res);
+		        unset($_SESSION[$name]);
+
+        }
 
         public static function buildPage($name) : string {        
             $name = basename($name, ".php");
 
             try {
                 $page = self::loadHtmlFile(__DIR__ . "/../html/{$name}.html", "Could not load page content: {$name}"); 
+
                 self::replaceSectionContent($page, 'head');
                 self::replaceSectionContent($page, 'header');
-                self::replaceSectionContent($page, 'footer');
-            
+                
+                if (isset($_SESSION["error"])) {
+                    $section = self::loadHtmlFile(__DIR__ . "/../html/component.server_msg.html", "Could not load page content: {$name}");
+                    $server = self::getSectionContent($section, "server_msgs");
+                    self::buildMessage($server, "error", "Errore.");
+                    self::replaceAnchor($page, "server_msgs", $server, true);
+                }
+                
                 if (self::isAuthPage($name)) {
                     self::replaceSectionContent($page, 'header_user', '');
                     self::replaceSectionContent($page, 'account', '');
                 } 
                 else {
-                    if (isset($_SESSION["id"])) {
-				                    self::replaceAnchor($page, "account_button", "Utente");
+                    if (isset($_SESSION["id"])) {                                           
+                            self::replaceAnchor($page, "account_button", "Utente");
                             
                             if ($_SESSION["is_admin"] == 0)
 					                      self::replaceSectionContent($page, "header_admin", "");
-			              } else {
-				                self::replaceSectionContent($page, "header_user", "");
-				                self::replaceAnchor($page, "account_button", "Accedi");
-			              }                
+                    } else {
+                        self::replaceSectionContent($page, "header_user", "");
+                        self::replaceAnchor($page, "account_button", "Accedi");
+                    }
+
+                    self::replaceSectionContent($page, 'footer');
+                
                 }
+
 
             } catch (Exception $e) {
                 echo "<p lang='en'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
@@ -132,8 +162,8 @@ session_start();
             return $page;
         }
 
-        public static function showPage(&$page) : void {
-		        $page = preg_replace('/^\h*\v+/m', '', $page);
+        public static function showPage(&$page) { 
+            $page = preg_replace('/^\h*\v+/m', '', $page);
 		        echo($page);
 	      }
     }

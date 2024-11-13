@@ -1,8 +1,8 @@
 <?php
     require_once('ini.php');
-
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
     class Database {
         private $connection;
         private const ERR_DUPLICATE = 1062;
@@ -12,18 +12,19 @@
         private const ERR_INVALID_PARAMETERS = "Invalid parameters provided for the statement.";
 
         public function __construct() {
-		        try {
-			      $this->connection = new mysqli(
-				        'mariadb',
-				        getenv('MARIADB_USER'),
-				        getenv('MARIADB_PASSWORD'),
-				        getenv('MARIADB_DATABASE')
-            );
-			      $this->connection->set_charset("utf8mb4");
-			      $this->connection->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
-            } catch (Exception $e) {
+            
+            try {
+			          $this->connection = new mysqli(
+				            'mariadb',
+                    getenv('MARIADB_USER'),
+                    getenv('MARIADB_PASSWORD'),
+                    getenv('MARIADB_DATABASE')
+                );
+			          $this->connection->set_charset("utf8mb4");
+			          $this->connection->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+            } catch (mysqli_sql_exception $e) {
 			          throw new Exception(self::ERR_CONNECTION_FAILED);
-		        }
+            }
         }
 
         public function __destruct() {

@@ -13,7 +13,8 @@ VARIABLES AND COLORS
     --header-height: 3.5em;
     --content-width: 60em;
     --content-padding: 1em;
-	  --border-radius-link: 0.3rem;       /* Lightly rounded corners */
+	  --border-radius-link: 0.3rem;       
+    --border-radius: 0.3rem;
 
     /*
     ==============
@@ -147,3 +148,20 @@ HEADER
 	display: block;
 }
 
+/*
+==============
+SERVER MESSAGES
+==============
+*/
+
+#server-msg {
+	margin: 1em 0;
+	padding: 0;
+	border: 0.2em solid;
+	border-radius: var(--border-radius);
+	list-style-type: none;
+}
+
+#server-msg li {
+	padding: 0.5em;
+}

@@ -8,7 +8,7 @@
         try {
 	          $connection = new Database();
             $loginData = $connection->authenticateUser($username, $password);
-	          unset($connection);
+            unset($connection);
             return $loginData;
         } catch (Exception $e) {
             unset($connection);
