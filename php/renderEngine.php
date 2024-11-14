@@ -126,10 +126,15 @@
                 self::replaceSectionContent($page, 'head');
                 self::replaceSectionContent($page, 'header');
                 
-                if (isset($_SESSION["error"])) {
+                if (isset($_SESSION["error"]) || isset($_SESSION["success"])) {
                     $section = self::loadHtmlFile(__DIR__ . "/../html/component.server_msg.html", "Could not load page content: {$name}");
                     $server = self::getSectionContent($section, "server_msgs");
-                    self::buildMessage($server, "error", "Errore.");
+                    
+                    if (isset($_SESSION["success"]))
+                        self::buildMessage($server, "success", "Successo.");
+                    elseif (isset($_SESSION["error"]))
+                        self::buildMessage($server, "error", "Errore.");
+
                     self::replaceAnchor($page, "server_msgs", $server, true);
                 }
                 

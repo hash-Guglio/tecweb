@@ -182,12 +182,17 @@
             return $result;
         }
 
+        
+        // ==========================
+        // Insert(without param id) Update(with param id) User
+        // ==========================
+    
         public function persistUser(
             string $usr_name,
             string $usr_mail,
             string $usr_first_name,
-            int $usr_gender,
             string $usr_birth_date,
+            string $usr_gender = 'other',
             ?string $usr_password = '',
             bool $usr_is_vegan = false,
             bool $usr_is_celiac = false,
@@ -214,7 +219,7 @@
                 [$usr_name, "usr_name", "s"],
                 [$usr_mail, "usr_mail", "s"],
                 [$usr_first_name, "usr_first_name", "s"],
-                [$gender, "usr_gender", "i"],
+                [$usr_gender, "usr_gender", "s"],
                 [$usr_birth_date, "usr_birth_date", "s"],
                 [$usr_password, "usr_password", "s"]
             ];
