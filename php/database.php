@@ -104,13 +104,45 @@
             }
         }
 
+        private function composeQueryAndParameters(
+            string &$query,
+            array &$params,
+            string &$types,
+            array $fields,
+            bool $isUpdate
+            ): void {
+                
+            $setClauses = [];
+            $placeholders = [];
+            
+            foreach ($fields as $field) {
+                [$value, $column, $type] = $field;
+
+                if (!is_null($value) || $isUpdate) {
+                    if ($isUpdate) {
+                        $setClauses[] = "$column = ?";
+                    } else {
+                        $placeholders[] = "?";
+                    }
+                    
+                    $params[] = $value;
+                    $types .= $type;
+                }
+            }
+
+            if ($isUpdate) {
+                $query .= implode(", ", $setClauses);
+            } else {
+                $query .= implode(", ", array_column($fields, 1)) . ") VALUES (" . implode(", ", $placeholders) . ")";
+            }
+        }
+
         private function handleDatabaseException(mysqli_sql_exception $e): bool {
             if ($e->getCode() == self::ERR_DUPLICATE) {
                 return false;
             }
             throw new Exception($e->getMessage());
         }
-
 
         // ==========================
         // User-related Queries
@@ -150,6 +182,58 @@
             return $result;
         }
 
+        public function persistUser(
+            string $usr_name,
+            string $usr_mail,
+            string $usr_first_name,
+            int $usr_gender,
+            string $usr_birth_date,
+            ?string $usr_password = '',
+            bool $usr_is_vegan = false,
+            bool $usr_is_celiac = false,
+            bool $usr_is_lint = false,
+            ?int $id = null
+            ): array {
+    
+            $isUpdate = !is_null($id);
+
+            if ($isUpdate) {
+                $query = "UPDATE user SET ";
+            } else {
+                $query = "INSERT INTO user (";
+            }
+
+            $params = [];
+            $types = "";
+
+            if (!empty($usr_password)) {
+                $usr_password = password_hash($password, PASSWORD_DEFAULT);
+            }
+
+            $fields = [
+                [$usr_name, "usr_name", "s"],
+                [$usr_mail, "usr_mail", "s"],
+                [$usr_first_name, "usr_first_name", "s"],
+                [$gender, "usr_gender", "i"],
+                [$usr_birth_date, "usr_birth_date", "s"],
+                [$usr_password, "usr_password", "s"]
+            ];
+
+            $this->composeQueryAndParameters($query, $params, $types, $fields, $isUpdate);
+
+            if ($isUpdate) {
+                $query .= " WHERE id = ?";
+                $params[] = $id;
+                $types .= "i";
+            }
+
+            $result = $this->executeUpdateQuery($query, $params, $types);
+
+            return [
+                $result,
+                $isUpdate ? $id : $this->connection->insert_id
+            ];
+        }
 
     }
 ?>
