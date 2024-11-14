@@ -1,0 +1,245 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    font-size: 100%;
+    font-family: 'Open Sans', sans-serif;
+    margin: auto;
+    max-width: 70%;
+    text-align:center;
+
+    background-color: rgb(240, 240, 236);
+}
+
+h1{
+    margin-bottom: 2%;
+}
+
+h2{
+    margin-bottom: 1%;
+    text-align: justify;
+}
+#parag-breadcrumb{
+    margin-bottom: 2%;
+    text-align:justify;
+}
+
+.container {
+    border: 1% solid #333;
+    display: flex;
+    align-items: center;
+    max-width: 90%;
+    margin: auto;
+    text-align:justify;
+}
+.container img {
+    max-width: 150px;
+    margin-right: 20px;
+}
+.container .text {
+    flex: 1;
+    align-items: right;
+}
+
+.article {
+    margin-bottom: 8%;
+}
+
+
+
+.riquadro {
+    border: 2px solid #333;      
+    padding: 20px;                
+    margin: 20px;                 
+    border-radius: 8px;           
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); 
+}
+
+input[type="text"] {
+    width: 25%;
+    padding: 0.5%;
+    margin-top: 3px;
+    font-size: 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+
+  .search-button {
+    background-color: #818481;
+    color: white;
+    font-size: 16px;
+    padding: 0.5% 1%;
+    border: none;
+    border-radius: 50px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+
+  ul {
+    list-style-type: none; /* Rimuove i puntini predefiniti */
+    padding: 0;
+    margin: 1%;
+  }
+
+  li {
+    font-size: 16px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 4%; /* Distanza tra il testo e il punto */
+  }
+
+
+  li::before {
+    content: "➤"; 
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-60%);
+    color: #070707; 
+    font-size: 20px; 
+  }
+
+
+  li:hover {
+    color: #0e0e0e;
+    background-color: #e8f5e9;
+    padding-left: 35px; 
+    transition: all 0.3s ease; 
+  }
+
+
+/*STILE PROVA PER FOOTER*/
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 40px 0;
+  text-align: center;
+  border-radius: 30%;
+  margin: 2%;
+}
+
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width:100%;
+  margin: 0 auto;
+}
+
+.footer-container > div {
+  flex: 1 1 200px;
+  margin: 10px;
+}
+
+footer h2, footer h3 {
+  font-weight: 700;
+  color: #ffdd57;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+
+.footer-links ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin: 5px 0;
+}
+
+.footer-links a {
+  color: #ffdd57;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+
+.footer-contact p,
+.footer-social a {
+  color: #ccc;
+  font-size: 0.9em;
+}
+
+.footer-social a {
+  display: inline-block;
+  margin: 5px;
+  color: #ffdd57;
+  text-decoration: none;
+}
+
+.footer-social a:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  padding-top: 20px;
+  font-size: 0.8em;
+  color: #777;
+}
+
+
+/*STILE PER HEADER*/
+ 
+
+
+.header {
+  background-color: #a7a4a4;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-radius: 30%;
+padding: 10px 20px;
+margin-bottom: 2%;
+}
+
+.user-section {
+  display: flex;
+  align-items: right;
+  gap: 15px;
+}
+
+.nav-links {
+display: flex;
+gap: 20px;
+}
+
+.nav-links a {
+color: #0066cc;
+text-decoration: none;
+font-weight: 500;
+position: relative;
+transition: color 0.3s;
+}
+
+.nav-links a:hover {
+color: #004999;
+}
+
+.nav-links a::after {
+content: "";
+display: block;
+width: 0;
+height: 2px;
+background: #0066cc;
+transition: width 0.3s;
+margin-top: 5px;
+}
+
+.nav-links a:hover::after {
+width: 100%;
+}
+
+
