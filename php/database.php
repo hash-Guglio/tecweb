@@ -188,10 +188,10 @@
             string $usr_first_name,
             int $usr_gender,
             string $usr_birth_date,
-            ?string $usr_password = '',,
+            ?string $usr_password = '',
             bool $usr_is_vegan = false,
             bool $usr_is_celiac = false,
-            bool $usr_is_lint = false
+            bool $usr_is_lint = false,
             ?int $id = null
             ): array {
     
