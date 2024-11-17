@@ -23,7 +23,7 @@
             return in_array($name, self::$authPages);
         }
         
-        private static function getSectionContent(&$in, $name) : string {
+        public static function getSectionContent(&$in, $name) : string {
             $startDelimiter = "<!-- {$name}_start -->";
             $endDelimiter = "<!-- {$name}_end -->";
             
@@ -46,8 +46,9 @@
             $pos = strpos($in, $from);
 
 
-            if ($pos !== false) {
+            while ($pos !== false) {
                 $in = substr_replace($in, $content, $pos, strlen($from));
+                $pos = strpos($in, $from, $pos + strlen($content));
             }
         }
        

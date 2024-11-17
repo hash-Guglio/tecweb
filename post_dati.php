@@ -21,9 +21,9 @@
             usr_name: $postData["username"],
             usr_mail: $postData["mail"],
             usr_first_name: $postData["first_name"],
-            usr_gender: /*$postData["gender"]*/"other",
-            usr_birth_date: /*$postData["birth_date"]*/"2002-04-09",
-            usr_password: isset($postData["new_password"]) ? $postData["new_password"] : null,
+            usr_gender: $postData["gender"],
+            usr_birth_date: $postData["birth_date"],
+            usr_new_password: isset($postData["new_password"]) ? $postData["new_password"]: null,
             usr_is_vegan: $postData["is_vegan"],
             usr_is_celiac: $postData["is_celiac"],
             usr_is_lint: $postData["is_lactose_intolerant"]
@@ -46,7 +46,7 @@
 
         // $_SESSION["error"] = ["La password corrente è errata. Nessuna modifica è stata effettuata."];
         // $_SESSION["success"] = ["Nessuna modifica è stata effettuata."];
-         $_SESSION["success"] = ["I dati sono stati aggiornati correttamente."];
+        $_SESSION["success"] = ["I dati sono stati aggiornati correttamente."];
 
         header("Location: dati.php");
 

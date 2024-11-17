@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `usr_name` varchar(45) UNIQUE NOT NULL,
   `usr_mail` varchar(100) UNIQUE,
   `usr_first_name` varchar(45) NOT NULL,
-  `usr_gender` ENUM('male', 'female', 'other') DEFAULT 'other',
+  `usr_gender` ENUM('maschio', 'femmina', 'altro') DEFAULT 'altro',
   `usr_birth_date` date,
   `usr_password` varchar(255) NOT NULL,
   `usr_is_admin` boolean DEFAULT FALSE,

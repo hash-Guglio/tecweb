@@ -8,6 +8,7 @@
     <meta name="keywords" content="" />
 
     <!-- shared_head -->
+    <script src="js/validate_user.js"></script>
 </head>
 <body>
     <!-- shared_header -->
@@ -19,16 +20,54 @@
         
         <!-- server_msgs -->
 
-        <form id="user_data" method="post" action="post_dati.php">
+        <form id="manage_user" method="post" action="post_dati.php">
             <fieldset>
 				        <legend>Informazioni di base</legend>
 
 				        <label for="username"><span lang="en">Username</span><span class="required">(richiesto)</span></label>
 				        <input type="text" id="username" name="username" value="@@username@@" required aria-describedby="username-hint" autocomplete="username" maxlength="30" />
-    
-				        <label for="email"><span lang="en">Email</span></label>
-				        <input type="text" id="email" name="mail" value="@@mail@@" autocomplete="email" maxlength="100" />
+                <p id="username-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>   
+				        
+                <label for="email"><span lang="en">Email</span></label>
+				        <input type="text" id="email" name="mail" value="@@mail@@" autocomplete="email"
+                maxlength="100" aria-describedby="email-hint"/>
+                <p id="email-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>   
+			      
+            </fieldset>
+            <fieldset>
+				        <legend>Cambia la tua <span lang="en">password</span></legend>
+				            
+                <label for="old_password"><span lang="en">Password</span> corrente</label>
+				        <input type="password" id="old_password" name="old_password" autocomplete="current-password" />
+				        <p id="old_password-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
 
+				        <label for="new_password">Nuova <span lang="en">password</span></label>
+				        <input type="password" id="new_password" name="new_password" autocomplete="new-password" />
+				            <p id="new_password-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+				        <label for="new_password_confirm">Conferma la nuova <span lang="en">password</span></label>
+				            <input type="password" id="new_password_confirm" name="new_password_confirm" autocomplete="new-password" />
+				            <p id="new_password_confirm-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+            </fieldset>
+            <fieldset>
+				        <legend>Altre info</legend>
+
+				        <label for="first_name">Nome</label>
+				        <input type="text" id="first_name" name="first_name" value="@@first_name@@"
+                autocomplete="first_name" maxlength="50" />
+				        <p id="first_name-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+				        <label for="birth_date">Data di nascita</label>
+				        <input type="date" id="birth_date" name="birth_date" value="@@birth_date@@" min="1900-01-01" max="2099-12-31" />
+				        <p id="data-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+                
+                <label for="gender"><span lang="en">Sesso</span></label>
+				        <select id="gender" name="gender">
+					          <!-- gender_start -->
+					          <option value="@@gender@@" @@_select@@>@@gender@@</option>
+					          <!-- gender_end -->
+				        </select>
 			      </fieldset>
             <fieldset>
 				        <legend>Salva le modifiche</legend>
