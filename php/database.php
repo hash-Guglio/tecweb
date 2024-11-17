@@ -118,7 +118,7 @@
             foreach ($fields as $field) {
                 [$value, $column, $type] = $field;
 
-                if (!is_null($value) || $isUpdate) {
+                if ($value != null) {
                     if ($isUpdate) {
                         $setClauses[] = "$column = ?";
                     } else {
@@ -144,6 +144,19 @@
             throw new Exception($e->getMessage());
         }
 
+        // ==========================
+        // Component creation realted Queries
+        // ==========================
+        
+        public function getGenderSchema() : array {
+            $query = "SELECT SUBSTRING(COLUMN_TYPE, 6, LENGTH(COLUMN_TYPE) - 6) AS genders FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'user' AND COLUMN_NAME = 'usr_gender';";
+            $res = $this->executeSelectQuery($query);
+
+            $res = str_replace("'", '', $res[0]['genders']);
+            return explode(',', $res);
+        }
+
+        
         // ==========================
         // User-related Queries
         // ==========================
@@ -192,8 +205,8 @@
             string $usr_mail,
             string $usr_first_name,
             string $usr_birth_date,
-            string $usr_gender = 'other',
-            ?string $usr_password = '',
+            string $usr_gender = 'altro',
+            ?string $usr_new_password = null,
             bool $usr_is_vegan = false,
             bool $usr_is_celiac = false,
             bool $usr_is_lint = false,
@@ -211,8 +224,8 @@
             $params = [];
             $types = "";
 
-            if (!empty($usr_password)) {
-                $usr_password = password_hash($password, PASSWORD_DEFAULT);
+            if ($usr_new_password != null) {
+                $usr_new_password = password_hash($usr_new_password, PASSWORD_DEFAULT);
             }
 
             $fields = [
@@ -221,7 +234,7 @@
                 [$usr_first_name, "usr_first_name", "s"],
                 [$usr_gender, "usr_gender", "s"],
                 [$usr_birth_date, "usr_birth_date", "s"],
-                [$usr_password, "usr_password", "s"]
+                [$usr_new_password, "usr_password", "s"]
             ];
 
             $this->composeQueryAndParameters($query, $params, $types, $fields, $isUpdate);
