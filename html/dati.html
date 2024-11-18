@@ -35,6 +35,25 @@
 			      
             </fieldset>
             <fieldset>
+				        <legend>Altre informazioni</legend>
+
+				        <label for="first_name">Nome</label>
+				        <input type="text" id="first_name" name="first_name" value="@@first_name@@"
+                autocomplete="first_name" maxlength="50" />
+				        <p id="first_name-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+				        <label for="birth_date">Data di nascita</label>
+				        <input type="date" id="birth_date" name="birth_date" value="@@birth_date@@" min="1900-01-01" max="2099-12-31" />
+				        <p id="birth_date-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+                
+                <label for="gender"><span lang="en">Sesso</span></label>
+				        <select id="gender" name="gender">
+					          <!-- gender_start -->
+					          <option value="@@gender@@" @@_select@@>@@gender@@</option>
+					          <!-- gender_end -->
+				        </select>
+			      </fieldset>
+            <fieldset>
 				        <legend>Cambia la tua <span lang="en">password</span></legend>
 				            
                 <label for="old_password"><span lang="en">Password</span> corrente</label>
@@ -50,25 +69,6 @@
 				            <p id="new_password_confirm-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
 
             </fieldset>
-            <fieldset>
-				        <legend>Altre info</legend>
-
-				        <label for="first_name">Nome</label>
-				        <input type="text" id="first_name" name="first_name" value="@@first_name@@"
-                autocomplete="first_name" maxlength="50" />
-				        <p id="first_name-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
-
-				        <label for="birth_date">Data di nascita</label>
-				        <input type="date" id="birth_date" name="birth_date" value="@@birth_date@@" min="1900-01-01" max="2099-12-31" />
-				        <p id="data-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
-                
-                <label for="gender"><span lang="en">Sesso</span></label>
-				        <select id="gender" name="gender">
-					          <!-- gender_start -->
-					          <option value="@@gender@@" @@_select@@>@@gender@@</option>
-					          <!-- gender_end -->
-				        </select>
-			      </fieldset>
             <fieldset>
 				        <legend>Salva le modifiche</legend>
 				        <button type="submit" name="submit">Modifica</button>

@@ -4,7 +4,7 @@ const listeners = {
     'first_name': ['input', validateUserFirstName], 
     'birth_date': ['input', validateUserBirthDate],
     'new_password' : ["blur", validateUserPassword],
-    'new_password_confirm' : ["blur", validateUserPasswordConfirm ],
+    'new_password_confirm' : ["blur", validateUserPasswordConfirm],
 };
 
 function getFieldValue(fieldName) {
@@ -49,6 +49,12 @@ function validateUserUsername() {
 }
 
 function validateUserEmail() {
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(String(email).toLowerCase());
+    }
+
     const id = 'email';
     const email = getFieldValue('email');
 
@@ -63,11 +69,6 @@ function validateUserEmail() {
     }
     removeErrorMessage(id);
     return true;
-}
-
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(String(email).toLowerCase());
 }
 
 function validateUserFirstName() {
@@ -135,5 +136,74 @@ function validateUserPasswordConfirm() {
     return true;
 }
 
-function validateUserBirthDate() {}
+function validateUserBirthDate() {
+        
+    function isFieldEmpty(value) {
+        return value == null || value.trim() === '';
+    }
+
+    function isValidDateFormat(date) {
+        const dateRegex = /^([\d]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        return dateRegex.test(date);
+    }
+
+    function calculateAge(dateOfBirth, today) {
+        let age = today.getFullYear() - dateOfBirth.getFullYear();
+        console.log(age);
+
+        if (today.getMonth() < dateOfBirth.getMonth() || (today.getMonth() === dateOfBirth.getMonth() && today.getDate() < dateOfBirth.getDate())) { age--; }
+            return age;
+    }
+
+    function isAgeValid(age, dateOfBirth, today) {
+        const MIN_AGE = 13;
+        const MAX_AGE = 100;
+
+        if (age < MIN_AGE) return false;
+        if (age > MAX_AGE) return false;
+
+        return true;
+    }
+
+    function getAgeErrorMessage(age) {
+        if (age < 13) {
+            return "Devi avere almeno 13 anni per procedere. Raggiungi l'età minima richiesta e riprova.";
+        } else if (age > 100) {
+            return "Ci dispiace, ma l'età inserita supera il limite massimo consentito";
+        }
+        return '';
+    }
+
+    const id = 'birth_date';
+    const birth_date = getFieldValue('birth_date');
+    console.log(birth_date);
+    const today = new Date();
+
+    if (isFieldEmpty(birth_date)) {
+        removeErrorMessage(id);
+        return true;
+    }
+
+    if (!isValidDateFormat(birth_date)) {
+        showErrorMessage(id, 'Data non corretta. Usa il formato YYYY-MM-DD.');
+        return false;
+    }
+
+    const dateOfBirth = new Date(birth_date);
+    const userAge = calculateAge(dateOfBirth, today);
+
+    if (!isAgeValid(userAge, dateOfBirth, today)) {
+        showErrorMessage(
+            id,
+            getAgeErrorMessage(userAge)
+        );
+        return false;
+    }
+
+    removeErrorMessage(id);
+    return true;
+        
+
+}
+
 window.addEventListener('load', initFormValidation);
