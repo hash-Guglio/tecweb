@@ -3,9 +3,9 @@
     require_once("ini.php");
     session_start();
 
-    class RenderEngine {
+   class RenderEngine {
         private static $authPages = ['login', 'user'];
-
+        
         private static function loadHtmlFile(string $filePath, string $errorMessage): string {
             if (!file_exists($filePath)) {
                 throw new Exception("File not found: {$filePath}");
