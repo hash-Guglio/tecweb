@@ -55,3 +55,45 @@ function toggleMenu() {
 	btn.setAttribute("data-open", isOpen);
 	links.setAttribute("data-open", isOpen);
 }
+
+
+const getPreferredTheme = () => {
+  if (typeof localStorage !== 'undefined') {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme;
+  }
+
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+
+  return 'light';
+};
+
+const applyTheme = (theme) => {
+  const rootElement = document.documentElement;
+
+  if (theme === 'dark') {
+    rootElement.classList.add('dark');
+  } else {
+    rootElement.classList.remove('dark');
+  }
+};
+
+const currentTheme = getPreferredTheme();
+applyTheme(currentTheme);
+
+if (typeof localStorage !== 'undefined') {
+  localStorage.setItem('theme', currentTheme);
+}
+
+const toggleTheme = () => {
+  const rootElement = document.documentElement;
+  const isDarkMode = rootElement.classList.contains('dark');
+
+  rootElement.classList.toggle('dark');
+
+  localStorage.setItem('theme', isDarkMode ? 'light' : 'dark');
+};
+
+

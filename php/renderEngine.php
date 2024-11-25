@@ -118,7 +118,7 @@
 
         }
 
-        public static function buildPage($name) : string {        
+        public static function buildPage($name, $activePage = "") : string {        
             $name = basename($name, ".php");
 
             try {
@@ -157,8 +157,8 @@
                     self::replaceSectionContent($page, 'footer');
                 
                 }
-
-
+                self::deleteCircularLinks($page, ($activePage ?: $name));
+            
             } catch (Exception $e) {
                 echo "<p lang='en'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
                 echo "<p lang='en'>File: " . htmlspecialchars($e->getFile()) . " | Line: " . $e->getLine() . "</p>";

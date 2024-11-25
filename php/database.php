@@ -231,7 +231,7 @@
             $fields = [
                 [$usr_name, "usr_name", "s"],
                 [$usr_mail, "usr_mail", "s"],
-                [$usr_first_name, "usr_first_name", "s"],
+                [$usr_first_name, "usr_first_name", "s"],
                 [$usr_gender, "usr_gender", "s"],
                 [$usr_birth_date, "usr_birth_date", "s"],
                 [$usr_new_password, "usr_password", "s"]
@@ -252,6 +252,93 @@
                 $isUpdate ? $id : $this->connection->insert_id
             ];
         }
+
+        
+        // ==========================
+        // Recipe-related Queries
+        // ==========================
+
+        public function searchRecipe($str, $limit, $offest) : array {
+            $base = "FROM recipe WHERE rcp_title LIKE ? ORDER BY rcp_title ASC";
+
+            $res = [];
+
+            $query = "SELECT rcp_title, rcp_image " . $baseQuery . " LIMIT ? OFFSET ?";
+
+            $params = ["%". trim($str) . "%", $limit, $offest]; 
+            $types = "sii"
+            
+            $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
+
+            $query = "SELECT COUNT(*) AS total " . $base;
+            $params = ["%". trim($str) . "%"];
+            $types = "s";
+            $res['count'] = $this->executeSelectQuery($query, $params, $types);
+        
+            return $res;
+        }
+
+        public function searchRecipeByType($str, $limit, $offest, $dish_type) : array {
+            $base = "FROM recipe AS r JOIN dish_type_recipe AS dtr ON r.id = dtr.recipe JOIN dish_type AS dt ON dtr.dish_type = dt.id  WHERE rcp_title LIKE ? AND dt.id = ? ORDER BY r.rcp_title ASC";
+
+            $res = [];
+
+            $query = "SELECT r.rcp_title, r.rcp_image" . $base . "LIMIT ? OFFSET ?";
+
+            $params = ["%". trim($str) . "%", $dish_type, $limit, $offest];
+            $types = "siii";
+            $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
+ 
+            $query = "SELECT COUNT(*) AS total " . $base;
+            $params = ["%". trim($str) . "%", $dish_type];
+            $types = "si";
+            $res['count'] = $this->executeSelectQuery($query, $params, $types);
+        
+            return $res;
+        }
+
+        
+        public function searchRecipeByAllgs($str, $limit, $offest, $allgs) : array {
+            $base = "FROM recipe AS r WHERE r.rcp_title LIKE ?";
+
+            $params = ["%". trim($str) . "%"];
+            $res = [];
+
+            if (isset($allgs["vegan"])) {
+                $base .= "AND rcp_is_vegan = ?";
+                $params[] = $allgs["vegan"];
+                $types .= "i"; 
+            }
+
+            if (isset($allgs["dairy_free"])) { 
+                $base .= "AND rcp_is_dairy_free = ?";
+                $params[] = $allgs["dairy_free"];
+                $types .= "i"; 
+            }
+
+            if (isset($allgs["gluten_free"])) { 
+                $base .= "AND rcp_is_gluten_free = ?";
+                $params[] = $allgs["gluten_free"]; 
+                $types .= "i"; 
+            }
+
+            $params [] = $limit;
+            $params [] = $offset;
+
+
+            $query = "SELECT r.rcp_title, r.rcp_image" . $base . "ORDER BY r.rcp_title ASC LIMIT ? OFFSET ?";
+
+            //TODO
+            $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
+ 
+            $query = "SELECT COUNT(*) AS total " . $base;
+
+            
+            $res['count'] = $this->executeSelectQuery($query, $params, $types);
+        
+            return $res;
+        }
+
 
     }
 ?>

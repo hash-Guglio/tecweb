@@ -16,7 +16,8 @@ VARIABLES AND COLORS
     --content-padding: 1em;
 	  --border-radius-link: 0.3rem;       
     --border-radius: 2rem;
-    --border-thin: 4em;
+    --border-thin: 0.2rem;
+    --auth-form-width: 30em;
     /*
     ==============
     COLOR  (LIGHT)
@@ -25,11 +26,13 @@ VARIABLES AND COLORS
     --txtcolor: #101010;
     --bgcolor: #efefef;
     --secondarybgcolor: #ffffff;
-    --link-color: #1E90FF;              /* Dodger Blue */
-	  --link-hover-color: #1C7ED6;        /* Royal Blue */
-	  --link-visited-color: #9B59B6;      /* Amethyst Purple */
-	  --link-visited-hover-color: #8E44AD;/* Dark Amethyst */
-	  --focus-outline-color: ##efefef;     /* Emerald Green */
+    --link-color: #006633;              
+	  --link-hover-color: #00994d ;    
+	  --link-visited-color: #685925;      
+	  --link-visited-hover-color: #8E44AD;
+	  --focus-outline-color: #e0e0e0;    
+    
+    --error: #A24C46;
 }
 
 /*
@@ -38,7 +41,11 @@ COLOR (DARK)
 ==============
 */
 
-:root.dark {}
+:root.dark {
+
+    --bgcolor: #040404;
+    --txtcolor: #efefef;
+}
 
 /*
 ==============
@@ -114,9 +121,9 @@ a {
 
 a:hover,
 a:focus {
-	outline: 0.2rem solid var(--focus-outline-color);
-	border-radius: var(--border-radius-link);
-	/*color: var(--link-hover-color);*/
+	outline: 0.1rem solid var(--focus-outline-color);
+	border-radius: var(--border-radius);
+	color: var(--link-hover-color);
 }
 
 a:visited {
@@ -127,6 +134,42 @@ a:visited:hover,
 a:visited:focus {
 /*	color: var(--link-visited-hover-color); */
 }
+
+
+/*
+==============
+SCREEN READER / KEYBOARD USERS
+==============
+*/
+.sr-a11y-only,
+.skip-to-content {
+	position: absolute;
+  width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+.skip-to-content:focus {
+	color: white;
+	background-color: var(--link-color);
+	z-index: 999;
+	width: auto;
+	height: auto;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+	clip: auto;
+	padding: 0.5em;
+}
+
+.sr-a11y-only {
+
+} 
 
 /*
 ==============
@@ -163,7 +206,7 @@ HEADER
 
 #page-header li a:hover,
 #accountButton:hover {
-	/*background-color: var(--link-hover-color);*/
+	background-color: var(--secondarybgcolor);
 }
 
 #page-header li .active,
@@ -221,6 +264,15 @@ HEADER
 
 #themeToggle svg.sun {display: none}
 
+html.dark #themeToggle svg.moon {display: none}
+html.dark #themeToggle svg.sun {display: flex}
+
+.active {
+	background-color: var(--focus-outline-color);
+	pointer-events: none;
+	padding: 0.5em;
+	border-radius: var(--border-radius);
+}
 /*
 ==============
 BREADCRUMB
@@ -228,7 +280,7 @@ BREADCRUMB
 */
 
 #breadcrumb {
-	background-color: var(--secondaryColor);
+	background-color: var(--secondarybgcolor);
 	font-size: 0.9em;
 	padding: 0.5em var(--content-padding);
 	border-radius: var(--border-radius);
@@ -285,6 +337,71 @@ INDEX
     background-image: url("../img/logo.svg");
 }
 
+.content {
+	display: flex;
+	flex-flow: row-reverse wrap;
+	gap: 2em;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--secondarybgcolor);
+	border-radius: var(--border-radius);
+	padding: 2em;
+	margin-top: 2.5em;
+}
+
+.content > .content-text {
+	flex: 1 0 15em;
+}
+
+.content-text ul li::after {
+    content: ";";
+}
+
+.content-text ul li:last-child::after {
+    content: ".";
+}
+
+.image {
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 15em;
+	height: 15em;
+}
+
+.image.people-bg {
+	background-image: url("../img/people-bg.svg");
+}
+
+.image.free-bg {
+	background-image: url("../img/free-bg.svg");
+}
+
+/*
+==============
+LOGIN
+==============
+*/
+
+#auth main {
+	max-width: var(--auth-form-width);
+	margin: 0 auto;
+	background-color: var(--secondarybgcolor);
+	border-radius: var(--border-radius);
+	text-align: center;
+}
+
+#authForm {
+	margin-top: 1.5em;
+	text-align: left;
+}
+
+#authhForm > fieldset {
+	border-color: transparent;
+}
+
+#authForm > fieldset input {
+	margin-bottom: 1em;
+}
 
 /*
 ==============
@@ -312,13 +429,10 @@ SEARCH BAR
 #search input {
 	flex: 2 0;
   padding: 0.5em;
+  border-radius: var(--border-radius);
+  border: var(--border-thin);
 
-}
 
-#search select {
-	--search-input-border: var(--border-thin) solid var(--bgcolor-off);
-	flex: 1 0;
-	border-left: var(--search-input-border);
 }
 
 #search button[type=submit] {
@@ -328,8 +442,15 @@ SEARCH BAR
 	align-items: center;
 	justify-content: center;
 	font-size: 1em;
+  border-radius: var(--border-radius);
+  border: var(--border-thin);
+  background-color: var(--link-color);
+  color: var(--secondarybgcolor);
 }
 
+#search button[type=submit]:hover {
+    background-color: var(--link-hover-color);
+}
 
 /*
 ==============
@@ -373,3 +494,55 @@ FOOTER
 	padding: 0.5em 0;
 }
 
+#page-footer .special-attribution {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	margin-top: 2em;
+	gap: 1em;
+	font-size: 0.8em;
+}
+
+.special-attribution p {
+	flex: 1 0 6.25em;
+}
+
+.special-attribution img {
+	flex: 0 0 3em;
+	width: 3em;
+	margin-top: 0.4em;
+}
+
+/*
+==============
+FORM
+==============
+*/
+
+input, textarea, button, select {
+	width: 100%;
+	padding: 0.5em;
+}
+
+fieldset, input, textarea, button, select {
+	border-radius: var(--border-radius);
+	border: var(--border-thin) solid var(--focus-outline-color);
+}
+
+form .required {
+	margin-left: 0.5ch;
+	color: var(--error);
+}
+
+button[type=submit] {
+	color: var(--secondarybgcolor);
+	background-color: var(--link-color);
+	border: transparent;
+	font-weight: 600;
+	font-size: 1.2em;
+}
+
+button[type=submit]:hover,
+button[type=submit]:focus {
+	background-color: var(--link-hover-color);
+}
