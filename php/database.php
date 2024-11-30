@@ -147,15 +147,39 @@
         // ==========================
         // Component creation realted Queries
         // ==========================
-        
-        public function getGenderSchema() : array {
-            $query = "SELECT SUBSTRING(COLUMN_TYPE, 6, LENGTH(COLUMN_TYPE) - 6) AS genders FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'user' AND COLUMN_NAME = 'usr_gender';";
+
+        public function getSchemaSelect($searchType, $filterName) {
+
+            $filters = [];
+
+            switch ($searchType) {
+                case "ricette":
+                    switch ($filterName) {
+                        case "dish_type":    
+                            $query = "SELECT id, dt_type FROM dish_type;";
+                            break;
+                        case "allgs":
+                            $query = "SELECT id, restriction_type, disorder_name FROM restriction;";
+                            break;
+                        default:
+                            $query = "";
+                            break;
+                    }
+                case "ingrediente":
+                    break;
+                default:
+                    $query = "SELECT SUBSTRING(COLUMN_TYPE, 6, LENGTH(COLUMN_TYPE) - 6) AS genders FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'user' AND COLUMN_NAME = 'usr_gender';";
+                    break;
+            }
+
             $res = $this->executeSelectQuery($query);
+            if ($searchType === "utente") {
+                $res = str_replace("'", '', $res[0]['genders']);
+                return explode(',', $res);
+            }
 
-            $res = str_replace("'", '', $res[0]['genders']);
-            return explode(',', $res);
-        }
-
+            return $res; 
+        } 
         
         // ==========================
         // User-related Queries
@@ -231,7 +255,7 @@
             $fields = [
                 [$usr_name, "usr_name", "s"],
                 [$usr_mail, "usr_mail", "s"],
-                [$usr_first_name, "usr_first_name", "s"],
+                [$usr_first_name, "usr_first_name", "s"],
                 [$usr_gender, "usr_gender", "s"],
                 [$usr_birth_date, "usr_birth_date", "s"],
                 [$usr_new_password, "usr_password", "s"]
@@ -259,14 +283,14 @@
         // ==========================
 
         public function searchRecipe($str, $limit, $offest) : array {
-            $base = "FROM recipe WHERE rcp_title LIKE ? ORDER BY rcp_title ASC";
+            $base = "FROM recipe WHERE rcp_title LIKE ? ORDER BY rcp_title";
 
             $res = [];
 
-            $query = "SELECT rcp_title, rcp_image " . $baseQuery . " LIMIT ? OFFSET ?";
+            $query = "SELECT id, rcp_title AS name, rcp_image AS image " . $base . " LIMIT ? OFFSET ?";
 
             $params = ["%". trim($str) . "%", $limit, $offest]; 
-            $types = "sii"
+            $types = "sii";
             
             $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
 
@@ -279,11 +303,11 @@
         }
 
         public function searchRecipeByType($str, $limit, $offest, $dish_type) : array {
-            $base = "FROM recipe AS r JOIN dish_type_recipe AS dtr ON r.id = dtr.recipe JOIN dish_type AS dt ON dtr.dish_type = dt.id  WHERE rcp_title LIKE ? AND dt.id = ? ORDER BY r.rcp_title ASC";
+            $base = "FROM recipe AS r JOIN dish_type_recipe AS dtr ON r.id = dtr.recipe JOIN dish_type AS dt ON dtr.dish_type = dt.id  WHERE r.rcp_title  LIKE ? AND dt.id = ? ORDER BY r.rcp_title ASC";
 
             $res = [];
 
-            $query = "SELECT r.rcp_title, r.rcp_image" . $base . "LIMIT ? OFFSET ?";
+            $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image " . $base . " LIMIT ? OFFSET ?";
 
             $params = ["%". trim($str) . "%", $dish_type, $limit, $offest];
             $types = "siii";
@@ -297,12 +321,12 @@
             return $res;
         }
 
-        
-        public function searchRecipeByAllgs($str, $limit, $offest, $allgs) : array {
+        public function searchRecipeByAllgs($str, $limit, $offset, $allgs) : array {
             $base = "FROM recipe AS r WHERE r.rcp_title LIKE ?";
 
             $params = ["%". trim($str) . "%"];
             $res = [];
+            $types = "s";
 
             if (isset($allgs["vegan"])) {
                 $base .= "AND rcp_is_vegan = ?";
@@ -324,16 +348,17 @@
 
             $params [] = $limit;
             $params [] = $offset;
+            $types .= "ii";
 
+            $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image " . $base . " ORDER BY r.rcp_title ASC LIMIT ? OFFSET ?";
 
-            $query = "SELECT r.rcp_title, r.rcp_image" . $base . "ORDER BY r.rcp_title ASC LIMIT ? OFFSET ?";
-
-            //TODO
             $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
  
             $query = "SELECT COUNT(*) AS total " . $base;
 
-            
+            $types = substr_replace($types, '', -2);
+            array_pop($params);
+            array_pop($params);
             $res['count'] = $this->executeSelectQuery($query, $params, $types);
         
             return $res;
