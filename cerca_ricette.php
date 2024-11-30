@@ -1,4 +1,4 @@
 <?php
-    $search_type = "ricetta";
+    $searchType = "ricette";
     require_once("cerca.php");
 ?>

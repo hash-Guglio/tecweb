@@ -12,7 +12,7 @@
         try {
             $connection = new Database();
             $userData = $connection->getUserDataByUserId($_SESSION['id']);
-            $genders = $connection->getGenderSchema();
+            $genders = $connection->getSchemaSelect("utente", "gender");
         } catch(Exception) {
             unset($connection);
             RenderEngine::errorCode(500);

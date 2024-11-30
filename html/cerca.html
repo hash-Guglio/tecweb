@@ -4,41 +4,68 @@
     <meta charset="utf-8">
 
 	  <title>@@title@@ | fioridisapore</title>
-	  <meta name="description" content="" />
-	  <meta name="keywords" content="fioridisapore, @@keys_tiporicerca@@, ricerca, filtra risultati, ricette" />
+	  <meta name="description" content="@@searchtype_desc@@" />
+	  <meta name="keywords" content="fioridisapore, @@searchtype_kw@@, ricerca, filtra risultati, ricette" />
 
 	  <!-- shared_head -->
 </head>
-<body>
+<body class="search-page">
     <!-- shared_header -->
     <nav id="breadcrumb" aria-label="Percorso di navigazione">
 		    <p>Ti trovi in: <a href="index.php"><span lang="en">Home</span></a> &gt;&gt; @@breadcrumb@@</p>
 	  </nav> 
     <main id="content">
+        		<a href="#results" class="skip-to-content">Salta ai risultati</a>
+        <h1>Cerca</h1>
+        <form method="get" id="search">
+            <label for="searchbar" class="sr-a11y-only">Termine di ricerca</label>
+            <input type="text" id="searchbar" name="question" value="@@search_value@@" placeholder="Che @@search_type@@ stai cercando?" />
 
-        <!-- cards_start -->
+            <label for="filter" class="sr-a11y-only">Filtra per</label>
+            <select name="filter" id="filter" onchange="updateFilterVisibility();" >
+                <option value="">Nessun filtro</option>
+                <!-- filter_start -->
+					      <option value="@@value@@" @@select@@>@@name@@</option>
+					      <!-- filter_end -->
+            </select>
+            <label id="dt_filter_l" class="sr-a11y-only" hidden>Tipo Piatto</label>
+				    <select id="dt_filter" name="dish_type" hidden>
+					      <option value="">Nessun tipo piatto</option>
+					      <!-- dish_type_start -->
+					      <option value="@@value@@" @@select@@>@@name@@</option>
+					      <!-- dish_type_end -->
+				    </select>
+				    <label id="allg_filter_l" class="sr-a11y-only" hidden>Allergeni</label>
+				    <select id="allg_filter" name="allgs" hidden>
+					      <option value="">Nessun allergene</option>
+					      <!-- allgs_start -->
+					      <option value="@@value@@" @@select@@>@@name@@</option>
+					      <!-- allgs_end -->
+				    </select>
+                
+				    <button type="submit">
+                    <span class="sr-a11y-only">Cerca</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44" zoomAndPan="magnify" viewBox="0 0 33 32.999998" height="44" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="226e89835b"><path d="M 16.5 0 C 7.386719 0 0 7.386719 0 16.5 C 0 25.613281 7.386719 33 16.5 33 C 25.613281 33 33 25.613281 33 16.5 C 33 7.386719 25.613281 0 16.5 0 Z M 16.5 0 " clip-rule="nonzero"/></clipPath><clipPath id="b94dddbbda"><path d="M 6.789062 6.789062 L 26.289062 6.789062 L 26.289062 26.289062 L 6.789062 26.289062 Z M 6.789062 6.789062 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#226e89835b)"><path stroke-linecap="butt" transform="matrix(0.75, 0, 0, 0.75, 0.000001, -0.000001)" fill="none" stroke-linejoin="miter" d="M 22.000001 0.00000133333 C 9.848958 0.00000133333 -0.00000133333 9.848961 -0.00000133333 22.000004 C -0.00000133333 34.151046 9.848958 44.000006 22.000001 44.000006 C 34.151044 44.000006 44.000003 34.151046 44.000003 22.000004 C 44.000003 9.848961 34.151044 0.00000133333 22.000001 0.00000133333 Z M 22.000001 0.00000133333 " stroke="currentcolor" stroke-width="4" stroke-opacity="1" stroke-miterlimit="4"/></g><g clip-path="url(#b94dddbbda)"><path fill="currentcolor" d="M 19.269531 20.988281 L 24.023438 25.742188 C 24.496094 26.210938 25.261719 26.210938 25.730469 25.742188 C 26.203125 25.269531 26.203125 24.503906 25.730469 24.035156 L 20.976562 19.28125 C 21.933594 17.984375 22.5 16.375 22.5 14.640625 C 22.5 10.304688 18.980469 6.789062 14.648438 6.789062 C 10.3125 6.789062 6.792969 10.304688 6.792969 14.640625 C 6.792969 18.972656 10.3125 22.492188 14.648438 22.492188 C 16.375 22.492188 17.972656 21.933594 19.269531 20.988281 Z M 14.648438 9.199219 C 17.648438 9.199219 20.085938 11.636719 20.085938 14.640625 C 20.085938 17.640625 17.648438 20.078125 14.648438 20.078125 C 11.644531 20.078125 9.207031 17.640625 9.207031 14.640625 C 9.207031 11.636719 11.644531 9.199219 14.648438 9.199219 Z M 14.648438 9.199219 " fill-opacity="1" fill-rule="evenodd"/></g></svg>
+            </button>
+        </form>
+       
+        <nav id="result" class="nav-result" aira-label="Indicazione numero di pagina">
+            <p role="status" class="message-res">@@message_result@@</p>
+        </nav>
+
 		    <ul class="cards">
-			      <!-- card_start -->
+            <!-- results_start -->
+            <!-- card_start -->
 			      <li class="card">
-				    <a href="@@link@@">
-					  <picture>
-						    <!-- pic_source_start -->
-						    <source srcset="@@immagine_webp@@" type="image/webp" />
-						    <!-- pic_source_end -->
-						    <img src="@@immagine@@" alt=""/>
-					  </picture>
-					  <div class="details">
-						    <h2 class="title">@@name@@</h2>
-
-						<!-- score_start -->
-						<p>@@score_film@@</p>
-						<!-- score_end -->
-					</div>
-				</a>
-			</li>
-			<!-- card_end -->
-		</ul>
-		<!-- cards_end -->
+				        <a href="@@link@@">
+					          <div class="details">
+						            <h2 class="title">@@name@@</h2>
+					          </div>
+				        </a>
+			      </li>
+			      <!-- card_end -->
+		        <!-- results_end -->
+		    </ul>
     </main>
     <!-- shared_footer -->
 </body>

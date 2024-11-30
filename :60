@@ -1,0 +1,112 @@
+<?php
+
+    require_once("php/renderEngine.php");
+    require_once("php/database.php");
+    
+    if (!isset($search_type)) {
+        RenderEngine::errorCode(404);
+        exit();
+    } 
+
+    $question = $_GET["question"] ?? ""; 
+    $filter_name = $_GET["filter_name"] ?? "";  
+    //$rdish_type ="";/*$_GET["rdish_type"] ?? "";*/
+    //$rallgs = "";/*$_GET["rallgs"] ?? "";*/
+    $filter_value = $_GET[$filter_name] ?? "";
+    $itemsPerPage = 16;
+    
+    $currentPage = intval($_GET["page"] ?? 0);
+    $offset = $itemsPerPage * $currentPage;
+    
+    $filters = [];
+    
+    try {
+        $connection = new Database();
+
+        $filterNames = [
+            "ricetta" => ["dish_type", "allgs"],
+            "ingrediente" => ["allgs"]
+        ];
+
+        foreach ($filterNames[$search_type] as $filter_name) {
+            $filterData = $connection->getSchemaSelect($search_type, $filter_name);
+            $filters[$filter_name] = $filterData;
+        }
+
+        $filters['filter'] = [
+            ['id' => 'dish_type', 'it' => 'Tipo piatto'],
+            ['id' => 'allgs', 'it' => 'Allergeni']
+        ];
+
+    $result = handleSearch($connection, $search_type, $question, $filter_name, $filter_value, $itemsPerPage, $offset);    
+    unset($connection);
+    } catch (Exception $e) {
+        RenderEngine::errorCode(500);
+        exit();
+    }
+
+    if (empty($result)) {
+        RenderEngine::errorCode(404);
+        exit();
+    }
+    
+    $page = RenderEngine::buildPage("cerca", "cerca_$search_type");
+
+    foreach (["filter", "dish_type", "allgs"] as $filter_name) {
+        buildFilterSection($page, $filter_name, $filters, $filter_value);
+    }    
+    
+    RenderEngine::replaceAnchor($page, "breadcrumb", buildBreadcrumb($page, $search_type, $filter_name, $filter_value));
+    RenderEngine::replaceAnchor($page, "name", $result["recipe"][0]["rcp_title"]);     
+    RenderEngine::showPage($page);
+
+
+    function handleSearch($connection, $search_type, $question, $filter_name, $filter_value, $liimit_res, $offset) {
+        switch ($search_type) {
+            case "ricetta":
+                return searchRecipe($connection, $question, $filter_name, $filter_value, $liimit_res, $offset);
+        
+        default:
+            return [];    
+        }
+
+    }
+
+    function searchRecipe($connection, $question, $filter_name, $filter_value, $itemsPerPage, $offset) {
+        if ($filter_name === "dish_type" && $filter_value) {
+            return $connection->searchRecipeByType($question, $itemsPerPage, $offset, $filter_value);
+        } else if ($filter_name === "allgs" && $filter_value) {
+            return $connection->searchRecipeByAllgs($question, $itemsPerPage, $offset, $filter_value);
+        }
+
+        return $connection->searchRecipe($question, $itemsPerPage, $offset);
+    }
+    
+    function buildFilterSection(&$page, $filterName, $filterItems, $selectedValue) {
+        $template = RenderEngine::getSectionContent($page, $filterName);
+        $result = "";
+        foreach ($filterItems[$filterName] as $item) {
+                $filter = $template;
+                RenderEngine::replaceAnchor($filter, "value", $item["id"]);
+                RenderEngine::replaceAnchor($filter, "name", $item["dt_type"] ?? $item["restriction_type"] ?? $item["it"]);
+                RenderEngine::replaceAnchor($filter, "select", ($item["id"] == $selectedValue) ? "selected" : "");
+                $result .= $filter;
+        }
+
+        RenderEngine::replaceSectionContent($page, $filterName, $result);
+    }
+
+    function buildBreadcrumb(&$page, $searchType, $filterName, $filterValue) {
+        $bcrb = ucfirst($searchType);
+        switch ($searchType) {
+            case "ricette":
+                if (!$filterName) return;
+                $bcrb .= " filtrate per {$filterName}";
+                break;
+            default:
+                break;
+        }
+        return $bcrb;
+    }
+
+?>

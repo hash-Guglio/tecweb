@@ -5,7 +5,10 @@
 
    class RenderEngine {
         private static $authPages = ['login', 'user'];
-        
+        private const CONVERSION_LEVEL_EDIT = 0;
+        private const CONVERSION_LEVEL_STRIP = 1;
+        private const CONVERSION_LEVEL_FULL = 2;
+
         private static function loadHtmlFile(string $filePath, string $errorMessage): string {
             if (!file_exists($filePath)) {
                 throw new Exception("File not found: {$filePath}");
@@ -39,13 +42,58 @@
             $contentLength = $endPos - $startPos;
 
             return substr($in, $startPos, $contentLength);
+        
         }
+
+        private static function convertLanguageTags(string $text, bool $removeTags = false): string {
+            $patterns = [
+                "/\[([a-z]{2,3})\]/",
+                "/\[\/([a-z]{2,3})\]/"
+            ];
+            $replacements = $removeTags ? ['', ''] : ['<span lang="${1}">', '</span>'];
+            return preg_replace($patterns, $replacements, $text);
+        }
+
+        private static function convertAbbreviations(string $text, bool $removeTags = false): string {
+            $patterns = [
+                "/\{abbr\}([^;{}]*?)\{\/abbr\}/",
+                "/\{abbr\}([^;{}]*?);(.*?)\{\/abbr\}/s"
+            ];
+            $replacements = $removeTags ? ['', ''] : ['<abbr>${1}</abbr>', '<abbr title="${2}">${1}</abbr>'];
+            return preg_replace($patterns, $replacements, $text);
+        }
+
+        public static function processElement($item, $key, $conversionLevel) {
+            if (is_string($item)) {
+                $item = htmlspecialchars($item, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
+
+
+                if ($conversionLevel != 0) {
+                    $strip = ($conversionLevel == 1);
+                    $item = RenderEngine::convertLanguageTags($item, $strip);
+                    $item = RenderEngine::convertAbbreviations($item, $strip);
+                }
+            }   
+
+            return $item;
+        }
+
+        public static function convertToHtml($input, int $conversionLevel = self::CONVERSION_LEVEL_FULL) {
+            if (is_array($input)) {
+                return array_map(function($item) use ($conversionLevel) {
+                return self::processElement($item, null, $conversionLevel);
+            }, $input);
+            } elseif (is_string($input)) {
+                return self::processElement($input, null, $conversionLevel);
+            }
+            return $input; 
+        }
+
 
         public static function replaceAnchor(&$in, $anchor, $content, $comment = false) : void {
             $from = $comment ? "<!-- $anchor -->" : "@@{$anchor}@@";
             $pos = strpos($in, $from);
-
-
+            $content = self::convertToHtml($content, self::CONVERSION_LEVEL_FULL);
             while ($pos !== false) {
                 $in = substr_replace($in, $content, $pos, strlen($from));
                 $pos = strpos($in, $from, $pos + strlen($content));
@@ -75,7 +123,8 @@
             
             if ($startIndex == false || $endIndex == false) return;
 
-            $startIndex += strlen($startTag);
+            //$startIndex += strlen($startTag);
+            $endIndex += strlen($endTag);
             $length = $endIndex - $startIndex;
         
             $in = substr_replace($in, $content, $startIndex, $length);

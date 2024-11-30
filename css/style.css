@@ -395,13 +395,15 @@ LOGIN
 	text-align: left;
 }
 
-#authhForm > fieldset {
+#authForm > fieldset {
 	border-color: transparent;
 }
 
 #authForm > fieldset input {
 	margin-bottom: 1em;
 }
+
+
 
 /*
 ==============
@@ -426,13 +428,19 @@ SEARCH BAR
 	overflow: hidden;
 }
 
-#search input {
-	flex: 2 0;
+#search input,
+#search select {
   padding: 0.5em;
   border-radius: var(--border-radius);
   border: var(--border-thin);
+}
 
+#search input {
+    flex: 2 0;
+}
 
+#search select {
+    flex: 1 0;
 }
 
 #search button[type=submit] {
@@ -546,3 +554,37 @@ button[type=submit]:hover,
 button[type=submit]:focus {
 	background-color: var(--link-hover-color);
 }
+
+
+/*
+==============
+CARDS
+==============
+*/
+
+.cards{
+	list-style-type: none;
+	padding: 0;
+	justify-content: center;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.5em;
+}
+
+.card {
+	background-color: var(--secondarybgcolor);
+	border-radius: var(--border-radius);
+}
+
+.card:hover,
+.card:focus-within {
+	transform: scale(1.04);
+}
+
+.card > a {
+	display: flex;
+	text-decoration: none;
+	flex-direction: row;
+	width: 100%;
+}
+
