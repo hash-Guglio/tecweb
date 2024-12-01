@@ -17,8 +17,8 @@ VALUES
     (1, 1);
 
 INSERT INTO recipe (id, rcp_title, rcp_image, rcp_ready_minutes, rcp_servings, rcp_instructions, rcp_price_servings, rcp_difficult) VALUES 
-(1, 'Pasta al Pomodoro', 'pasta.jpg', 30, 2, 'Cuocere la pasta, preparare il sugo, unire e servire.', 2.50, 'Facile'),
-(2, 'Zuppa di Lenticchie', 'zuppa.jpg', 45, 4, 'Soffriggere, aggiungere le lenticchie e cuocere finché sono morbide.', 3.20, 'Medio');
+(1, 'Pasta al Pomodoro', 'pasta', 30, 2, 'Cuocere la pasta, preparare il sugo, unire e servire.', 2.50, 'Facile'),
+(2, 'Zuppa di Lenticchie', 'pasta', 45, 4, 'Soffriggere, aggiungere le lenticchie e cuocere finché sono morbide.', 3.20, 'Medio');
 
 INSERT INTO recipe_restriction (recipe, restriction)
 VALUES 

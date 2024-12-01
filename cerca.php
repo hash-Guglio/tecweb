@@ -155,10 +155,15 @@
         $cards = "";
         $template = RenderEngine::getSectionContent($page, "card");
         
+        
         foreach ($results as $result) {
             $card = $template;
             RenderEngine::replaceAnchor($card, "name", $result["name"]);
             RenderEngine::replaceAnchor($card, "link", "{$searchType}.php?id={$result['id']}");
+            RenderEngine::replaceAnchor($card, "webp", "pics/" . $result["image"] . ".webp");
+            RenderEngine::replaceAnchor($card, "image", "pics/" . $result["image"] . ".jpg");
+            RenderEngine::replaceAnchor($card, "time", $result["ready_in"]);
+            RenderEngine::replaceAnchor($card, "servings", $result["servings"]);
             $cards .= $card;
         }
         

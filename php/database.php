@@ -287,7 +287,7 @@
 
             $res = [];
 
-            $query = "SELECT id, rcp_title AS name, rcp_image AS image " . $base . " LIMIT ? OFFSET ?";
+            $query = "SELECT id, rcp_title AS name, rcp_image AS image, rcp_ready_minutes AS ready_in, rcp_servings AS servings " . $base . " LIMIT ? OFFSET ?";
 
             $params = ["%". trim($str) . "%", $limit, $offest]; 
             $types = "sii";
@@ -307,7 +307,7 @@
 
             $res = [];
 
-            $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image " . $base . " LIMIT ? OFFSET ?";
+            $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image, r.rcp_ready_minutes AS ready_in, r.rcp_servings AS servings " . $base . " LIMIT ? OFFSET ?";
 
             $params = ["%". trim($str) . "%", $dish_type, $limit, $offest];
             $types = "siii";
@@ -350,7 +350,7 @@
             $params [] = $offset;
             $types .= "ii";
 
-            $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image " . $base . " ORDER BY r.rcp_title ASC LIMIT ? OFFSET ?";
+            $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image, r.rcp_ready_minutes AS ready_in, r.rcp_servings AS servings " . $base . " ORDER BY r.rcp_title ASC LIMIT ? OFFSET ?";
 
             $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
  

@@ -53,14 +53,26 @@
             <p role="status" class="message-res">@@message_result@@</p>
         </nav>
 
-		    <ul class="cards">
+
+        <ul class="cards">
             <!-- results_start -->
             <!-- card_start -->
 			      <li class="card">
-				        <a href="@@link@@">
-					          <div class="details">
-						            <h2 class="title">@@name@@</h2>
-					          </div>
+				        <picture>
+						        <!-- webp_start -->
+						            <source srcset="@@webp@@" type="image/webp" />
+						        <!-- webp_end -->
+						        <img src="@@image@@" alt=""/>
+					      </picture>
+					          <div class="details"> 
+                    <ul class="recipe-overview">
+                        <li>@@time@@<abbr title="minuti">min</abbr></li>
+                        <li>@@servings@@ porzioni</li>
+                        <li>@@cal@@</li>
+                    </ul>
+                </div>
+                <a href="@@link@@">
+						        <h2 class="title">@@name@@</h2>
 				        </a>
 			      </li>
 			      <!-- card_end -->
