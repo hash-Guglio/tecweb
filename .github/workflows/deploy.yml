@@ -53,6 +53,7 @@ jobs:
           script: |
             cd /home
             ./create_apache_conf.sh ${{ steps.branch-name.outputs.current_branch }} ${{ github.event.repository.name }}
+            ./setup_mariadb.sh
             echo "Deploy complete 🚀"
 
   broken-links-check:
