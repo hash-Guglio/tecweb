@@ -20,7 +20,7 @@
         
         $currentPage = intval($_GET["page"] ?? 0);
         $offset = $itemsPerPage * $currentPage;
-        
+
         $filters = [];
 
         try {
@@ -76,7 +76,7 @@
                 break;
         }
 
-        RenderEngine::replaceAnchor($page, "searchtype_kw", $question); 
+        RenderEngine::replaceAnchor($page, "searchtype_kw", ($question != "")?(", ". $question . ","):","); 
         RenderEngine::replaceAnchor($page, "searchtype_desc", $mdesc);
         RenderEngine::replaceAnchor($page, "breadcrumb", $bcrb);
         RenderEngine::replaceAnchor($page, "search_type", $searchType);
@@ -86,14 +86,13 @@
 
         if (!empty($results["recipe"])) {
             RenderEngine::replaceSectionContent($page, "results", buildResultsSection($page, $results["recipe"], $searchType));
-            buildResultNavbar($page, $results, $currentPage, $itemsPerPage);
+	          $navigationLink = "cerca_$searchType.php?question=$question" . (($searchType == "ricette" && $filterName) ? ("&filter=" . $filterName. "&dish_type=" . $filterValue . "&allgs=" . $filterValue) : "");
+            buildResultNavbar($page, $results, $currentPage, $itemsPerPage, $navigationLink);
         } else {
             RenderEngine::replaceSectionContent($page, "results", "");
+            RenderEngine::replaceSectionContent($page, "navigation_bottom", "");
             RenderEngine::replaceAnchor($page, "message_result", "Questa ricerca non ha prodotto risultati");
         }
-
-
-        //if (!empty($result["recipe"])) RenderEngine::replaceAnchor($page, "name", $result["recipe"][0]["name"]);     
         
         RenderEngine::showPage($page);
 
@@ -143,7 +142,6 @@
                 $optionFilterField = ($filterName == "dish_type")?"dt_type":"restriction_type";
                 $intFilterValue = intval($filterValue) - 1;
                 $res = " filtrate per {$filters[$filterName][$intFilterValue][$optionFilterField]}";     
-               //"({$filters["filter"][$optionFilterType]["it"]})";
                 break;
             default:
                 break;
@@ -153,9 +151,9 @@
     
     function buildResultsSection($page, $results, $searchType) {
         $cards = "";
+        $resSection = RenderEngine::getSectionContent($page, "results");
         $template = RenderEngine::getSectionContent($page, "card");
-        
-        
+                
         foreach ($results as $result) {
             $card = $template;
             RenderEngine::replaceAnchor($card, "name", $result["name"]);
@@ -167,12 +165,28 @@
             $cards .= $card;
         }
         
-        return $cards;
+        RenderEngine::replaceSectionContent($resSection, "card", $cards);
+
+        return $resSection;
     }
     
-    function buildResultNavbar(&$page, $results, $currentPage, $itemsPerPage) {
+    function buildResultNavbar(&$page, $results, $currentPage, $itemsPerPage, $navigationLink) {
         $message = ("Pagina ". ($currentPage + 1)  . " su ". ceil($results["count"][0]["total"]/ $itemsPerPage) . ". Risultati totali: " . $results["count"][0]["total"]);
         RenderEngine::replaceAnchor($page, "message_result", $message);
+        RenderEngine::replaceAnchor($page, "message_result_bottom", $message); 
+
+        if ($currentPage > 0) { 
+            RenderEngine::replaceAnchor($page, "prev_page", ($navigationLink. "&page=" . ($currentPage - 1) . "#results"));     
+        } 
+        else { 
+            RenderEngine::replaceSectionContent($page, "prev_page", ""); 
+        }
+        if (($currentPage + 1) < ceil($results["count"][0]["total"] / $itemsPerPage)) {
+            RenderEngine::replaceAnchor($page, "next_page", ($navigationLink . "&page=" . ($currentPage + 1) . "#results"));
+        }
+        else {
+            RenderEngine::replaceSectionContent($page, "next_page", "");
+        }
     }
     
     main($searchType);

@@ -1,4 +1,3 @@
-let prevType = '';
 let isOpen = false;
 
 const focusOnTopmostError = () => {

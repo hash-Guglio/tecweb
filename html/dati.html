@@ -24,7 +24,7 @@
             <fieldset>
 				        <legend>Informazioni di base</legend>
 
-				        <label for="username"><span lang="en">Username</span><span class="required">(richiesto)</span></label>
+				        <label for="username"><span lang="en">Username</span></label>
 				        <input type="text" id="username" name="username" value="@@username@@" required aria-describedby="username-hint" autocomplete="username" maxlength="30" />
                 <p id="username-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>   
 				        
@@ -52,7 +52,32 @@
 					          <option value="@@gender@@" @@_select@@>@@gender@@</option>
 					          <!-- gender_end -->
 				        </select>
-			      </fieldset>
+<fieldset><legend>Intolleranze</legend>                
+                <div class="checkbox-grid">
+  <div class="checkbox-container">
+    <input type="checkbox" id="option1">
+    <label for="option1">Opzione 1</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option2">
+    <label for="option2">Opzione 2</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option3">
+    <label for="option3">Opzione 3</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option4">
+    <label for="option4">Opzione 4</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option5">
+    <label for="option5">Opzione 5</label>
+  </div>
+</div>
+</fieldset>
+			      
+            </fieldset>
             <fieldset>
 				        <legend>Cambia la tua <span lang="en">password</span></legend>
 				            
