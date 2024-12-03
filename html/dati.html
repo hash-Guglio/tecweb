@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+
+	  <title>Dati personali | nome_sito</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <!-- shared_head -->
+    <script src="js/validate_user.js"></script>
+</head>
+<body>
+    <!-- shared_header -->
+    <nav id="breadcrumb" aria-label="Percorso di navigazione">
+		    <p>Ti trovi in: <a href="index.php"><span lang="en">Home</span></a> &gt;&gt; <a href="user.php">Utente</a> &gt;&gt; Dati personali</p>
+	  </nav>
+    <main>
+        <h1>Dati personali</h1>
+        
+        <!-- server_msgs -->
+
+        <form id="manage_user" method="post" action="post_dati.php">
+            <fieldset>
+				        <legend>Informazioni di base</legend>
+
+				        <label for="username"><span lang="en">Username</span></label>
+				        <input type="text" id="username" name="username" value="@@username@@" required aria-describedby="username-hint" autocomplete="username" maxlength="30" />
+                <p id="username-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>   
+				        
+                <label for="email"><span lang="en">Email</span></label>
+				        <input type="text" id="email" name="mail" value="@@mail@@" autocomplete="email"
+                maxlength="100" aria-describedby="email-hint"/>
+                <p id="email-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>   
+			      
+            </fieldset>
+            <fieldset>
+				        <legend>Altre informazioni</legend>
+
+				        <label for="first_name">Nome</label>
+				        <input type="text" id="first_name" name="first_name" value="@@first_name@@"
+                autocomplete="first_name" maxlength="50" />
+				        <p id="first_name-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+				        <label for="birth_date">Data di nascita</label>
+				        <input type="date" id="birth_date" name="birth_date" value="@@birth_date@@" min="1900-01-01" max="2099-12-31" />
+				        <p id="birth_date-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+                
+                <label for="gender"><span lang="en">Sesso</span></label>
+				        <select id="gender" name="gender">
+					          <!-- gender_start -->
+					          <option value="@@gender@@" @@_select@@>@@gender@@</option>
+					          <!-- gender_end -->
+				        </select>
+<fieldset><legend>Intolleranze</legend>                
+                <div class="checkbox-grid">
+  <div class="checkbox-container">
+    <input type="checkbox" id="option1">
+    <label for="option1">Opzione 1</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option2">
+    <label for="option2">Opzione 2</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option3">
+    <label for="option3">Opzione 3</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option4">
+    <label for="option4">Opzione 4</label>
+  </div>
+  <div class="checkbox-container">
+    <input type="checkbox" id="option5">
+    <label for="option5">Opzione 5</label>
+  </div>
+</div>
+</fieldset>
+			      
+            </fieldset>
+            <fieldset>
+				        <legend>Cambia la tua <span lang="en">password</span></legend>
+				            
+                <label for="old_password"><span lang="en">Password</span> corrente</label>
+				        <input type="password" id="old_password" name="old_password" autocomplete="current-password" />
+				        <p id="old_password-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+				        <label for="new_password">Nuova <span lang="en">password</span></label>
+				        <input type="password" id="new_password" name="new_password" autocomplete="new-password" />
+				            <p id="new_password-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+				        <label for="new_password_confirm">Conferma la nuova <span lang="en">password</span></label>
+				            <input type="password" id="new_password_confirm" name="new_password_confirm" autocomplete="new-password" />
+				            <p id="new_password_confirm-hint" class="error-message" aria-live="assertive" aria-relevant="additions removals"></p>
+
+            </fieldset>
+            <fieldset>
+				        <legend>Salva le modifiche</legend>
+				        <button type="submit" name="submit">Modifica</button>
+			      </fieldset>
+        </form>
+    </main>
+    <!-- shared_footer -->
+</body>
+
+</html>
