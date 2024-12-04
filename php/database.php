@@ -321,30 +321,14 @@
             return $res;
         }
 
-        public function searchRecipeByAllgs($str, $limit, $offset, $allgs) : array {
-            $base = "FROM recipe AS r WHERE r.rcp_title LIKE ?";
+        public function searchRecipeByAllgs($str, $limit, $offset, $allg) : array {
 
-            $params = ["%". trim($str) . "%"];
+            $base = "FROM recipe AS r JOIN recipe_restriction AS rr ON r.id = rr.recipe JOIN restriction AS rst ON rst.id = rr.restriction WHERE r.rcp_title LIKE ? AND rr.restriction = ?";
+
+            $params = ["%". trim($str) . "%", $allg];
             $res = [];
-            $types = "s";
+            $types = "si";
 
-            if (isset($allgs["vegan"])) {
-                $base .= "AND rcp_is_vegan = ?";
-                $params[] = $allgs["vegan"];
-                $types .= "i"; 
-            }
-
-            if (isset($allgs["dairy_free"])) { 
-                $base .= "AND rcp_is_dairy_free = ?";
-                $params[] = $allgs["dairy_free"];
-                $types .= "i"; 
-            }
-
-            if (isset($allgs["gluten_free"])) { 
-                $base .= "AND rcp_is_gluten_free = ?";
-                $params[] = $allgs["gluten_free"]; 
-                $types .= "i"; 
-            }
 
             $params [] = $limit;
             $params [] = $offset;

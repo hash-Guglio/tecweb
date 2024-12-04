@@ -44,7 +44,8 @@
             $results = handleSearch($connection, $searchType, $question, $filterName, $filterValue, $itemsPerPage, $offset);    
             unset($connection);
         } catch (Exception $e) {
-            RenderEngine::errorCode(500);
+            echo $e;
+            //RenderEngine::errorCode(500);
             exit();
         }
 
