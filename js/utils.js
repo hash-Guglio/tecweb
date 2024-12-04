@@ -78,21 +78,29 @@ const updateFilterVisibility = () => {
     labelDt.hidden = true;
     inputAllgs.hidden = true;
     labelAllgs.hidden = true;
+    inputAllgs.value = '';
+    inputDt.value = '';
 
 
     if (type === 'dish_type') {
         inputDt.hidden = false;
         labelDt.hidden = false;
+
     } else if (type === 'allgs') {
         inputAllgs.hidden = false;
-        labelAllgs.hidden = false;
+        labelAllgs.hidden = false; 
     }
 
 };
 
+
 document.addEventListener('DOMContentLoaded', () => {
     if (document.body.classList.contains('search-page')) {
         updateFilterVisibility();
+        const filter = document.getElementById('filter');
+        if (filter) {
+            filter.addEventListener('change', updateFilterVisibility);
+        }
     }
 });
 
