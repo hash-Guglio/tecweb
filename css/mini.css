@@ -66,3 +66,24 @@ SEARCH BAR
 #search {
     width: 100%;
 }
+
+#search {
+    flex-direction: column;
+}
+
+#search > * {
+	min-height: 3em;
+}
+
+/*
+==============
+CARDS
+==============
+*/
+
+.cards {
+	grid-template-columns: 1fr;
+}
+
+
+

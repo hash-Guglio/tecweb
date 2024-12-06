@@ -12,11 +12,11 @@ VARIABLES AND COLORS
     */
     --header-height: 3.5em;
     --content-width: 60em;
-    --content-width-reduced: 20em;
+    --content-width-reduced: 30em;
     --content-padding: 1em;
 	  --border-radius-link: 0.3rem;       
     --border-radius: 2rem;
-    --border-thin: 0.4rem;
+    --border-thin: 0.2rem;
     --auth-form-width: 30em;
     --focus-outline-border: 0.2rem;
 
@@ -126,6 +126,7 @@ a:focus {
 	  outline: var(--focus-outline-border) solid var(--focus-outline-color);
 	  border-radius: var(--border-radius);
 	  color: var(--link-hover-color);
+    background-color: var(--secondarybgcolor);
 }
 
 a:visited {
@@ -134,7 +135,7 @@ a:visited {
 
 a:visited:hover,
 a:visited:focus {
-/*	color: var(--link-visited-hover-color); */
+    color: var(--link-visited-hover-color); 
 }
 
 
@@ -213,7 +214,9 @@ HEADER
 }
 
 #page-header li a:hover,
-#accountButton:hover {
+#accountButton:hover,
+#accountButton:focus,
+{
 	  background-color: var(--secondarybgcolor);
 }
 
@@ -262,12 +265,22 @@ HEADER
 	  color: var(--txtcolor);
 }
 
+#dropdown-menu-toggle:hover,
+#dropdown-menu-toggle:focus {
+    color: var(--link-hover-color);
+}
+
 #themeToggle {
     color: var(--txtcolor);
     padding: 0;
 	  background: transparent;
 	  border: 0;
 	  cursor: pointer;
+}
+
+#themeToggle:hover,
+#themeToggle:focus {
+    color: var(--link-hover-color);
 }
 
 #themeToggle svg.sun {display: none}
@@ -366,7 +379,9 @@ SEARCH BAR
     color: var(--secondarybgcolor);
 }
 
-#search button[type=submit]:hover {
+#search button[type=submit]:hover,
+#search button[type=submit]:focus
+{
     background-color: var(--link-hover-color);
 }
 
@@ -536,7 +551,7 @@ CARDS
 }
 
 .card:hover,
-.card:focus-within {
+.card:focus {
     transform: translatey(-0.5em);
 }
 
