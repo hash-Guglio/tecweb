@@ -171,11 +171,9 @@
                     switch ($filterName) {
                         case "order":
                             return 
-                                [["id" => "asc",
-                                  "it" => "Ascendente"], 
-                                 ["id" => "desc",
-                                  "it" => "Discendente"
-                                ]];
+                                ["asc" => "più basso", 
+                                 "desc" => "più alto"
+                                ];
                     }
                     break;
 
@@ -429,7 +427,7 @@
         }
 
         public function searchIngredientByNut($str, $limit, $offset, $nutrient, $order) : array {
-            $base = "FROM ingredient JOIN ingredient_nutrient ON ingredient.id = ingredient_nutrient.ingredient JOIN nutrient n ON n.id = ingredient_nutrient.nutrient WHERE ingredient.igr_name LIKE ? AND n.ntr_name = ? ORDER BY n.ntr_name {$order}";
+            $base = "FROM ingredient JOIN ingredient_nutrient ON ingredient.id = ingredient_nutrient.ingredient JOIN nutrient n ON n.id = ingredient_nutrient.nutrient WHERE ingredient.igr_name LIKE ? AND n.id = ? ORDER BY ingredient_nutrient.amount {$order}";
             $res = [];
             
             $query = "SELECT ingredient.id, igr_name AS name, igr_image AS image " . $base . " LIMIT ? OFFSET ?";    
