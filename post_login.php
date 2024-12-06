@@ -34,7 +34,7 @@
 
         if (!empty($loginData)) {
             setUserSession($loginData);
-            header('location: user.php');
+            header('location: utente.php');
             exit();
 
         } else {

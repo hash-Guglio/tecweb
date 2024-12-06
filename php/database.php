@@ -148,27 +148,40 @@
         // Component creation realted Queries
         // ==========================
 
-        public function getSchemaSelect($searchType, $filterName) {
+        public function getSchemaSelect($searchType, $filterName = "") {
 
             $filters = [];
+            $query = "";
 
             switch ($searchType) {
                 case "ricette":
                     switch ($filterName) {
                         case "dish_type":    
-                            $query = "SELECT id, dt_type FROM dish_type;";
+                            $query = "SELECT DISTINCT id, dt_type FROM dish_type;";
                             break;
                         case "allgs":
-                            $query = "SELECT id, restriction_type, disorder_name FROM restriction;";
+                            $query = "SELECT id, rst_type, rst_disorder_name FROM restriction;";
                             break;
                         default:
                             $query = "";
                             break;
                     }
-                case "ingrediente":
                     break;
-                default:
+                case "ingredienti":
+                    switch ($filterName) {
+                        case "order":
+                            return 
+                                ["asc" => "più basso", 
+                                 "desc" => "più alto"
+                                ];
+                    }
+                    break;
+
+                case "utente":
                     $query = "SELECT SUBSTRING(COLUMN_TYPE, 6, LENGTH(COLUMN_TYPE) - 6) AS genders FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'user' AND COLUMN_NAME = 'usr_gender';";
+                     break;
+
+                default:
                     break;
             }
 
@@ -200,7 +213,7 @@
         }
  
         public function getUsernameByUserId($id): array {
-            $query = "SELECT usr_name FROM user WHERE id = ?";
+            $query = "SELECT usr_name FROM user  WHERE id = ?";
             $params = [$id];
             $types = "i";
 
@@ -210,7 +223,7 @@
         }
 
         public function getUserDataByUserId($id): array {
-            $query = "SELECT * FROM user WHERE id = ?";
+            $query = "SELECT user.*, restriction.id AS rst_id, restriction.rst_type, restriction.rst_disorder_name FROM user LEFT JOIN user_restriction ON user.id = user_restriction.user LEFT JOIN restriction ON restriction.id = user_restriction.restriction WHERE user.id = ?";
             $params = [$id];
             $types = "i";
 
@@ -231,12 +244,10 @@
             string $usr_birth_date,
             string $usr_gender = 'altro',
             ?string $usr_new_password = null,
-            bool $usr_is_vegan = false,
-            bool $usr_is_celiac = false,
-            bool $usr_is_lint = false,
+            array $usr_restrictions = [],
             ?int $id = null
             ): array {
-    
+            
             $isUpdate = !is_null($id);
 
             if ($isUpdate) {
@@ -269,12 +280,55 @@
                 $types .= "i";
             }
 
+
             $result = $this->executeUpdateQuery($query, $params, $types);
+            $userId = $isUpdate ? $id : $this->connection->insert_id;
+
+            $this->updateUserRestrictions($userId, $usr_restrictions);
 
             return [
                 $result,
-                $isUpdate ? $id : $this->connection->insert_id
+                $userId
             ];
+        }
+
+        private function updateUserRestrictions(int $userId, array $user_restrictions): void {
+
+            $query = "SELECT id, rst_type FROM restriction";
+            $restrictionData = $this->executeSelectQuery($query);
+
+
+            $restrictionMap = [];
+            foreach ($restrictionData as $row) {
+                $restrictionMap[$row['id']] = $row['id'];
+            }
+
+            $activeRestrictionIds = [];
+            foreach ($user_restrictions as $restriction) {
+                if (isset($restrictionMap[intval($restriction)])) {
+                    $activeRestrictionIds[] = $restrictionMap[intval($restriction)];
+                }
+            }
+
+            $deleteQuery = "DELETE FROM user_restriction WHERE user = ?";
+            $this->executeUpdateQuery($deleteQuery, [$userId], "i");
+
+            if (!empty($activeRestrictionIds)) {
+                $insertQuery = "INSERT INTO user_restriction (user, restriction) VALUES ";
+                $insertParams = [];
+                $insertTypes = "";
+
+                foreach ($activeRestrictionIds as $restrictionId) {
+                    $insertQuery .= "(?, ?),";
+                    $insertParams[] = $userId;
+                    $insertParams[] = $restrictionId;
+                    $insertTypes .= "ii";
+                }
+
+                $insertQuery = rtrim($insertQuery, ",");
+                $this->executeUpdateQuery($insertQuery, $insertParams, $insertTypes);
+            }
+
         }
 
         
@@ -292,7 +346,7 @@
             $params = ["%". trim($str) . "%", $limit, $offest]; 
             $types = "sii";
             
-            $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
+            $res['result'] = $this->executeSelectQuery($query, $params, $types);
 
             $query = "SELECT COUNT(*) AS total " . $base;
             $params = ["%". trim($str) . "%"];
@@ -311,7 +365,7 @@
 
             $params = ["%". trim($str) . "%", $dish_type, $limit, $offest];
             $types = "siii";
-            $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
+            $res['result'] = $this->executeSelectQuery($query, $params, $types);
  
             $query = "SELECT COUNT(*) AS total " . $base;
             $params = ["%". trim($str) . "%", $dish_type];
@@ -336,7 +390,7 @@
 
             $query = "SELECT r.id, r.rcp_title AS name, r.rcp_image AS image, r.rcp_ready_minutes AS ready_in, r.rcp_servings AS servings " . $base . " ORDER BY r.rcp_title ASC LIMIT ? OFFSET ?";
 
-            $res['recipe'] = $this->executeSelectQuery($query, $params, $types);
+            $res['result'] = $this->executeSelectQuery($query, $params, $types);
  
             $query = "SELECT COUNT(*) AS total " . $base;
 
@@ -347,7 +401,50 @@
         
             return $res;
         }
+        
+        // ==========================
+        // Ingredient-related Queries
+        // ==========================
 
+        public function searchIngredient($str, $limit, $offest) : array {            
+            $base = "FROM ingredient WHERE igr_name LIKE ? ORDER BY igr_name";
 
+            $res = [];
+
+            $query = "SELECT id, igr_name AS name, igr_image AS image " . $base . " LIMIT ? OFFSET ?";
+
+            $params = ["%". trim($str) . "%", $limit, $offest]; 
+            $types = "sii";
+            
+            $res['result'] = $this->executeSelectQuery($query, $params, $types);
+
+            $query = "SELECT COUNT(*) AS total " . $base;
+            $params = ["%". trim($str) . "%"];
+            $types = "s";
+            $res['count'] = $this->executeSelectQuery($query, $params, $types);
+            
+            return $res;
+        }
+
+        public function searchIngredientByNut($str, $limit, $offset, $nutrient, $order) : array {
+            $base = "FROM ingredient JOIN ingredient_nutrient ON ingredient.id = ingredient_nutrient.ingredient JOIN nutrient n ON n.id = ingredient_nutrient.nutrient WHERE ingredient.igr_name LIKE ? AND n.id = ? ORDER BY ingredient_nutrient.amount {$order}";
+            $res = [];
+            
+            $query = "SELECT ingredient.id, igr_name AS name, igr_image AS image " . $base . " LIMIT ? OFFSET ?";    
+
+            $params = ["%". trim($str) . "%", $nutrient, $limit, $offset];
+
+            $types = "sssi";
+
+            $res['result'] = $this->executeSelectQuery($query, $params, $types);
+            
+            $query = "SELECT COUNT(*) AS total " . $base;
+
+            $params = ["%". trim($str) . "%", $nutrient];
+            $types = "ss";
+            $res['count'] = $this->executeSelectQuery($query, $params, $types);
+            
+            return $res;
+        }    
     }
 ?>

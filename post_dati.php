@@ -10,8 +10,8 @@
 
         foreach ($fields as $field) {
             $result[$field] = isset($_POST[$field]) ? $_POST[$field] : "";
-        }
 
+        }
         return $result;
     }
 
@@ -24,9 +24,7 @@
             usr_gender: $postData["gender"],
             usr_birth_date: $postData["birth_date"],
             usr_new_password: isset($postData["new_password"]) ? $postData["new_password"]: null,
-            usr_is_vegan: $postData["is_vegan"],
-            usr_is_celiac: $postData["is_celiac"],
-            usr_is_lint: $postData["is_lactose_intolerant"]
+            usr_restrictions: ["is_vegan" => $postData["is_vegan"], "is_celiac" => $postData["is_celiac"], "is_lactose_intolerant" => $postData["is_lactose_intolerant"]]
         )[0];
     }
 

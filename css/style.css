@@ -12,12 +12,14 @@ VARIABLES AND COLORS
     */
     --header-height: 3.5em;
     --content-width: 60em;
-    --content-width-reduced: 20em;
+    --content-width-reduced: 30em;
     --content-padding: 1em;
 	  --border-radius-link: 0.3rem;       
     --border-radius: 2rem;
     --border-thin: 0.2rem;
     --auth-form-width: 30em;
+    --focus-outline-border: 0.2rem;
+
     /*
     ==============
     COLOR  (LIGHT)
@@ -121,9 +123,10 @@ a {
 
 a:hover,
 a:focus {
-	  outline: 0.1rem solid var(--focus-outline-color);
+	  outline: var(--focus-outline-border) solid var(--focus-outline-color);
 	  border-radius: var(--border-radius);
 	  color: var(--link-hover-color);
+    background-color: var(--secondarybgcolor);
 }
 
 a:visited {
@@ -132,7 +135,7 @@ a:visited {
 
 a:visited:hover,
 a:visited:focus {
-/*	color: var(--link-visited-hover-color); */
+    color: var(--link-visited-hover-color); 
 }
 
 
@@ -211,7 +214,9 @@ HEADER
 }
 
 #page-header li a:hover,
-#accountButton:hover {
+#accountButton:hover,
+#accountButton:focus,
+{
 	  background-color: var(--secondarybgcolor);
 }
 
@@ -260,12 +265,22 @@ HEADER
 	  color: var(--txtcolor);
 }
 
+#dropdown-menu-toggle:hover,
+#dropdown-menu-toggle:focus {
+    color: var(--link-hover-color);
+}
+
 #themeToggle {
     color: var(--txtcolor);
     padding: 0;
 	  background: transparent;
 	  border: 0;
 	  cursor: pointer;
+}
+
+#themeToggle:hover,
+#themeToggle:focus {
+    color: var(--link-hover-color);
 }
 
 #themeToggle svg.sun {display: none}
@@ -321,12 +336,12 @@ SEARCH BAR
 #search {
     display: flex;
 	  gap: 0.5em;
-	  width: 60%;
+	  width: 80%;
 	  margin: 1.5em auto;
 }
 
 .home #search {
-	  max-width: var(--content-reduced-width);
+	  max-width: var(--content-width-reduced);
 }
 
 #search .search-utility {
@@ -347,6 +362,7 @@ SEARCH BAR
 }
 
 #search select {
+
     flex: 1 0;
 }
 
@@ -363,7 +379,9 @@ SEARCH BAR
     color: var(--secondarybgcolor);
 }
 
-#search button[type=submit]:hover {
+#search button[type=submit]:hover,
+#search button[type=submit]:focus
+{
     background-color: var(--link-hover-color);
 }
 
@@ -466,60 +484,41 @@ button[type=submit]:focus {
 	  background-color: var(--link-hover-color);
 }
 
-/* Contenitore */
 .checkbox-container {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px; /* Spazio tra checkbox e label */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; 
 }
 
-/* Contenitore della griglia */
 .checkbox-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Griglia dinamica */
-  gap: 15px; /* Spazio tra gli elementi */
-  padding: 10px; /* Margine interno */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px; 
+    padding: 10px; 
 }
 
-
-/* Personalizzazione della checkbox */
 input[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  background-color: #f0f0f0;
-  border: 2px solid #007BFF;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background-color: var(--bg-color);
+    border: 2px solid var(--focus-outline-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 input[type="checkbox"]:checked {
-  background-color: #007BFF;
+  background-color: var(--link-color);
   border-color: #0056b3;
   position: relative;
 }
 
-input[type="checkbox"]:checked::after {
-  content: "✔";
-  color: white;
-  font-size: 16px;
-  position: absolute;
-  top: 2px;
-  left: 6px;
-}
-
-/* Label per le checkbox */
-label {
-  font-size: 14px;
+.checkbox-container label {
   color: #333;
-  font-weight: bold;
   cursor: pointer;
 }
 
-/* Effetto hover */
 input[type="checkbox"]:hover {
   background-color: #e6f7ff;
   border-color: #0056b3;
@@ -552,9 +551,7 @@ CARDS
 }
 
 .card:hover,
-.card:focus-within {
-    /*box-shadow: 0 0 0 2px #16C79A, 0 10px 60px 0 rgba(#000, .1);
-    */
+.card:focus {
     transform: translatey(-0.5em);
 }
 
@@ -593,15 +590,16 @@ CARDS
 	z-index: 1;
 	cursor: pointer;
 	color: #565656;
-	
-	svg {
-		width: 1em;
-		height: 1em;
-	}
-	&:hover, &:focus {
+}
+
+.card button:hover, .card button:focus {
 		background-color: #EC4646;
 		color: #FFF;
-	}
+}
+
+.card svg {
+		width: 1em;
+		height: 1em;
 }
 
 .card-footer {
@@ -617,7 +615,11 @@ CARDS
 	display: flex;
 	align-items: center;
 	color: #787878;
-	&:first-child:after {
+
+
+}
+
+.card-meta:first-child:after {
 		display: block;
 		content: "";
 		width: 4px;
@@ -626,16 +628,37 @@ CARDS
 		background-color: currentcolor;
 		margin-left: .75rem;
 		margin-right: .75rem;
-	}
-	svg {
+}
+
+
+.card-meta svg {
 		flex-shrink: 0;
 		width: 1em;
 		height: 1em;
 		margin-right: .25em;
-	}
 }
 
 
+/*
+==============
+ANCHOR BUTTON
+==============
+*/
+
+.anchor-button {
+	display: flex;
+	align-items: center;
+	background-color: var(--secondarybgcolor);
+	border-radius: var(--border-radius);
+	border: var(--border-thin) solid var(--bgcolor-off);
+	padding: 0.5em;
+	min-height: 3em;
+	margin-top: 0.5em;
+}
+
+.anchor-button span {
+	margin-left: 0.5em;
+}
 /*
 ==============
 COMPONENT END
@@ -752,15 +775,14 @@ SEARCH PAGE
 	grid-template-columns: 3.5em 1fr 3.5em;
 	gap: 0.5em;
 	align-items: center;
-	max-width: var(--content-reduced-width);
 	margin: 1em auto;
 }
 
-.results-navigation .link-button {
+.results-navigation .anchor-button {
 	height: 3em;
 }
 
-.link-button svg {
+.anchor-button svg {
     height: auto;
     width: 3.5em;
 }
@@ -773,7 +795,23 @@ SEARCH PAGE
 	text-align: center;
 }
 
+/*
+==============
+USER PAGE
+==============
+*/
 
+#user-actions {
+	list-style-type: none;
+	padding: 0;
+	margin: 1.5em auto;
+	max-width: var(--content-width-reduced);
+}
+
+#user-actions li:hover,
+#user-actions li:focus-within {
+	transform: scale(1.02);
+}
 /*
 ==============
 PAGES END
