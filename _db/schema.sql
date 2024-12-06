@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS dish_type (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 CREATE TABLE IF NOT EXISTS nutrient (
-    id BIGINT UNSIGNED AUTO_INCREMENT,
+    id varchar(6),
     ntr_name varchar(45) DEFAULT NULL,
     ntr_unit varchar(4) DEFAULT NULL,
     PRIMARY KEY (id)
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS dish_type_recipe (
 
 CREATE TABLE IF NOT EXISTS ingredient_nutrient (
     ingredient BIGINT UNSIGNED,
-    nutrient BIGINT UNSIGNED,
+    nutrient varchar(6),
     amount double NOT NULL,
     PRIMARY KEY (ingredient, nutrient),
     FOREIGN KEY (ingredient) REFERENCES ingredient(id) ON DELETE CASCADE,

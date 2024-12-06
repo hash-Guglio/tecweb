@@ -67,6 +67,14 @@ SEARCH BAR
     width: 100%;
 }
 
+#search {
+    flex-direction: column;
+}
+
+#search > * {
+	min-height: 3em;
+}
+
 /*
 ==============
 CARDS
