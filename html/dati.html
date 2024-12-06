@@ -49,35 +49,23 @@
                 <label for="gender"><span lang="en">Sesso</span></label>
 				        <select id="gender" name="gender">
 					          <!-- gender_start -->
-					          <option value="@@gender@@" @@_select@@>@@gender@@</option>
+					          <option value="@@gender@@" @@gender_select@@>@@gender@@</option>
 					          <!-- gender_end -->
 				        </select>
-<fieldset><legend>Intolleranze</legend>                
-                <div class="checkbox-grid">
-  <div class="checkbox-container">
-    <input type="checkbox" id="option1">
-    <label for="option1">Opzione 1</label>
-  </div>
-  <div class="checkbox-container">
-    <input type="checkbox" id="option2">
-    <label for="option2">Opzione 2</label>
-  </div>
-  <div class="checkbox-container">
-    <input type="checkbox" id="option3">
-    <label for="option3">Opzione 3</label>
-  </div>
-  <div class="checkbox-container">
-    <input type="checkbox" id="option4">
-    <label for="option4">Opzione 4</label>
-  </div>
-  <div class="checkbox-container">
-    <input type="checkbox" id="option5">
-    <label for="option5">Opzione 5</label>
-  </div>
-</div>
-</fieldset>
-			      
+            
             </fieldset>
+            <fieldset>
+                <legend>Intolleranze</legend>                
+                <div class="checkbox-grid">
+                    <!-- allgs_start -->
+                    <div class="checkbox-container">
+                        <input type="checkbox" name="@@allgs_name@@" value="@@allgs_value@@" @@allgs_checked@@>
+                        <label for="@@allgs_name@@">@@allgs@@</label>
+                    </div>
+                    <!-- allgs_end -->
+                </div>
+            </fieldset>
+			      
             <fieldset>
 				        <legend>Cambia la tua <span lang="en">password</span></legend>
 				            

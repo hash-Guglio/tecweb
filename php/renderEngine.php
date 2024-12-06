@@ -5,6 +5,7 @@
 
    class RenderEngine {
         private static $authPages = ['login', 'user'];
+        private const CONVERSION_LEVEL_NONE = -1;
         private const CONVERSION_LEVEL_EDIT = 0;
         private const CONVERSION_LEVEL_STRIP = 1;
         private const CONVERSION_LEVEL_FULL = 2;
@@ -79,6 +80,8 @@
         }
 
         public static function convertToHtml($input, int $conversionLevel = self::CONVERSION_LEVEL_FULL) {
+            if ($conversionLevel === -1) return $input;
+
             if (is_array($input)) {
                 return array_map(function($item) use ($conversionLevel) {
                 return self::processElement($item, null, $conversionLevel);
@@ -90,10 +93,10 @@
         }
 
 
-        public static function replaceAnchor(&$in, $anchor, $content, $comment = false) : void {
+        public static function replaceAnchor(&$in, $anchor, $content, $comment = false, $conversion_level = 2)  : void {
             $from = $comment ? "<!-- $anchor -->" : "@@{$anchor}@@";
             $pos = strpos($in, $from);
-            $content = self::convertToHtml($content, self::CONVERSION_LEVEL_FULL);
+            $content = self::convertToHtml($content, $conversion_level);
             while ($pos !== false) {
                 $in = substr_replace($in, $content, $pos, strlen($from));
                 $pos = strpos($in, $from, $pos + strlen($content));
@@ -184,8 +187,7 @@
                         self::buildMessage($server, "success", "Successo.");
                     elseif (isset($_SESSION["error"]))
                         self::buildMessage($server, "error", "Errore.");
-
-                    self::replaceAnchor($page, "server_msgs", $server, true);
+                    self::replaceAnchor($page, "server_msgs", $server, true, self::CONVERSION_LEVEL_NONE);
                 }
                 
                 if (self::isAuthPage($name)) {

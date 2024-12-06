@@ -21,7 +21,7 @@
         $connection = new Database();
         $username = getUsername($connection, $_SESSION["id"]); 
 
-        $page = RenderEngine::buildPage('user');
+        $page = RenderEngine::buildPage('utente');
 
         RenderEngine::replaceAnchor($page, 'username', $username);
         

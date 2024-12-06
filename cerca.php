@@ -16,7 +16,11 @@
         
         $filterValue = $_GET[$filterName] ?? "";
 
-        $itemsPerPage = 16;
+        if (in_array($filterName, ["pro", "fat", "carbo", "cal"])) {
+            $filterValue = $_GET["order"];
+        }
+        
+        $itemsPerPage = 4;
         
         $currentPage = intval($_GET["page"] ?? 0);
         $offset = $itemsPerPage * $currentPage;
@@ -28,7 +32,9 @@
 
             $filterNames = [
                 "ricette" => ["dish_type", "allgs"],
-                "ingrediente" => ["allgs"]
+                "ingredienti" => ["order"],
+                //da nutriente (asc/disc)
+                //
             ];
 
             foreach ($filterNames[$searchType] as $fName) {
@@ -36,10 +42,27 @@
                 $filters[$fName] = $filterLabel;
             }
 
-            $filters['filter'] = [
-                ['id' => 'dish_type', 'it' => 'Tipo piatto'],
-                ['id' => 'allgs', 'it' => 'Allergeni']
-            ];
+            switch ($searchType) {
+                case "ricette":
+                    $filters['filter'] = [
+                        ['id' => 'dish_type', 'it' => 'Tipo piatto'],
+                        ['id' => 'allgs', 'it' => 'Allergeni']
+                    ];
+                    break;
+                case "ingredienti":
+                    $filters['filter'] = [
+                        ['id' => 'cal', 'it' => 'Calorie'],
+                        ['id' => 'prt', 'it' => 'Proteine'], 
+                        ['id' => 'fat', 'it' => 'Grassi'],
+                        ['id' => 'carbo', 'it' => 'Carboidrati'],
+                    ];
+                    foreach ($filters['filter'] as $filter) {
+                        if ($filter['id'] === $filterName) {
+                            $filterName = $filter['it'];
+                        }
+                     }
+                    break;
+            }
 
             $results = handleSearch($connection, $searchType, $question, $filterName, $filterValue, $itemsPerPage, $offset);    
             unset($connection);
@@ -56,7 +79,7 @@
         
         $page = RenderEngine::buildPage("cerca", "cerca_$searchType");
 
-        foreach (["filter", "dish_type", "allgs"] as $fName) {
+        foreach (array_keys($filters) as $fName) {
             buildFilterSection($page, $fName, $filters, $filterName, $filterValue);
         }    
 
@@ -74,6 +97,8 @@
         switch ($searchType) {
             case "ricette":
                 $mdesc = "Trova la ricetta perfetta per te, filtrando i risultati per tipo o allergene.";
+            case "ingredienti":
+                $mdesc = "Scopri gli ingredienti, le loro proprietà alimentari e i benefici su fioridisapore";
                 break;
         }
 
@@ -85,8 +110,8 @@
         RenderEngine::replaceAnchor($page, "title", $title);
 
 
-        if (!empty($results["recipe"])) {
-            RenderEngine::replaceSectionContent($page, "results", buildResultsSection($page, $results["recipe"], $searchType));
+        if (!empty($results["result"])) {
+            RenderEngine::replaceSectionContent($page, "results", buildResultsSection($page, $results["result"], $searchType));
 	          $navigationLink = "cerca_$searchType.php?question=$question" . (($searchType == "ricette" && $filterName) ? ("&filter=" . $filterName. "&dish_type=" . $filterValue . "&allgs=" . $filterValue) : "");
             buildResultNavbar($page, $results, $currentPage, $itemsPerPage, $navigationLink);
         } else {
@@ -103,9 +128,10 @@
         switch ($searchType) {
             case "ricette":
                 return searchRecipe($connection, $question, $filterName, $filterValue, $liimit_res, $offset);
-        
-        default:
-            return [];    
+            case "ingredienti":
+                return searchIngredient($connection, $question, $filterName, $filterValue, $liimit_res, $offset);
+            default:
+                return [];    
         }
 
     }
@@ -119,15 +145,29 @@
         }
         return $connection->searchRecipe($question, $itemsPerPage, $offset);
     }
+
+    function searchIngredient($connection, $question, $filterName, $filterValue, $itemsPerPage, $offset) {
+    
+        if ($filterName !== '' && $filterValue !== '') {
+            return $connection->searchIngredientByNut($question, $itemsPerPage, $offset, $filterName, strtoupper($filterValue));
+        }
+        return $connection->searchIngredient($question, $itemsPerPage, $offset);    
+    }
     
     function buildFilterSection(&$page, $filterName, $filterItems, $filterNameSelected, $selectedValue) {
+        $prev = $filterName;
+
+        if ($filterName === "asc" || $filterName === "desc") {
+            $filterName = "order";
+        };
 
         $template = RenderEngine::getSectionContent($page, $filterName);
         $result = "";
-        foreach ($filterItems[$filterName] as $item) {
+
+        foreach ($filterItems[$prev] as $item) {
                 $filter = $template;
-                RenderEngine::replaceAnchor($filter, "value", $item["id"]);
-                RenderEngine::replaceAnchor($filter, "name", $item["dt_type"] ?? $item["restriction_type"] ?? $item["it"]);
+                RenderEngine::replaceAnchor($filter, "value", $item["id"] ?? $item);
+                RenderEngine::replaceAnchor($filter, "name", $item["dt_type"] ?? $item["rst_type"] ?? $item["it"] ?? $item["ntr_name"]);
                 RenderEngine::replaceAnchor($filter, "select", ($item["id"] == (($filterName != "filter")?$selectedValue:$filterNameSelected)) ? "selected" : "");
                 $result .= $filter;
         }
@@ -140,9 +180,11 @@
         switch ($searchType) {
             case "ricette":
                 $optionFilterType = ($filterName == "dish_type")?0:1;
-                $optionFilterField = ($filterName == "dish_type")?"dt_type":"restriction_type";
+                $optionFilterField = ($filterName == "dish_type")?"dt_type":"rst_type";
                 $intFilterValue = intval($filterValue) - 1;
                 $res = " filtrate per {$filters[$filterName][$intFilterValue][$optionFilterField]}";     
+                break;
+            case "ingredienti": 
                 break;
             default:
                 break;
@@ -161,8 +203,8 @@
             RenderEngine::replaceAnchor($card, "link", "{$searchType}.php?id={$result['id']}");
             RenderEngine::replaceAnchor($card, "webp", "pics/" . $result["image"] . ".webp");
             RenderEngine::replaceAnchor($card, "image", "pics/" . $result["image"] . ".jpg");
-            RenderEngine::replaceAnchor($card, "time", $result["ready_in"]);
-            RenderEngine::replaceAnchor($card, "servings", $result["servings"]);
+            RenderEngine::replaceAnchor($card, "time", $result["ready_in"] ?? "");
+            RenderEngine::replaceAnchor($card, "servings", $result["servings"] ?? "");
             $cards .= $card;
         }
         

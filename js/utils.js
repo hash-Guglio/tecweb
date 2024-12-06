@@ -13,7 +13,7 @@ const showErrorMessage = (id, message) => {
     element.classList.add('invalid');
     if (element.tagName !== 'DIV') element.setAttribute('aria-invalid', 'true');
     messageTarget.classList.add('error-message');
-    messageTarget.textContent = message;
+    messageTarget.innerHTML= message;
 };
 
 const removeErrorMessage = (id) => {
@@ -23,7 +23,7 @@ const removeErrorMessage = (id) => {
     element.classList.remove('invalid');
     if (element.tagName !== 'DIV') element.setAttribute('aria-invalid', 'false');
     messageTarget.classList.remove('error-message');
-    messageTarget.textContent = '';
+    messageTarget.innerHTML = '';
 };
 
 const toggleMenu = () => {
@@ -72,23 +72,30 @@ const updateFilterVisibility = () => {
     const inputDt = document.getElementById('dt_filter');
     const labelDt = document.getElementById('dt_filter_l');
     const inputAllgs = document.getElementById('allg_filter');
-    const labelAllgs = document.getElementById('allg_filter');
+    const labelAllgs = document.getElementById('allg_filter_l');
+    const inputOrder = document.getElementById('order_filter'); 
+    const labelOrder = document.getElementById('order_filter_l');
 
     inputDt.hidden = true;
     labelDt.hidden = true;
     inputAllgs.hidden = true;
     labelAllgs.hidden = true;
+    inputOrder.hidden = true;
+    labelOrder.hidden = true;
+
     inputAllgs.value = '';
     inputDt.value = '';
-
+    inputOrder.value = '';
 
     if (type === 'dish_type') {
         inputDt.hidden = false;
         labelDt.hidden = false;
-
     } else if (type === 'allgs') {
         inputAllgs.hidden = false;
         labelAllgs.hidden = false; 
+    } else if (type === 'cal' || type === 'prt' || type === 'carbo' || type === 'fat') { 
+        inputOrder.hidden = false;
+        labelOrder.hidden = false; 
     }
 
 };
