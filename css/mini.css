@@ -63,16 +63,16 @@ SEARCH BAR
 ==============
 */
 
-#search {
+#search .search-filter {
     width: 100%;
 }
-
-#search {
+body:not(.home) #search,
+#search .search-filter {
     flex-direction: column;
 }
 
 #search > * {
-	min-height: 3em;
+    min-height: 3em;
 }
 
 /*

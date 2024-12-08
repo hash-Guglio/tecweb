@@ -33,7 +33,7 @@ VARIABLES AND COLORS
 	  --link-visited-color: #685925;      
 	  --link-visited-hover-color: #8E44AD;
 	  --focus-outline-color: #e0e0e0;    
-    
+    --error-required: #C20000;
     --error: #A24C46;
 }
 
@@ -327,6 +327,7 @@ SERVER MESSAGES
     padding: 0.5em;
 }
 
+
 /*
 ==============
 SEARCH BAR
@@ -344,17 +345,18 @@ SEARCH BAR
 	  max-width: var(--content-width-reduced);
 }
 
-#search .search-utility {
+#search .search_filter {
 	  flex-grow: 1;
 	  display: flex;
 	  overflow: hidden;
+    border-radius: var(--border-radius);
 }
 
 #search input,
 #search select {
     padding: 0.5em;
-    border-radius: var(--border-radius);
-    border: var(--border-thin);
+    border-radius: 0;
+	  border: 0;
 }
 
 #search input {
@@ -362,8 +364,12 @@ SEARCH BAR
 }
 
 #search select {
-
     flex: 1 0;
+    border-left: var(--border-thin) solid var(--bgcolor);;
+}
+
+.search-utility {
+    border-radius: var(--border-radius);
 }
 
 #search button[type=submit] {
@@ -465,6 +471,13 @@ input, textarea, button, select {
 form .required {
 	  margin-left: 0.5ch;
 	  color: var(--error);
+}
+
+form div.invalid,
+form input.invalid,
+form textarea.invalid {
+    outline: 0.15rem solid var(--error-required);
+    border-radius: var(--border-radius);
 }
 
 form > fieldset {
@@ -812,6 +825,55 @@ USER PAGE
 #user-actions li:focus-within {
 	transform: scale(1.02);
 }
+
+#manage_user {
+    margin: auto;
+    width: 60%;
+}
+
+#manage_user fieldset {
+    border: var(--border-thin) solid; 
+    border-color: var(--focus-outline-color);
+    border-radius: var(--border-radius);
+}
+
+#manage_user legend {
+    margin: auto;
+    text-transform: uppercase;
+}
+
+
+/*
+==============
+ERROR PAGE
+==============
+*/
+
+.error-page {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+}
+
+.error-page .error-code {
+	  font-size: 5em;
+	  font-weight: 800;
+}
+
+.error-page h2 {
+    text-align: center;
+}
+
+.error-page p {
+    text-align: center;
+	  max-width: var(--content-width-reduced);
+}
+
+#thing {
+    width: 30em;
+    height: auto;
+}
+
 /*
 ==============
 PAGES END
