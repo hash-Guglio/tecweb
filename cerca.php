@@ -26,11 +26,9 @@ function main($searchType) {
         $connection = new Database();
         $filters = buildFilters($connection, $searchType);
         $results = handleSearch($connection, $searchType, $question, $filterName, $filterValue, $itemsPerPage, $offset);
-        //var_dump($results);
         unset($connection);
     } catch (Exception $e) {
-        echo $e;
-        //RenderEngine::errorCode(500);
+        renderEngine::errorCode(500);
         exit();
     }
 
