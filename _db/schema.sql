@@ -13,10 +13,10 @@ DROP TABLE IF EXISTS recipe_restriction;
 DROP TABLE IF EXISTS ingredient_nutrient;
 
 CREATE TABLE IF NOT EXISTS user (
-    id BIGINT UNSIGNED,
+    id BIGINT UNSIGNED AUTO_INCREMENT,
     usr_name varchar(45) UNIQUE NOT NULL,
-    usr_mail varchar(100) UNIQUE,
-    usr_first_name varchar(45) NOT NULL,
+    usr_mail varchar(100) UNIQUE DEFAULT NULL,
+    usr_first_name varchar(45) DEFAULT NULL,
     usr_gender ENUM('maschio', 'femmina', 'altro') DEFAULT 'altro',
     usr_birth_date date,
     usr_password varchar(255) NOT NULL,

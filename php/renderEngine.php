@@ -4,7 +4,7 @@
     session_start();
 
    class RenderEngine {
-        private static $authPages = ['login', 'user'];
+        private static $authPages = ['login', 'signup', 'user'];
         private const CONVERSION_LEVEL_NONE = -1;
         private const CONVERSION_LEVEL_EDIT = 0;
         private const CONVERSION_LEVEL_STRIP = 1;
@@ -154,7 +154,7 @@
         private static function buildMessage(&$in, $name, $intro): void {
 
             self::replaceAnchor($in, "server_msg_intro", $intro);
-            self::replaceAnchor($in, "msg_type", $name);
+            self::replaceAnchor($in, "smsg_type", $name);
             
             $template = self::getSectionContent($in, "server_msg");
             $res = "";

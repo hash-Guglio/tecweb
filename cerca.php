@@ -161,7 +161,7 @@ function main($searchType) {
 
         $breadcrumb = ucfirst($searchType);
 
-        $header = buildHeaderFilter($page, $question, $searchType, $filters, $filterName, $filterValue);
+        $header = buildHeader($page, $question, $searchType, $filters, $filterName, $filterValue);
         $title = (($question != "") ? '"' . $question . '" | ' : "") . "Cerca {$searchType} $header";
 
         RenderEngine::replaceAnchor($page, "searchtype_kw", $question ? ", $question," : ",");
@@ -198,7 +198,7 @@ function main($searchType) {
         foreach ($filterOptions[$originalKey] as $key => $option) {
             $filterItem = $template;
             RenderEngine::replaceAnchor($filterItem, 'value', $key);
-            RenderEngine::replaceAnchor($filterItem, 'name', $option["dt_type"] ?? $option["rst_type"] ?? $option["it"] ?? $option);
+            RenderEngine::replaceAnchor($filterItem, 'name', ucfirst( $option["dt_type"] ?? $option["rst_type"] ?? $option["it"] ?? $option));
             RenderEngine::replaceAnchor(
             $filterItem,
                 'select',
@@ -210,7 +210,7 @@ function main($searchType) {
         RenderEngine::replaceSectionContent($page, $filterKey, $filterHtml);
     }
 
-    function buildHeaderFilter(string &$page, string $query, string $searchType, array $filters, string $filterName, string $filterValue): string {
+    function buildHeader(string &$page, string $query, string $searchType, array $filters, string $filterName, string $filterValue): string {
         $headerText = '';
 
         if (empty($filterName) || empty($filterValue)) return '';
@@ -231,7 +231,7 @@ function main($searchType) {
         return $headerText;
     }
 
-    function buildResultsSection(string &$page, array $results, string $searchType): string {
+    function buildResultsSection(string $page, array $results, string $searchType): string {
         $cardsHtml = '';
         $resultsSection = RenderEngine::getSectionContent($page, 'results');
         $cardTemplate = RenderEngine::getSectionContent($page, 'card');
@@ -240,14 +240,17 @@ function main($searchType) {
             $cardHtml = $cardTemplate;
             RenderEngine::replaceAnchor($cardHtml, 'name', $result['name']);
             RenderEngine::replaceAnchor($cardHtml, 'link', "{$searchType}.php?id={$result['id']}");
-            RenderEngine::replaceAnchor($cardHtml, 'webp', "pics/" . ($result['image'] ?? 'default') . ".webp");
-            RenderEngine::replaceAnchor($cardHtml, 'image', "pics/" . ($result['image'] ?? 'default') . ".jpg");
+            RenderEngine::replaceAnchor($cardHtml, 'webp', "pics/" . ($result['image'] ?? 'placeholder') . ".webp");
+            RenderEngine::replaceAnchor($cardHtml, 'image', "pics/" . ($result['image'] ?? 'placeholder') . ".jpg");
             RenderEngine::replaceAnchor($cardHtml, 'time', $result['ready_in'] ?? '');
             RenderEngine::replaceAnchor($cardHtml, 'servings', $result['servings'] ?? '');
-
+            if ($searchType === "ingredienti") {
+                RenderEngine::replaceSectionContent($cardHtml, 'recipe_value', '');
+                RenderEngine::replaceSectionContent($cardHtml, 'recipe_like', '');
+            }
             $cardsHtml .= $cardHtml;
         }
-
+        
         RenderEngine::replaceSectionContent($resultsSection, 'card', $cardsHtml);
 
         return $resultsSection;

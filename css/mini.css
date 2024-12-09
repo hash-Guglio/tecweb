@@ -63,18 +63,25 @@ SEARCH BAR
 ==============
 */
 
-#search .search-filter {
-    width: 100%;
-}
-body:not(.home) #search,
-#search .search-filter {
-    flex-direction: column;
-}
-
 #search > * {
     min-height: 3em;
 }
 
+#search .search_filter > * {
+    border-radius: var(--border-radius);
+    min-height: 3em;
+}
+
+body:not(.home) #search, 
+#search .search_filter {
+    flex-direction: column;
+    gap: 0.5em;
+    border-radius: 0;
+}
+
+#search select {
+	border-left: 0;
+}
 /*
 ==============
 CARDS
@@ -88,9 +95,20 @@ CARDS
 
 /*
 ==============
+USER PAGE
+==============
+*/
+
+#manage_user {
+    width: 90%;
+}
+
+/*
+==============
 ERROR PAGE
 ==============
 */
+
 
 #thing {
     width: 25em;
