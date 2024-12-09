@@ -582,7 +582,7 @@ CARDS
 .card.ingredienti picture, 
 .card.ingredienti img {
     display: block;
-	  max-height: 10em;
+	  max-height: 8em;
 	  width: auto;
 	  object-fit: cover;
 }
@@ -627,6 +627,11 @@ CARDS
 		text-decoration: underline; 
 }
 
+.card.ingredienti div.container_card {
+
+    width: 100%
+}
+
 .card button {
 	border: 0;
 	background-color: #fff;
@@ -660,8 +665,6 @@ CARDS
 
 
 .card-footer {
-	margin-top: 1.25rem;
-	border-top: 1px solid #ddd;
 	padding-top: 1.25rem;
 	display: flex;
 	align-items: center;
@@ -672,11 +675,13 @@ CARDS
 	display: flex;
 	align-items: center;
 	color: #787878;
-
-
 }
 
-.card-meta:first-child:after {
+.card.ingredienti div.card-meta {
+    margin-left: 1.5em;
+}
+
+.card-meta:first-child:not(:only-child):after {
 		display: block;
 		content: "";
 		width: 4px;
@@ -686,7 +691,6 @@ CARDS
 		margin-left: .75rem;
 		margin-right: .75rem;
 }
-
 
 .card-meta svg {
 		flex-shrink: 0;
@@ -707,7 +711,6 @@ ANCHOR BUTTON
 	align-items: center;
 	background-color: var(--secondarybgcolor);
 	border-radius: var(--border-radius);
-	border: var(--border-thin) solid var(--bgcolor-off);
 	padding: 0.5em;
 	min-height: 3em;
 	margin-top: 0.5em;
@@ -716,6 +719,12 @@ ANCHOR BUTTON
 .anchor-button span {
 	margin-left: 0.5em;
 }
+
+.anchor-button svg {
+    height: auto;
+    width: 3em;
+}
+
 /*
 ==============
 COMPONENT END
@@ -830,20 +839,20 @@ SEARCH PAGE
 */
 
 .results-navigation {
-	display: grid;
-	grid-template-columns: 3.5em 1fr 3.5em;
-	gap: 0.5em;
-	align-items: center;
-	margin: 1em auto;
+	  display: grid;
+	  grid-template-columns: 3.5em 1fr 3.5em;
+	  gap: 0.5em;
+	  align-items: center;
+    margin: 1em auto;
+    width: 50%;
 }
 
 .results-navigation .anchor-button {
-	height: 3em;
+    height: 3em;
 }
 
-.anchor-button svg {
-    height: auto;
-    width: 3.5em;
+.res-prev, .res-next {
+    background-color: transparent;
 }
 
 .results-navigation .res-prev { grid-area: 1 / 1; }
@@ -888,7 +897,7 @@ USER PAGE
     text-transform: uppercase;
 }
 
-#manage_user input {
+#manage_user input:not([type="checkbox"]), #manage_user select {
     margin-bottom: 1em;
 }
 /*

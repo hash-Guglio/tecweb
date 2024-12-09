@@ -116,3 +116,23 @@ VALUES
     (10, 'fat', 11),   -- Uova, Grassi
     (10, 'carbo', 1.1);-- Uova, Carboidrati
 
+INSERT INTO category (cat_name) VALUES
+    ('Carne'),
+    ('Pesce'),
+    ('Verdura'),
+    ('Cereali'),
+    ('Latticini'),
+    ('Frutta secca'),
+    ('Uova');
+
+INSERT INTO ingredient_category (ingredient, category) VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 3),
+    (5, 4),
+    (6, 5),
+    (7, 3),
+    (8, 4),
+    (9, 6),
+    (10, 7);

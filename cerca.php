@@ -243,9 +243,14 @@ function main($searchType) {
             RenderEngine::replaceAnchor($cardHtml, 'webp', "pics/" . ($result['image'] ?? 'placeholder') . ".webp");
             RenderEngine::replaceAnchor($cardHtml, 'image', "pics/" . ($result['image'] ?? 'placeholder') . ".jpg");
             RenderEngine::replaceAnchor($cardHtml, 'time', $result['ready_in'] ?? '');
+            RenderEngine::replaceAnchor($cardHtml, 'category', $result['category'] ?? '');
             RenderEngine::replaceAnchor($cardHtml, 'servings', $result['servings'] ?? '');
-            if ($searchType === "ingredienti") {
-                RenderEngine::replaceSectionContent($cardHtml, 'recipe_value', '');
+
+            if ($searchType === "ricette") {
+                RenderEngine::replaceSectionContent($cardHtml, "ingredient_value", '');
+            }
+            if ($searchType === "ingredienti") {    
+                RenderEngine::replaceSectionContent($cardHtml, "recipe_value", '');
                 RenderEngine::replaceSectionContent($cardHtml, 'recipe_like', '');
             }
             $cardsHtml .= $cardHtml;

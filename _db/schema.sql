@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS nutrient;
 DROP TABLE IF EXISTS user_restriction;
 DROP TABLE IF EXISTS recipe_restriction;
 DROP TABLE IF EXISTS ingredient_nutrient;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS ingredient_category;
 
 CREATE TABLE IF NOT EXISTS user (
     id BIGINT UNSIGNED AUTO_INCREMENT,
@@ -95,4 +97,19 @@ CREATE TABLE IF NOT EXISTS recipe_restriction (
     PRIMARY KEY (recipe, restriction),
     FOREIGN KEY (recipe) REFERENCES recipe(id) ON DELETE CASCADE,
     FOREIGN KEY (restriction) REFERENCES restriction(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE IF NOT EXISTS category (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    cat_name VARCHAR(45) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (cat_name)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE IF NOT EXISTS ingredient_category (
+    ingredient BIGINT UNSIGNED,
+    category BIGINT UNSIGNED,
+    PRIMARY KEY (ingredient, category),
+    FOREIGN KEY (ingredient) REFERENCES ingredient(id) ON DELETE CASCADE,
+    FOREIGN KEY (category) REFERENCES category(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
