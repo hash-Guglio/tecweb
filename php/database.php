@@ -211,6 +211,14 @@
             };
             return [];
         }
+
+        public function signupUser($username, $password) : array {
+            $query = "INSERT into user(usr_name, usr_password) VALUES (?, ?)";
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $params = [$username, $password];
+
+            return [$this->executeUpdateQuery($query, $params), $this->connection->insert_id];
+        }
  
         public function getUsernameByUserId($id): array {
             $query = "SELECT usr_name FROM user  WHERE id = ?";
