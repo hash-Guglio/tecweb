@@ -80,8 +80,9 @@ body:not(.home) #search,
 }
 
 #search select {
-	border-left: 0;
+    border-left: 0;
 }
+
 /*
 ==============
 CARDS
@@ -93,6 +94,14 @@ CARDS
 }
 
 
+/*
+==============
+RESULTS
+==============
+*/
+.results-navigation {
+    width: 100%
+}
 /*
 ==============
 USER PAGE

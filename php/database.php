@@ -415,11 +415,10 @@
         // ==========================
 
         public function searchIngredient($str, $limit, $offest) : array {            
-            $base = "FROM ingredient WHERE igr_name LIKE ? ORDER BY igr_name";
-
+            $base = "FROM ingredient JOIN ingredient_category AS ic ON ingredient.id = ic.ingredient JOIN category AS c ON c.id = ic.category WHERE igr_name LIKE ? ORDER BY igr_name";
             $res = [];
 
-            $query = "SELECT id, igr_name AS name, igr_image AS image " . $base . " LIMIT ? OFFSET ?";
+            $query = "SELECT ingredient.id, igr_name AS name, igr_image AS image, cat_name AS category " . $base . " LIMIT ? OFFSET ?";
 
             $params = ["%". trim($str) . "%", $limit, $offest]; 
             $types = "sii";
@@ -435,10 +434,11 @@
         }
 
         public function searchIngredientByNut($str, $limit, $offset, $nutrient, $order) : array {
-            $base = "FROM ingredient JOIN ingredient_nutrient ON ingredient.id = ingredient_nutrient.ingredient JOIN nutrient n ON n.id = ingredient_nutrient.nutrient WHERE ingredient.igr_name LIKE ? AND n.id = ? ORDER BY ingredient_nutrient.amount {$order}";
+            $base = "FROM ingredient JOIN ingredient_nutrient ON ingredient.id = ingredient_nutrient.ingredient JOIN nutrient n ON n.id = ingredient_nutrient.nutrient 
+                JOIN ingredient_category AS ic ON ingredient.id = ic.ingredient JOIN category AS c ON c.id = ic.category WHERE ingredient.igr_name LIKE ? AND n.id = ? ORDER BY ingredient_nutrient.amount {$order}";
             $res = [];
             
-            $query = "SELECT ingredient.id, igr_name AS name, igr_image AS image " . $base . " LIMIT ? OFFSET ?";    
+            $query = "SELECT ingredient.id, igr_name AS name, igr_image AS image, cat_name AS category " . $base . " LIMIT ? OFFSET ?";    
 
             $params = ["%". trim($str) . "%", $nutrient, $limit, $offset];
 

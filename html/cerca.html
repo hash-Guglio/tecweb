@@ -71,13 +71,13 @@
         <ul class="cards">
 	      <!-- card_start -->
             
-
             <li class="card @@search_type@@">
             <a href="@@link@@">
                 <picture>
 		                <source srcset="@@webp@@" type="image/webp" />
 		                <img src="@@image@@" alt=""/>
                 </picture>
+                <div class="container_card">
 	              <div class="card-header">
                     <h2 class="title">@@name@@</h2>
                     <!-- recipe_like_start -->
@@ -88,14 +88,16 @@
 		                </button>
                     <!-- recipe_like_end -->
 	              </div>
-                <!-- recipe_value_start -->
+
 	              <div class="card-footer">
+                    
+                    <!-- recipe_value_start -->
 		                <div class="card-meta">
                         <svg fill="currentcolor" height="22" width="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 455 455">
                             <path d="M332.229,90.04l14.238-27.159l-26.57-13.93L305.67,76.087c-19.618-8.465-40.875-13.849-63.17-15.523V30h48.269V0H164.231v30 H212.5v30.563c-22.295,1.674-43.553,7.059-63.171,15.523L135.103,48.95l-26.57,13.93l14.239,27.16 C67.055,124.958,30,186.897,30,257.5C30,366.576,118.424,455,227.5,455S425,366.576,425,257.5 C425,186.896,387.944,124.958,332.229,90.04z M355,272.5H212.5V130h30v112.5H355V272.5z"/>
                         </svg>
-                        @@time@@<abbr title="minuti">min</abbr>
+                        <span class="sr-a11y-only">Pronto in: </span>@@time@@<abbr title="minuti">min</abbr>
 		                </div>
 		                <div class="card-meta">
                         <svg fill="currentcolor" height="22" width="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 430 430" xml:space="preserve">
@@ -105,8 +107,18 @@
                         </svg>
                         @@servings@@ porzioni
 		                </div>
+                    <!-- recipe_value_end -->
+
+                    <!-- ingredient_value_start -->
+                    <div class="card-meta">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6 2C3.79086 2 2 3.79086 2 6V7C2 9.20914 3.79086 11 6 11H7C9.20914 11 11 9.20914 11 7V6C11 3.79086 9.20914 2 7 2H6ZM17 2C14.7909 2 13 3.79086 13 6V7C13 9.20914 14.7909 11 17 11H18C20.2091 11 22 9.20914 22 7V6C22 3.79086 20.2091 2 18 2H17ZM6 13C3.79086 13 2 14.7909 2 17V18C2 20.2091 3.79086 22 6 22H7C9.20914 22 11 20.2091 11 18V17C11 14.7909 9.20914 13 7 13H6ZM17 13C14.7909 13 13 14.7909 13 17V18C13 20.2091 14.7909 22 17 22H18C20.2091 22 22 20.2091 22 18V17C22 14.7909 20.2091 13 18 13H17Z" fill="currentcolor"/>
+</svg>
+                        <span class="sr-a11y-only">Categoria: </span>@@category@@
+                    </div>
+                    <!-- ingredient_value_end -->
 	              </div>
-                <!-- recipe_value_end -->
+                </div>
             </a>
             </li>
             
