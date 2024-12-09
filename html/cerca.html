@@ -71,31 +71,33 @@
         <ul class="cards">
 	      <!-- card_start -->
             
+
+            <li class="card @@search_type@@">
             <a href="@@link@@">
-            <li class="card">
-                </picture>   
-                    <!-- webp_start -->
+                <picture>
 		                <source srcset="@@webp@@" type="image/webp" />
-		                <!-- webp_end -->
 		                <img src="@@image@@" alt=""/>
                 </picture>
 	              <div class="card-header">
                     <h2 class="title">@@name@@</h2>
+                    <!-- recipe_like_start -->
                     <button>
 			                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" display="block" id="Heart">
 				                    <path d="M7 3C4.239 3 2 5.216 2 7.95c0 2.207.875 7.445 9.488 12.74a.985.985 0 0 0 1.024 0C21.125 15.395 22 10.157 22 7.95 22 5.216 19.761 3 17 3s-5 3-5 3-2.239-3-5-3z" />
 			                  </svg>
 		                </button>
+                    <!-- recipe_like_end -->
 	              </div>
+                <!-- recipe_value_start -->
 	              <div class="card-footer">
-		                <div class="card-meta card-meta--views">
+		                <div class="card-meta">
                         <svg fill="currentcolor" height="22" width="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 455 455">
                             <path d="M332.229,90.04l14.238-27.159l-26.57-13.93L305.67,76.087c-19.618-8.465-40.875-13.849-63.17-15.523V30h48.269V0H164.231v30 H212.5v30.563c-22.295,1.674-43.553,7.059-63.171,15.523L135.103,48.95l-26.57,13.93l14.239,27.16 C67.055,124.958,30,186.897,30,257.5C30,366.576,118.424,455,227.5,455S425,366.576,425,257.5 C425,186.896,387.944,124.958,332.229,90.04z M355,272.5H212.5V130h30v112.5H355V272.5z"/>
                         </svg>
                         @@time@@<abbr title="minuti">min</abbr>
 		                </div>
-		                <div class="card-meta card-meta--date">
+		                <div class="card-meta">
                         <svg fill="currentcolor" height="22" width="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 430 430" xml:space="preserve">
                             <path d="M214.246,380.67c91.955,0,166.5-74.546,166.5-166.501c0-91.956-74.545-166.5-166.5-166.5v172.019h-166.4 C50.76,309.087,124.137,380.67,214.246,380.67z"/>
                             <path d="M187.246,189.929V17.91c-91.957,0-166.5,74.544-166.5,166.5c0,1.848,0.041,3.685,0.1,5.519H187.246z"/>
@@ -104,11 +106,14 @@
                         @@servings@@ porzioni
 		                </div>
 	              </div>
-            </li>
+                <!-- recipe_value_end -->
             </a>
+            </li>
+            
             <!-- card_end -->
         </ul>
         <!-- results_end -->
+        
         <!-- navigation_bottom_start -->
 		    <nav id="results_nav" class="results-navigation" aria-label="Naviga tra i risultati di ricerca">
 			      <p class="message-res" aria-hidden="true">@@message_result_bottom@@</p>

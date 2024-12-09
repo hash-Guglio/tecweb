@@ -15,7 +15,7 @@ VARIABLES AND COLORS
     --content-width-reduced: 30em;
     --content-padding: 1em;
 	  --border-radius-link: 0.3rem;       
-    --border-radius: 2rem;
+    --border-radius: 1rem;
     --border-thin: 0.2rem;
     --auth-form-width: 30em;
     --focus-outline-border: 0.2rem;
@@ -34,7 +34,9 @@ VARIABLES AND COLORS
 	  --link-visited-hover-color: #8E44AD;
 	  --focus-outline-color: #e0e0e0;    
     --error-required: #C20000;
-    --error: #A24C46;
+    --error-required-bg: #C200002e;
+    --success-color: #007400;
+	  --success-color-bg: #0074002e;
 }
 
 /*
@@ -169,10 +171,6 @@ SCREEN READER / KEYBOARD USERS
 	  clip: auto;
 	  padding: 0.5em;
 }
-
-.sr-a11y-only {
-
-} 
 
 
 /*
@@ -327,6 +325,15 @@ SERVER MESSAGES
     padding: 0.5em;
 }
 
+#server-msg.success {
+	border-color: var(--success-color);
+	background-color: var(--success-color-bg);
+}
+
+#server-msg.error {
+	border-color: var(--error-required);
+	background-color: var(--error-required-bg);
+}
 
 /*
 ==============
@@ -470,7 +477,7 @@ input, textarea, button, select {
 
 form .required {
 	  margin-left: 0.5ch;
-	  color: var(--error);
+	  color: var(--error-required);
 }
 
 form div.invalid,
@@ -537,6 +544,9 @@ input[type="checkbox"]:hover {
   border-color: #0056b3;
 }
 
+.error-message {
+    margin-bottom: 1em;
+}
 
 /*
 ==============
@@ -555,32 +565,61 @@ CARDS
 }
 
 .card {
-	background-color: var(--secondarybgcolor);
-	border-radius: var(--border-radius);
-	overflow: hidden;
-	padding: 1.25rem;
-	position: relative;
-	transition: .15s ease-in;
+	  background-color: var(--secondarybgcolor);
+	  border-radius: var(--border-radius);
+	  overflow: hidden;
+	  padding: 1.25rem;
+	  position: relative;
+	  transition: .15s ease-in;
 }
 
-.card:hover,
-.card:focus {
+.card.ricette picture,
+.card.ricette img { 
+	  max-width: 100%;
+    border-radius: var(--border-radius);
+}
+
+.card.ingredienti picture, 
+.card.ingredienti img {
+    display: block;
+	  max-height: 10em;
+	  width: auto;
+	  object-fit: cover;
+}
+
+.card.ingredienti > a {
+	  display: flex;
+	  flex-direction: row;
+	
+}
+
+.card a:hover,
+.card a:focus {
+    outline: none;
+}
+
+.card:hover, 
+.card:focus-within {
+    outline: solid var(--focus-outline-color) var(--border-thin);
     transform: translatey(-0.5em);
 }
 
-.card img {
-    max-width: 100%;
-	  border-radius: var(--border-radius);
+.card a {
+    text-decoration: none;
 }
 
-.card-header {
-	margin-top: 1.5rem;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+.card.ricette div.card-header {
+    margin-top: 1.5rem;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
 }
 
-.card-header a {
+.card.ingredienti div.card-header {
+    margin-left: 1.5rem;
+}
+
+.card-header .title {
 		font-weight: 600;
 		font-size: 1.375rem;
 		line-height: 1.25;
@@ -614,6 +653,11 @@ CARDS
 		width: 1em;
 		height: 1em;
 }
+
+.card .details > *:not(.title) {
+	color: var(--txtcolor);
+}
+
 
 .card-footer {
 	margin-top: 1.25rem;
@@ -763,16 +807,18 @@ LOGIN
 	  text-align: center;
 }
 
-#authForm {
+#authForm, #signupForm {
     margin-top: 1.5em;
 	  text-align: left;
 }
 
-#authForm > fieldset {
+#authForm > fieldset, 
+#signupForm > fieldset {
     border-color: transparent;
 }
 
-#authForm > fieldset input {
+#authForm > fieldset input, 
+#signupForm > fieldset input {
 	  margin-bottom: 1em;
 }
 
@@ -842,7 +888,9 @@ USER PAGE
     text-transform: uppercase;
 }
 
-
+#manage_user input {
+    margin-bottom: 1em;
+}
 /*
 ==============
 ERROR PAGE
@@ -873,6 +921,13 @@ ERROR PAGE
     width: 30em;
     height: auto;
 }
+
+
+
+
+
+
+
 
 /*
 ==============
