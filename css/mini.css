@@ -93,15 +93,16 @@ CARDS
     grid-template-columns: 1fr;
 }
 
-
 /*
 ==============
 RESULTS
 ==============
 */
+
 .results-navigation {
     width: 100%
 }
+
 /*
 ==============
 USER PAGE
@@ -109,9 +110,16 @@ USER PAGE
 */
 
 #manage_user {
-    width: 90%;
+    width: 100%;
 }
 
+body#auth ul#server-msg {
+    width: 100%;
+}
+
+body#user-data ul#server-msg {
+     width: 100%;
+}
 /*
 ==============
 ERROR PAGE
