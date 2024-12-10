@@ -77,24 +77,31 @@ const updateFilterVisibility = () => {
     const inputOrder = document.getElementById('order_filter'); 
     const labelOrder = document.getElementById('order_filter_l');
 
-    inputDt.hidden = true;
-    labelDt.hidden = true;
-    inputAllgs.hidden = true;
-    labelAllgs.hidden = true;
-    inputOrder.hidden = true;
-    labelOrder.hidden = true;
+    if (inputDt && labelDt) {
+        inputDt.hidden = true;
+        labelDt.hidden = true;
+        inputDt.value = '';
+    };
 
-    inputAllgs.value = '';
-    inputDt.value = '';
-    inputOrder.value = '';
+    if (inputAllgs && labelAllgs) {
+        inputAllgs.hidden = true;
+        labelAllgs.hidden = true;
+        inputAllgs.value = '';
+    };
 
-    if (type === 'dish_type') {
+    if (inputOrder && labelOrder) {
+        inputOrder.hidden = true;
+        labelOrder.hidden = true;
+        inputOrder.value = '';
+    }
+
+    if (type && type === 'dish_type') {
         inputDt.hidden = false;
         labelDt.hidden = false;
-    } else if (type === 'allgs') {
+    } else if (type && type === 'allgs') {
         inputAllgs.hidden = false;
         labelAllgs.hidden = false; 
-    } else if (type === 'cal' || type === 'prt' || type === 'carbo' || type === 'fat') { 
+    } else if (type && type === 'cal' || type && type === 'prt' || type && type === 'carbo' || type && type === 'fat') { 
         inputOrder.hidden = false;
         labelOrder.hidden = false; 
     }
