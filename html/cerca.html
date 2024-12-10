@@ -30,7 +30,7 @@
 					      <option value="@@value@@" @@select@@>@@name@@</option>
 					      <!-- filter_end -->
             </select>
-            
+            <!-- recipe_filter_start --> 
             <label id="dt_filter_l" class="sr-a11y-only" hidden>Tipo Piatto</label>
 				    <select id="dt_filter" name="dish_type" hidden>
 					      <option value="">Nessun tipo piatto</option>
@@ -45,7 +45,8 @@
 					      <option value="@@value@@" @@select@@>@@name@@</option>
 					      <!-- allgs_end -->
 				    </select>
-            
+            <!-- recipe_filter_end -->
+            <!-- ingredient_filter_start -->
             <label id="order_filter_l" class="sr-a11y-only" hidden>Tipo di Ordine</label>
 				    <select id="order_filter" name="order" hidden>
 					      <option value="">Nessun ordine</option>
@@ -53,7 +54,7 @@
 					      <option value="@@value@@" @@select@@>@@name@@</option>
 					      <!-- order_end --> 
 				    </select>
-
+            <!-- ingredient_filter_end -->
             </div>
             <button type="submit">
                     <span>Cerca</span>
@@ -62,7 +63,7 @@
         </form>
 
        
-        <nav id="result" class="nav-result" aira-label="Indicazione numero di pagina">
+        <nav id="result" class="nav-result" aria-label="Indicazione numero di pagina">
             <p role="status" class="message-res">@@message_result@@</p>
         </nav>
 

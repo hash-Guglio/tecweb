@@ -169,7 +169,20 @@ function main($searchType) {
         RenderEngine::replaceAnchor($page, "search_type", $searchType);
         RenderEngine::replaceAnchor($page, "search_value", $question);
         RenderEngine::replaceAnchor($page, "title", $title);
-
+        
+        switch ($searchType) {
+            case "ricette":
+                $section = RenderEngine::getSectionContent($page, "recipe_filter");
+                RenderEngine::replaceSectionContent($page, "recipe_filter", $section);
+                RenderEngine::replaceSectionContent($page, "ingredient_filter", '');
+                break;
+            case "ingredienti":
+                $section = RenderEngine::getSectionContent($page, "ingredient_filter");
+                RenderEngine::replaceSectionContent($page, "ingredient_filter", $section);
+                RenderEngine::replaceSectionContent($page, "recipe_filter", '');
+                break;
+        }
+        
         if (!empty($results["result"])) {
             RenderEngine::replaceSectionContent($page, "results", buildResultsSection($page, $results["result"], $searchType));
             $navigationLink = buildNavigationLink($searchType, $question, $filterName, $filterValue);
