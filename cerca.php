@@ -87,7 +87,6 @@ function main($searchType) {
         }
     }
 
-
     function searchRecipes($connection, $question, $filterName, $filterValue, $itemsPerPage, $offset) {
         if ($filterName === "dish_type") { 
             return $connection->searchRecipeByType($question, $itemsPerPage, $offset, intval($filterValue) + 1);
@@ -246,12 +245,13 @@ function main($searchType) {
             RenderEngine::replaceAnchor($cardHtml, 'category', $result['category'] ?? '');
             RenderEngine::replaceAnchor($cardHtml, 'servings', $result['servings'] ?? '');
 
+            RenderEngine::replaceSectionContent($cardHtml, 'recipe_like', '');
+
             if ($searchType === "ricette") {
                 RenderEngine::replaceSectionContent($cardHtml, "ingredient_value", '');
             }
             if ($searchType === "ingredienti") {    
                 RenderEngine::replaceSectionContent($cardHtml, "recipe_value", '');
-                RenderEngine::replaceSectionContent($cardHtml, 'recipe_like', '');
             }
             $cardsHtml .= $cardHtml;
         }

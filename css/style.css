@@ -181,6 +181,28 @@ COMPONENT START
 
 /*
 ==============
+BACK TO TOP
+==============
+*/
+
+#back-to-top {
+	  width: 4em;
+	  height: 4em;
+    border-radius: 100%;
+    background-color: var(--link-color);
+    position: fixed;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+}
+
+#back-to-top.show {
+    opacity: 1;
+}
+
+/*
+==============
 HEADER
 ==============
 */
@@ -314,11 +336,15 @@ SERVER MESSAGES
 */
 
 #server-msg {
-    margin: 1em 0;
+    margin: 1em auto;
 	  padding: 0;
 	  border: 0.2em solid;
 	  border-radius: var(--border-radius);
 	  list-style-type: none;
+}
+
+body#user-data  ul#server-msg{
+    width: var(--content-width-reduced);
 }
 
 #server-msg li {
@@ -518,30 +544,27 @@ button[type=submit]:focus {
 }
 
 input[type="checkbox"] {
-    appearance: none;
+    /*appearance: none;*/
     width: 24px;
     height: 24px;
     background-color: var(--bg-color);
     border: 2px solid var(--focus-outline-color);
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    accent-color: var(--link-color);
+    /*transition: all 0.3s ease;*/
 }
 
-input[type="checkbox"]:checked {
-  background-color: var(--link-color);
-  border-color: #0056b3;
-  position: relative;
-}
 
 .checkbox-container label {
-  color: #333;
+  color: var(--txtcolor);;
   cursor: pointer;
 }
 
-input[type="checkbox"]:hover {
-  background-color: #e6f7ff;
-  border-color: #0056b3;
+input[type="checkbox"]:hover,
+input[type="checkbox"]:focus,
+{
+    accent-color: var(--link-hover-color);
 }
 
 .error-message {
@@ -628,11 +651,10 @@ CARDS
 }
 
 .card.ingredienti div.container_card {
-
     width: 100%
 }
 
-.card button {
+/*.card button {
 	border: 0;
 	background-color: #fff;
 	border-radius: 50%;
@@ -653,7 +675,7 @@ CARDS
 		background-color: #EC4646;
 		color: #FFF;
 }
-
+é*/
 .card svg {
 		width: 1em;
 		height: 1em;
@@ -707,17 +729,17 @@ ANCHOR BUTTON
 */
 
 .anchor-button {
-	display: flex;
-	align-items: center;
-	background-color: var(--secondarybgcolor);
-	border-radius: var(--border-radius);
-	padding: 0.5em;
-	min-height: 3em;
-	margin-top: 0.5em;
+    display: flex;
+	  align-items: center;
+	  background-color: var(--secondarybgcolor);
+	  border-radius: var(--border-radius);
+	  padding: 0.5em;
+	  min-height: 3em;
+	  margin-top: 0.5em;
 }
 
 .anchor-button span {
-	margin-left: 0.5em;
+	  margin-left: 0.5em;
 }
 
 .anchor-button svg {
@@ -853,6 +875,7 @@ SEARCH PAGE
 
 .res-prev, .res-next {
     background-color: transparent;
+    margin: 0;
 }
 
 .results-navigation .res-prev { grid-area: 1 / 1; }
@@ -872,7 +895,7 @@ USER PAGE
 #user-actions {
 	list-style-type: none;
 	padding: 0;
-	margin: 1.5em auto;
+	margin: 4em auto;
 	max-width: var(--content-width-reduced);
 }
 
@@ -883,13 +906,17 @@ USER PAGE
 
 #manage_user {
     margin: auto;
-    width: 60%;
+    width: var(--content-width-reduced);
 }
 
 #manage_user fieldset {
-    border: var(--border-thin) solid; 
-    border-color: var(--focus-outline-color);
+    background-color: var(--secondarybgcolor);
     border-radius: var(--border-radius);
+    
+}
+
+#manage_user > fieldset:not(:first-child) {
+    margin-top: 1em;
 }
 
 #manage_user legend {

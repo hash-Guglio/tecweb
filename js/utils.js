@@ -1,4 +1,5 @@
 let isOpen = false;
+let previousScrollPosition = 1;
 
 const focusOnTopmostError = () => {
     const invalidFields = document.getElementsByClassName('invalid');
@@ -111,10 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
 const registerRequiredListeners = () => {
     for (const id in listeners) {
         const element = document.getElementById(id);
         if (element) element.addEventListener(listeners[id][0], listeners[id][1]);
     }
 };
-
