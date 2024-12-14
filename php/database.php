@@ -344,6 +344,40 @@
         // Recipe-related Queries
         // ==========================
 
+        public function getRecipeById($id) : array {
+            $query = "SELECT * FROM recipe WHERE id = ?";
+            $params = [$id];
+            $types = "i";
+
+            return $this->executeSelectQuery($query, $params, $types);
+        }
+
+        public function getDtByRecipeId($id) : array {
+            $query = "SELECT dt.id AS id, dt.dt_type AS name FROM dish_type AS dt JOIN dish_type_recipe AS dtr ON dtr.dish_type = dt.id WHERE dtr.recipe = ?" ;
+            $params = [$id];
+            $types = "i";
+
+            return $this->executeSelectQuery($query, $params, $types);
+        }
+
+        public function getRstByRecipeId($id) : array {
+            $query = "SELECT r.rst_type FROM restriction AS r JOIN recipe_restriction AS rr ON r.id = rr.restriction WHERE rr.recipe = ?";
+            $params = [$id];
+            $types = "i";
+
+            return $this->executeSelectQuery($query, $params, $types);
+        
+        }
+
+        public function getIngredientsByRecipeId($id) : array {
+            $query = "SELECT i.id AS id, i.igr_name AS name, i.igr_image AS image, ri.amount AS amount, i.igr_unit AS unit FROM ingredient i JOIN recipe_ingredient ri ON i.id = ri.ingredient WHERE ri.recipe = ? ORDER BY i.igr_name ASC;"; 
+
+            $params = [$id];
+            $types = "i";
+
+            return $this->executeSelectQuery($query, $params, $types);
+        }
+        
         public function searchRecipe($str, $limit, $offest) : array {
             $base = "FROM recipe WHERE rcp_title LIKE ? ORDER BY rcp_title";
 
@@ -414,6 +448,14 @@
         // Ingredient-related Queries
         // ==========================
 
+        public function getNutByIngredientId($id) : array {
+            $query = "SELECT n.id AS id, n.ntr_name AS name, inut.amount AS amount, n.ntr_unit AS unit FROM ingredient i JOIN ingredient_nutrient inut ON i.id = inut.ingredient JOIN nutrient n ON inut.nutrient = n.id WHERE i.id = ?";
+            $params = [$id];
+            $types = "s";
+
+            return $this->executeSelectQuery($query, $params, $types);
+        }
+        
         public function searchIngredient($str, $limit, $offest) : array {            
             $base = "FROM ingredient JOIN ingredient_category AS ic ON ingredient.id = ic.ingredient JOIN category AS c ON c.id = ic.category WHERE igr_name LIKE ? ORDER BY igr_name";
             $res = [];

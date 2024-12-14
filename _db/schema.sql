@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS recipe_restriction;
 DROP TABLE IF EXISTS ingredient_nutrient;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS ingredient_category;
+DROP TABLE IF EXISTS recipe_ingredient;
 
 CREATE TABLE IF NOT EXISTS user (
     id BIGINT UNSIGNED AUTO_INCREMENT,
@@ -47,10 +48,11 @@ CREATE TABLE IF NOT EXISTS recipe (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 CREATE TABLE IF NOT EXISTS ingredient (
-  id BIGINT UNSIGNED AUTO_INCREMENT,
-  igr_name varchar(45) NOT NULL,
-  igr_image varchar(200) DEFAULT NULL,
-  PRIMARY KEY (id)
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    igr_name varchar(45) NOT NULL,
+    igr_image varchar(200) DEFAULT NULL,
+    igr_unit varchar(40) DEFAULT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 CREATE TABLE IF NOT EXISTS dish_type (
@@ -62,7 +64,7 @@ CREATE TABLE IF NOT EXISTS dish_type (
 CREATE TABLE IF NOT EXISTS nutrient (
     id varchar(6),
     ntr_name varchar(45) DEFAULT NULL,
-    ntr_unit varchar(4) DEFAULT NULL,
+    ntr_unit varchar(40) DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -113,3 +115,13 @@ CREATE TABLE IF NOT EXISTS ingredient_category (
     FOREIGN KEY (ingredient) REFERENCES ingredient(id) ON DELETE CASCADE,
     FOREIGN KEY (category) REFERENCES category(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE IF NOT EXISTS recipe_ingredient (
+    recipe BIGINT UNSIGNED,
+    ingredient BIGINT UNSIGNED,
+    amount DOUBLE NOT NULL,
+    PRIMARY KEY (recipe, ingredient),
+    FOREIGN KEY (recipe) REFERENCES recipe(id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredient) REFERENCES ingredient(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+

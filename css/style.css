@@ -81,7 +81,6 @@ COMMON STYLE
 
 img, picture {
 	  display: block;
-	  max-width: 15em;
 }
 
 svg {
@@ -747,6 +746,26 @@ ANCHOR BUTTON
     width: 3em;
 }
 
+
+/*
+==============
+HERO IMAGE
+==============
+*/
+
+#hero-image {
+	flex: 0 1;
+}
+
+#hero-image img {
+    width: 30em;
+}
+
+#hero-image picture {
+	position: sticky;
+	top: var(--header-height);
+}
+
 /*
 ==============
 COMPONENT END
@@ -960,8 +979,102 @@ ERROR PAGE
 
 
 
+/*
+==============
+RECIPE PAGE
+==============
+*/
+
+.recipe-page {
+	  display: flex;
+	  flex-flow: column;
+	  gap: 2em;
+}
+
+#recipe-details-horizontal {
+    display: flex;
+    flex-flow: row wrap;    
+	  gap: 2em;
+}
+
+.recipe-details h1 {
+	  font-size: 2em;
+	  font-weight: 700;
+	  color: var(--txtcolor);
+}
+
+.recipe-details section:not(:first-child) {
+	  margin: 2em 0;
+}
+
+.recipe-details ul {
+	  list-style-type: none;
+	  padding-left: 0;
+}
+
+.recipe-details dl.info {
+	  display: grid;
+	  grid-template-columns: auto 1fr;
+    grid-gap: 0.5em 1em;
+}
+
+.recipe-details dl.info dt::after {
+    content: ':';
+}
+
+.recipe-details span#cost::after {
+    content: "\20AC";
+}
 
 
+#recipe-desc .box {
+    display: flex;
+    margin-top: 1em;
+} 
+
+#recipe-desc .box li {
+    margin-right: 0.5em;
+	  line-height: 2em;
+    text-align: center;
+}
+
+
+#recipe-desc .box li,
+.box-inline li > a,
+.box-inline dd > a {
+	  border: var(--border-thin) solid var(--bgcolor);
+    border-radius: var(--border-radius);
+    background-color: var(--secondarybgcolor);
+}
+
+.box-inline li > a,
+.box-inline dd > a {
+    padding: 0.5em;
+}
+
+#recipe-desc .box li > span {
+    display: block;
+}
+
+#recipe-desc .box a {
+    text-align: center;
+}
+
+#recipe-desc .box li > picture > img {
+    width: 8em;
+}
+
+.box-inline dd,
+.box-inline li {
+    display: inline;
+	  margin-right: 0.5em;
+	  line-height: 3em;
+	  white-space: nowrap;
+}
+
+.box-inline dt:not(:first-of-type) {
+    margin-top: 1em;
+}
 
 
 

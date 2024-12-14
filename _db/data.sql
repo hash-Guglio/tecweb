@@ -15,32 +15,32 @@ VALUES
     (1, 2),
     (2, 1);
 
-INSERT INTO recipe (id, rcp_title, rcp_image, rcp_ready_minutes, rcp_servings, rcp_instructions, rcp_price_servings, rcp_difficult) VALUES
-(1, 'Pasta al Pomodoro', 'pasta', 30, 2, 'Cuocere la pasta, preparare il sugo, unire e servire.', 2.50, 'Facile'),
-(2, 'Zuppa di Lenticchie', 'pasta', 45, 4, 'Soffriggere, aggiungere le lenticchie e cuocere finché sono morbide.', 3.20, 'Medio'),
-(3, 'Insalata di Quinoa', 'pasta', 20, 2, 'Cuocere la quinoa, aggiungere verdure fresche e condire.', 4.00, 'Facile'),
-(4, 'Riso Integrale con Verdure', 'pasta', 40, 4, 'Cuocere il riso, saltare le verdure e mescolare.', 3.50, 'Facile'),  
-(5, 'Lasagna Vegetariana', 'pasta', 60, 6, 'Preparare la lasagna alternando strati di pasta e verdure, cuocere in forno.', 5.00, 'Difficile'),
-(6, 'Polpette di Lenticchie', 'pasta', 50, 4, 'Formare delle polpette con le lenticchie, cuocerle in forno.', 3.80, 'Medio');  
+INSERT INTO recipe (id, rcp_title, rcp_ready_minutes, rcp_servings, rcp_instructions, rcp_price_servings, rcp_difficult) VALUES
+(1, 'Pasta al Pomodoro', 30, 2, 'Cuocere la pasta, preparare il sugo, unire e servire.', 2.50, 'Facile'),
+(2, 'Zuppa di Lenticchie', 45, 4, 'Soffriggere, aggiungere le lenticchie e cuocere finché sono morbide.', 3.20, 'Medio'),
+(3, 'Insalata di Quinoa', 20, 2, 'Cuocere la quinoa, aggiungere verdure fresche e condire.', 4.00, 'Facile'),
+(4, 'Riso Integrale con Verdure', 40, 4, 'Cuocere il riso, saltare le verdure e mescolare.', 3.50, 'Facile'),  
+(5, 'Lasagna Vegetariana', 60, 6, 'Preparare la lasagna alternando strati di pasta e verdure, cuocere in forno.', 5.00, 'Difficile'),
+(6, 'Polpette di Lenticchie', 50, 4, 'Formare delle polpette con le lenticchie, cuocerle in forno.', 3.80, 'Medio');  
 
-INSERT INTO ingredient (igr_name, igr_image) VALUES
-('Petto di pollo', 'placeholder'),
-('Salmone', 'placeholder'),
-('Broccoli', 'placeholder'),
-('Pomodoro', 'placeholder'),
-('Riso basmati', 'placeholder'),
-('Mozzarella', 'placeholder'),
-('Zucchine', 'placeholder'),
-('Avena', 'placeholder'),
-('Mandorle', 'placeholder'),
-('Uova', 'placeholder');
+INSERT INTO ingredient (igr_name, igr_unit) VALUES
+('Petto di pollo', '{abbr}g;grammi{/abbr}'),
+('Salmone', '{abbr}g;grammi{/abbr}'),
+('Broccoli', '{abbr}g;grammi{/abbr}'),
+('Pomodoro', '{abbr}g;grammi{/abbr}'),
+('Riso basmati', '{abbr}g;grammi{/abbr}'),
+('Mozzarella', '{abbr}g;grammi{/abbr}'),
+('Zucchine', '{abbr}g;grammi{/abbr}'),
+('Avena', '{abbr}g;grammi{/abbr}'),
+('Mandorle', '{abbr}g;grammi{/abbr}'),
+('Uova', '{abbr}pz;pezzi{/abbr}');
 
 INSERT INTO nutrient (id, ntr_name, ntr_unit)
 VALUES
-    ('cal' , 'Calorie', 'kcal'),
-    ('prt', 'Proteine', 'g'),
-    ('fat', 'Grassi', 'g'),
-    ('carbo', 'Carboidrati', 'g');
+    ('cal' , 'Calorie', '{abbr}kcal;chilocalorie{/abbr}'),
+    ('prt', 'Proteine', '{abbr}g;grammi{/abbr}'),
+    ('fat', 'Grassi', '{abbr}g;grammi{/abbr}'),
+    ('carbo', 'Carboidrati', '{abbr}g;grammi{/abbr}');
 
 INSERT INTO recipe_restriction (recipe, restriction)
 VALUES 
@@ -136,3 +136,13 @@ INSERT INTO ingredient_category (ingredient, category) VALUES
     (8, 4),
     (9, 6),
     (10, 7);
+
+INSERT INTO recipe_ingredient (recipe, ingredient, amount) VALUES
+    (1, 4, 200),  -- Pasta al Pomodoro, Pomodoro, 200g
+    (1, 5, 150),  -- Pasta al Pomodoro, Riso basmati, 150g
+    (2, 3, 250),  -- Zuppa di Lenticchie, Broccoli, 250g
+    (2, 9, 100),  -- Zuppa di Lenticchie, Mandorle, 100g
+    (3, 8, 180),  -- Insalata di Quinoa, Avena, 180g
+    (4, 7, 200),  -- Riso Integrale con Verdure, Zucchine, 200g
+    (5, 6, 300),  -- Lasagna Vegetariana, Mozzarella, 300g
+    (6, 10, 250); -- Polpette di Lenticchie, Uova, 250g
