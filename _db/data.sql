@@ -16,12 +16,12 @@ VALUES
     (2, 1);
 
 INSERT INTO recipe (id, rcp_title, rcp_ready_minutes, rcp_servings, rcp_instructions, rcp_price_servings, rcp_difficult) VALUES
-(1, 'Pasta al Pomodoro', 30, 2, 'Cuocere la pasta, preparare il sugo, unire e servire.', 2.50, 'Facile'),
-(2, 'Zuppa di Lenticchie', 45, 4, 'Soffriggere, aggiungere le lenticchie e cuocere finché sono morbide.', 3.20, 'Medio'),
-(3, 'Insalata di Quinoa', 20, 2, 'Cuocere la quinoa, aggiungere verdure fresche e condire.', 4.00, 'Facile'),
-(4, 'Riso Integrale con Verdure', 40, 4, 'Cuocere il riso, saltare le verdure e mescolare.', 3.50, 'Facile'),  
-(5, 'Lasagna Vegetariana', 60, 6, 'Preparare la lasagna alternando strati di pasta e verdure, cuocere in forno.', 5.00, 'Difficile'),
-(6, 'Polpette di Lenticchie', 50, 4, 'Formare delle polpette con le lenticchie, cuocerle in forno.', 3.80, 'Medio');  
+(1, 'Pasta al Pomodoro', 30, 2, 'Cuocere la pasta. Preparare il sugo. Unire e servire.', 2.50, 'Facile'),
+(2, 'Zuppa di Lenticchie', 45, 4, 'Soffriggere. Aggiungere le lenticchie e cuocere finché sono morbide.', 3.20, 'Medio'),
+(3, 'Insalata di Quinoa', 20, 2, 'Cuocere la quinoa. Aggiungere verdure fresche e condire.', 4.00, 'Facile'),
+(4, 'Riso Integrale con Verdure', 40, 4, 'Cuocere il riso. Saltare le verdure e mescolare.', 3.50, 'Facile'),  
+(5, 'Lasagna Vegetariana', 60, 6, 'Preparare la lasagna alternando strati di pasta e verdure. Cuocere in forno.', 5.00, 'Difficile'),
+(6, 'Polpette di Lenticchie', 50, 4, 'Formare delle polpette con le lenticchie. Cuocerle in forno.', 3.80, 'Medio');  
 
 INSERT INTO ingredient (igr_name, igr_unit) VALUES
 ('Petto di pollo', '{abbr}g;grammi{/abbr}'),

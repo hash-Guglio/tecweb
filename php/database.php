@@ -361,7 +361,7 @@
         }
 
         public function getRstByRecipeId($id) : array {
-            $query = "SELECT r.rst_type FROM restriction AS r JOIN recipe_restriction AS rr ON r.id = rr.restriction WHERE rr.recipe = ?";
+            $query = "SELECT r.id AS id, r.rst_type AS name FROM restriction AS r JOIN recipe_restriction AS rr ON r.id = rr.restriction WHERE rr.recipe = ?";
             $params = [$id];
             $types = "i";
 

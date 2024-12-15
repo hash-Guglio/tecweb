@@ -27,8 +27,9 @@
             <div id="recipe-details-vertical" class="recipe-details">
                 <section>
                     <h1>@@recipe@@</h1>
+                    
+                    <!-- restrictions_start -->
                     <dl id="details">
-                        <!-- restrictions_start -->
                         <dt class="sr-a11y-only">Restrizioni</dt>
                         <dd>
                             <!-- restrictions_data_start -->
@@ -43,8 +44,8 @@
                         <!-- vegan_end -->
                         <!-- restrictions_data_end -->
                     </dd>
-                    <!-- restrictions_end -->
                 </dl>
+                <!-- restrictions_end -->
             </section>
                 
             <section>
@@ -79,7 +80,7 @@
             <section>
                 <header>
                     <h2>Tipo di Piatto</h2>
-				    	      <p class="sr-a11y-only">Esplora gli tipi di piatti usando i <span lang="en">link</span> seguenti.</p>
+				    	      <p class="sr-a11y-only">Esplora i tipi di piatti usando i <span lang="en">link</span> seguenti.</p>
                     <ul class="box-inline">
                         <!-- dt_start -->
                         <li><a href="@@dt_link@@">@@dt_name@@</a></li>
@@ -87,6 +88,22 @@
                     </ul>
                 </header>
             </section>
+    
+            <!-- allgs_start -->
+            <section>
+                <header>
+                    <h2>Tipo di Dieta</h2>
+				    	      <p class="sr-a11y-only">Esplora i tipi di dieta usando i <span lang="en">link</span> seguenti.</p>
+
+                    <ul class="box-inline">
+                        <!-- allg_start -->
+                        <li><a href="@@allg_link@@">@@allg_name@@</a></li>
+                        <!-- allg_end -->
+                    </ul>
+
+                </header>
+            </section>
+            <!-- allgs_end -->
         </div>
         
     </div>
@@ -114,7 +131,11 @@
         
         <section>
             <h2>Descrizione</h2>
-            <p>@@descrizione@@</p>
+                <ol id="recipe-steps">
+                    <!-- step_start -->
+                    <li>@@step@@</li>
+                    <!-- step_end -->
+                </ol>
         </section>
     </div> 
 

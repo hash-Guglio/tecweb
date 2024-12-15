@@ -60,12 +60,12 @@
 
     $rstSection = RenderEngine::getSectionContent($page, "restrictions"); 
     $rstSectionData = RenderEngine::getSectionContent($page, "restrictions_data");
-    $rsts = "";
+    $res = "";
     foreach ($restriction as $r) {
-        $tmp = RenderEngine::getSectionContent($rstSection, $restrictionMap[$r["rst_type"]]);  
-        $rsts .= $tmp;
+        $tmp = RenderEngine::getSectionContent($rstSection, $restrictionMap[$r["name"]]);  
+        $res .= $tmp;
     }
-    RenderEngine::replaceSectionContent($rstSection, "restrictions_data", $rsts);
+    RenderEngine::replaceSectionContent($rstSection, "restrictions_data", $res);
     RenderEngine::replaceSectionContent($page, "restrictions", $rstSection);
 
     foreach ($totalNutrients as $nutrientName => $nutrientAmount) {
@@ -88,11 +88,42 @@
     foreach ($dish_type as $dt) {
         $dtSection = RenderEngine::getSectionContent($page, "dt");
         RenderEngine::replaceAnchor($dtSection, "dt_name", $dt["name"]); 
-        RenderEngine::replaceAnchor($dtSection, "dt_link", "cerca_ricette.php?filter=dish_type&dish_type={$dt["id"]}");
+        RenderEngine::replaceAnchor($dtSection, "dt_link", "cerca_ricette.php?filter=dish_type&dish_type=" . ((int)$dt["id"] - 1));
         $res .= $dtSection;
     }
 
     RenderEngine::replaceSectionContent($page, "dt", $res);
+
+    if (empty($restriction)) {
+        RenderEngine::replaceSectionContent($page, "allgs", '');
+    }
+    else {
+        $rSection = RenderEngine::getSectionContent($page, "allgs");
+        $res = "";
+        foreach ($restriction as $r) {
+            $rSectionData = RenderEngine::getSectionContent($rSection, "allg");
+            RenderEngine::replaceAnchor($rSectionData, "allg_name", $r["name"]); 
+            RenderEngine::replaceAnchor($rSectionData, "allg_link", "cerca_ricette.php?filter=allgs&allgs=" . ((int)$r["id"] - 1));
+            $res .= $rSectionData;
+        }
+
+        RenderEngine::replaceSectionContent($rSection, "allg", $res);
+        RenderEngine::replaceSectionContent($page, "allgs", $rSection);
+
+    }
+
+    RenderEngine::replaceSectionContent($page, "allg", $res);
+
+    $steps = array_filter(array_map('trim', explode('.', $recipe[0]["rcp_instructions"])));
+
+    $res = "";
+    foreach ($steps as $s) {
+        $stpSection = RenderEngine::getSectionContent($page, "step");
+        RenderEngine::replaceAnchor($stpSection, "step", $s);
+        $res .= $stpSection;
+    }
+
+    RenderEngine::replaceSectionContent($page, "step", $res);
 
     RenderEngine::showPage($page);
 ?>

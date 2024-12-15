@@ -225,22 +225,20 @@ function main($searchType) {
     function buildHeader(string &$page, string $query, string $searchType, array $filters, string $filterName, string $filterValue): string {
         $headerText = '';
 
-        if (empty($filterName) || empty($filterValue)) return '';
+        if ($filterName === '' || $filterValue === '') return '';
         
         switch ($searchType) {
             case 'ricette':
                 $filterIndex = ($filterName === 'dish_type') ? 0 : 1;
                 $filterField = ($filterName === 'dish_type') ? 'dt_type' : 'rst_type';
                 $filterValueIndex = intval($filterValue);
-                $headerText = ' filtrate per "' . ($filters[$filterName][$filterValueIndex][$filterField] ?? '') . '"';
-                break;
-        
+                $headerText = ' filtrate per "' . ($filters[$filterName][$filterValueIndex][$filterField] ?? '') . '"'; 
+                return $headerText;
+
             case 'ingredienti':
                 $headerText = ' filtrati per "' . $filters["filter"][$filterName] . '" ordinati dal ' . $filters["order"][$filterValue];            
-                break;
+                return $headerText;
         }
-
-        return $headerText;
     }
 
     function buildResultsSection(string $page, array $results, string $searchType): string {
