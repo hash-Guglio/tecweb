@@ -81,7 +81,6 @@ COMMON STYLE
 
 img, picture {
 	  display: block;
-	  max-width: 15em;
 }
 
 svg {
@@ -178,6 +177,28 @@ SCREEN READER / KEYBOARD USERS
 COMPONENT START
 ==============
 */
+
+/*
+==============
+BACK TO TOP
+==============
+*/
+
+#back-to-top {
+	  width: 4em;
+	  height: 4em;
+    border-radius: 100%;
+    background-color: var(--link-color);
+    position: fixed;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+}
+
+#back-to-top.show {
+    opacity: 1;
+}
 
 /*
 ==============
@@ -314,11 +335,15 @@ SERVER MESSAGES
 */
 
 #server-msg {
-    margin: 1em 0;
+    margin: 1em auto;
 	  padding: 0;
 	  border: 0.2em solid;
 	  border-radius: var(--border-radius);
 	  list-style-type: none;
+}
+
+body#user-data  ul#server-msg{
+    width: var(--content-width-reduced);
 }
 
 #server-msg li {
@@ -518,30 +543,27 @@ button[type=submit]:focus {
 }
 
 input[type="checkbox"] {
-    appearance: none;
+    /*appearance: none;*/
     width: 24px;
     height: 24px;
     background-color: var(--bg-color);
     border: 2px solid var(--focus-outline-color);
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    accent-color: var(--link-color);
+    /*transition: all 0.3s ease;*/
 }
 
-input[type="checkbox"]:checked {
-  background-color: var(--link-color);
-  border-color: #0056b3;
-  position: relative;
-}
 
 .checkbox-container label {
-  color: #333;
+  color: var(--txtcolor);;
   cursor: pointer;
 }
 
-input[type="checkbox"]:hover {
-  background-color: #e6f7ff;
-  border-color: #0056b3;
+input[type="checkbox"]:hover,
+input[type="checkbox"]:focus,
+{
+    accent-color: var(--link-hover-color);
 }
 
 .error-message {
@@ -582,7 +604,7 @@ CARDS
 .card.ingredienti picture, 
 .card.ingredienti img {
     display: block;
-	  max-height: 10em;
+	  max-height: 8em;
 	  width: auto;
 	  object-fit: cover;
 }
@@ -627,7 +649,11 @@ CARDS
 		text-decoration: underline; 
 }
 
-.card button {
+.card.ingredienti div.container_card {
+    width: 100%
+}
+
+/*.card button {
 	border: 0;
 	background-color: #fff;
 	border-radius: 50%;
@@ -648,7 +674,7 @@ CARDS
 		background-color: #EC4646;
 		color: #FFF;
 }
-
+é*/
 .card svg {
 		width: 1em;
 		height: 1em;
@@ -660,8 +686,6 @@ CARDS
 
 
 .card-footer {
-	margin-top: 1.25rem;
-	border-top: 1px solid #ddd;
 	padding-top: 1.25rem;
 	display: flex;
 	align-items: center;
@@ -671,22 +695,23 @@ CARDS
 .card-meta {	
 	display: flex;
 	align-items: center;
-	color: #787878;
-
-
+	color: var(--txtcolor);;
 }
 
-.card-meta:first-child:after {
+.card.ingredienti div.card-meta {
+    margin-left: 1.5em;
+}
+
+.card-meta:first-child:not(:only-child):after {
 		display: block;
 		content: "";
-		width: 4px;
-		height: 4px;
+		width: .50rem;
+		height: .50rem;
 		border-radius: 50%;
 		background-color: currentcolor;
 		margin-left: .75rem;
 		margin-right: .75rem;
 }
-
 
 .card-meta svg {
 		flex-shrink: 0;
@@ -703,19 +728,44 @@ ANCHOR BUTTON
 */
 
 .anchor-button {
-	display: flex;
-	align-items: center;
-	background-color: var(--secondarybgcolor);
-	border-radius: var(--border-radius);
-	border: var(--border-thin) solid var(--bgcolor-off);
-	padding: 0.5em;
-	min-height: 3em;
-	margin-top: 0.5em;
+    display: flex;
+	  align-items: center;
+	  background-color: var(--secondarybgcolor);
+	  border-radius: var(--border-radius);
+	  padding: 0.5em;
+	  min-height: 3em;
+	  margin-top: 0.5em;
 }
 
 .anchor-button span {
-	margin-left: 0.5em;
+	  margin-left: 0.5em;
 }
+
+.anchor-button svg {
+    height: auto;
+    width: 3em;
+}
+
+
+/*
+==============
+HERO IMAGE
+==============
+*/
+
+#hero-image {
+	flex: 0 1;
+}
+
+#hero-image img {
+    width: 30em;
+}
+
+#hero-image picture {
+	position: sticky;
+	top: var(--header-height);
+}
+
 /*
 ==============
 COMPONENT END
@@ -830,20 +880,21 @@ SEARCH PAGE
 */
 
 .results-navigation {
-	display: grid;
-	grid-template-columns: 3.5em 1fr 3.5em;
-	gap: 0.5em;
-	align-items: center;
-	margin: 1em auto;
+	  display: grid;
+	  grid-template-columns: 3.5em 1fr 3.5em;
+	  gap: 0.5em;
+	  align-items: center;
+    margin: 1em auto;
+    width: 50%;
 }
 
 .results-navigation .anchor-button {
-	height: 3em;
+    height: 3em;
 }
 
-.anchor-button svg {
-    height: auto;
-    width: 3.5em;
+.res-prev, .res-next {
+    background-color: transparent;
+    margin: 0;
 }
 
 .results-navigation .res-prev { grid-area: 1 / 1; }
@@ -863,7 +914,7 @@ USER PAGE
 #user-actions {
 	list-style-type: none;
 	padding: 0;
-	margin: 1.5em auto;
+	margin: 4em auto;
 	max-width: var(--content-width-reduced);
 }
 
@@ -874,13 +925,17 @@ USER PAGE
 
 #manage_user {
     margin: auto;
-    width: 60%;
+    width: var(--content-width-reduced);
 }
 
 #manage_user fieldset {
-    border: var(--border-thin) solid; 
-    border-color: var(--focus-outline-color);
+    background-color: var(--secondarybgcolor);
     border-radius: var(--border-radius);
+    
+}
+
+#manage_user > fieldset:not(:first-child) {
+    margin-top: 1em;
 }
 
 #manage_user legend {
@@ -888,7 +943,7 @@ USER PAGE
     text-transform: uppercase;
 }
 
-#manage_user input {
+#manage_user input:not([type="checkbox"]), #manage_user select {
     margin-bottom: 1em;
 }
 /*
@@ -924,9 +979,120 @@ ERROR PAGE
 
 
 
+/*
+==============
+RECIPE PAGE
+==============
+*/
+
+.recipe-page {
+	  display: flex;
+	  flex-flow: column;
+	  gap: 2em;
+}
+
+#recipe-details-horizontal {
+    display: flex;
+    flex-flow: row wrap;    
+	  gap: 2em;
+}
+
+.recipe-details h1 {
+	  font-size: 2em;
+	  font-weight: 700;
+	  color: var(--txtcolor);
+}
+
+.recipe-details section:not(:first-child) {
+	  margin: 2em 0;
+}
+
+.recipe-details ul {
+	  list-style-type: none;
+	  padding-left: 0;
+}
+
+.recipe-details dl.info {
+	  display: grid;
+	  grid-template-columns: auto 1fr;
+    grid-gap: 0.5em 1em;
+}
+
+.recipe-details dl.info dt::after {
+    content: ':';
+}
+
+.recipe-details span#cost::after {
+    content: "\20AC";
+}
 
 
+#recipe-desc .box {
+    display: flex;
+    margin-top: 1em;
+} 
 
+#recipe-desc .box li {
+    margin-right: 0.5em;
+	  line-height: 2em;
+    text-align: center;
+}
+
+
+#recipe-desc .box li,
+.box-inline li > a,
+.box-inline dd > a {
+	  border: var(--border-thin) solid var(--bgcolor);
+    border-radius: var(--border-radius);
+    background-color: var(--secondarybgcolor);
+}
+
+.box img {
+    border-radius: var(--border-radius);
+}
+
+.box li:hover, 
+.box li:focus-within {
+    outline: solid var(--focus-outline-color) var(--border-thin);
+    transform: translatey(-0.5em);
+}
+
+.box-inline li > a,
+.box-inline dd > a {
+    padding: 0.5em;
+}
+
+#recipe-desc .box li > span {
+    display: block;
+}
+
+#recipe-desc .box a {
+    text-align: center;
+}
+
+#recipe-desc .box li > picture > img {
+    width: 8em;
+}
+
+.box-inline dd,
+.box-inline li {
+    display: inline;
+	  margin-right: 0.5em;
+	  line-height: 3em;
+	  white-space: nowrap;
+}
+
+.box-inline dt:not(:first-of-type) {
+    margin-top: 1em;
+}
+
+ol#recipe-steps li::after {
+    content: ";";
+}
+
+ol#recipe-steps li:last-child::after {
+    content: ".";
+}
 
 
 /*
