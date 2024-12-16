@@ -120,6 +120,19 @@ body#auth ul#server-msg {
 body#user-data ul#server-msg {
      width: 100%;
 }
+
+
+/*
+==============
+RECIPE PAGE
+==============
+*/
+
+#recipe-details-horizontal {
+    flex-direction: column;
+}
+
+
 /*
 ==============
 ERROR PAGE

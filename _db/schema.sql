@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS dish_type_recipe (
 CREATE TABLE IF NOT EXISTS ingredient_nutrient (
     ingredient BIGINT UNSIGNED,
     nutrient varchar(6),
-    amount double NOT NULL,
+    amount double DEFAULT  NULL,
     PRIMARY KEY (ingredient, nutrient),
     FOREIGN KEY (ingredient) REFERENCES ingredient(id) ON DELETE CASCADE,
     FOREIGN KEY (nutrient) REFERENCES nutrient(id) ON DELETE CASCADE
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS ingredient_category (
 CREATE TABLE IF NOT EXISTS recipe_ingredient (
     recipe BIGINT UNSIGNED,
     ingredient BIGINT UNSIGNED,
-    amount DOUBLE NOT NULL,
+    amount DOUBLE DEFAULT NULL,
     PRIMARY KEY (recipe, ingredient),
     FOREIGN KEY (recipe) REFERENCES recipe(id) ON DELETE CASCADE,
     FOREIGN KEY (ingredient) REFERENCES ingredient(id) ON DELETE CASCADE

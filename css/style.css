@@ -987,13 +987,12 @@ RECIPE PAGE
 
 .recipe-page {
 	  display: flex;
-	  flex-flow: column;
+    flex-flow: column;
 	  gap: 2em;
 }
 
 #recipe-details-horizontal {
     display: flex;
-    flex-flow: row wrap;    
 	  gap: 2em;
 }
 
@@ -1026,18 +1025,26 @@ RECIPE PAGE
     content: "\20AC";
 }
 
-
 #recipe-desc .box {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 1em;
 } 
 
 #recipe-desc .box li {
     margin-right: 0.5em;
-	  line-height: 2em;
+	  margin-top: 0.5em;
+    line-height: 2em;
     text-align: center;
+    display: flex;
+	  flex-direction: column;
+	  width: 10em;
 }
 
+.box-inline {
+    display: flex;
+    flex-flow: wrap;
+}
 
 #recipe-desc .box li,
 .box-inline li > a,
@@ -1045,6 +1052,7 @@ RECIPE PAGE
 	  border: var(--border-thin) solid var(--bgcolor);
     border-radius: var(--border-radius);
     background-color: var(--secondarybgcolor);
+
 }
 
 .box img {
@@ -1055,6 +1063,11 @@ RECIPE PAGE
 .box li:focus-within {
     outline: solid var(--focus-outline-color) var(--border-thin);
     transform: translatey(-0.5em);
+}
+
+.box a:hover,
+.box a:focus {
+    outline: none;
 }
 
 .box-inline li > a,
@@ -1068,10 +1081,11 @@ RECIPE PAGE
 
 #recipe-desc .box a {
     text-align: center;
+    padding: 0.3em;
 }
 
 #recipe-desc .box li > picture > img {
-    width: 8em;
+    max-width: 100%;
 }
 
 .box-inline dd,
@@ -1094,7 +1108,10 @@ ol#recipe-steps li:last-child::after {
     content: ".";
 }
 
-
+.text-content {
+    display: flex;
+    flex-direction: column;
+}
 /*
 ==============
 PAGES END

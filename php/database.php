@@ -471,7 +471,7 @@
             $params = ["%". trim($str) . "%"];
             $types = "s";
             $res['count'] = $this->executeSelectQuery($query, $params, $types);
-            
+
             return $res;
         }
 
