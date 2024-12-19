@@ -1,5 +1,5 @@
 let isOpen = false;
-let previousScrollPosition = 1;
+let lastScrollPosition = 10;
 
 const focusOnTopmostError = () => {
     const invalidFields = document.getElementsByClassName('invalid');
@@ -80,7 +80,6 @@ const updateFilterVisibility = () => {
     if (inputDt && labelDt) {
         inputDt.hidden = true;
         labelDt.hidden = true;
-        inputDt.value = '';
     };
 
     if (inputAllgs && labelAllgs) {
@@ -109,6 +108,29 @@ const updateFilterVisibility = () => {
 };
 
 
+
+function isScrollingDownward() {
+    let isDownward = false;
+	  let currentScrollPosition = window.pageYOffset;
+	  if (currentScrollPosition > lastScrollPosition) { isDownward = true };
+	  lastScrollPosition = currentScrollPosition;
+	  return isDownward;
+}
+
+function handlePageScroll() {
+	  let scrollToTopButton = document.getElementById("back-to-top");
+	  if (scrollToTopButton != null) {
+		    let viewportHeight = window.innerHeight;
+		    let currentScrollPosition = window.pageYOffset;
+
+		    if (isScrollingDownward() || currentScrollPosition == 0) {
+			      scrollToTopButton.classList.remove('show');
+		    } else if (isScrollingDownward() === false && currentScrollPosition > viewportHeight/5) {
+			      scrollToTopButton.classList.add('show');
+		    }
+	  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     if (document.body.classList.contains('search-page')) {
         updateFilterVisibility();
@@ -126,3 +148,5 @@ const registerRequiredListeners = () => {
         if (element) element.addEventListener(listeners[id][0], listeners[id][1]);
     }
 };
+
+window.addEventListener("scroll", handlePageScroll);

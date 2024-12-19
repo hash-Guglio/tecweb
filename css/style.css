@@ -185,20 +185,39 @@ BACK TO TOP
 */
 
 #back-to-top {
-	  width: 4em;
-	  height: 4em;
-    border-radius: 100%;
-    background-color: var(--link-color);
-    position: fixed;
-    z-index: 50;
-    display: flex;
-    justify-content: center;
-    opacity: 0;
+	width: 4em;
+	height: 4em;
+	border-radius: 100%;
+	background-color: var(--link-color);
+	color: var(--secondarybgcolor);
+	position: fixed;
+	right: var(--content-padding);
+	bottom: var(--content-padding);
+	opacity: 0;
+	z-index: 50;
+	transform: scale(0);
+	display: flex;
+	justify-content: center;
 }
 
-#back-to-top.show {
-    opacity: 1;
+#back-to-top.show:hover {
+	outline: none;
+	transform: scale(1.1);
+	background-color: var(--link-hover-color);
 }
+
+@media (prefers-reduced-motion: no-preference) {
+	#back-to-top {
+		transition: all .2s ease-in-out;
+	}
+}
+
+#back-to-top:focus,
+#back-to-top.show {
+	opacity: 1;
+	transform: scale(1);
+}
+
 
 /*
 ==============
